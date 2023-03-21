@@ -25,3 +25,7 @@ def login(request):
             return redirect(login)           
     else:
         return render(request, 'login/login.html')
+    
+def validacao(request):
+    return render(request, 'validacao/valida_Email.html')
+    
