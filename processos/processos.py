@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 def enviaEmail(email, titulo, conteudo):
     #Coloque o E-mail e a Senha
     sender_address = 'admenvmail@gmail.com' #'Coloque seu E-mail de origem'
-    sender_pass = 'mwjybcqlentpoayt' #'Coloque seu Acesso de App (senha de acesso ao App)'
+    sender_pass = 'Senha App' #'Coloque seu Acesso de App (senha de acesso ao App)'
     receiver_address = email #Email de destino
     #Configurar o MIME
     message = MIMEMultipart()
