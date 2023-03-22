@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import auth, messages
 from .models import User
 from django.db.models import Q
+from processos import processos
 
 def login(request):
     if "login" in request.POST:
@@ -27,5 +28,30 @@ def login(request):
         return render(request, 'login/login.html')
     
 def validacao(request):
+    print('entrei')
+    if "validaSenha" in request.POST:
+        email = request.POST.get('email')
+        validEmail = User.objects.get(email=email)
+        print(validEmail)
+        if validEmail is None:
+            print('entrou')
+            return(redirect, enviaEmail)   
+        else:
+            processos.enviaEmail(validEmail.email, 'Teste', 'Teste1213123123')
+            return render(request, 'validacao/valida_Email.html')
     return render(request, 'validacao/valida_Email.html')
     
+    
+def enviaEmail(request):
+    print('olá')
+    if "validaSenha" in request.POST:
+        email = request.POST.GET('email')
+        validEmail = User.objects.get(email=email)
+        print(validEmail)
+        if validEmail is None:
+            print('entrou')
+            return(redirect, enviaEmail)   
+        else:
+            processos.enviaEmail(validEmail.email, 'Teste', 'Teste1213123123')
+            return render(request, 'validacao/valida_Email.html')
+    return render(request, 'validacao/valida_Email.html')

@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <div class="container col-sx-6 col-sm-6 col-md-8 pt-5">
+    <div class="container col-sx-6 col-sm-6 col-md-8">
         <div class="content col-xs-10">
             <label class="logo">
                 <img src="{% static 'image/logo_400x400 branco.png' %}" alt="">
@@ -29,17 +29,17 @@
             <p class=" text1 pt-3">Redefina a sua senha</p>
             <div class="column">
 
-                <form class="form">
+                <form class="form" method="POST"> {% csrf_token %}
                     <p class="form-text1"><b> Digite o endereço de e-mail válido da sua conta e 
                         enviaremos um link de
                         redefinição de senha.</b></p>
                     <div id="input" class="input-group flex-nowrap col-sm-9">
-                        <input type="text" class="form-control" placeholder="Digite seu e-mail" aria-label="Email">
+                        <input name="email" type="text" class="form-control" placeholder="Digite seu e-mail" aria-label="Email">
                     </div>
                     <p class="form-text2"> <b> Verifique a sua conta</b></p>
                     <div id="verificar" class=col-sm-9 p-3>                                              
                     </div>
-                    <button id="btn-hover" class="btn">Enviar e-mail de redefinição de senha</button>
+                    <button id="btn-hover" name='validaSenha' class="btn" submit="submit">Enviar e-mail de redefinição de senha</button>
                     <footer class="footer-login">
                         <p class=""> © 2023
                             <span> | Desenvolvido por</span>
@@ -49,10 +49,7 @@
                     </footer>
                 </form>
             </div>
-
         </div>
-
-
     </div>
 </body>
 

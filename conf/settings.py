@@ -118,6 +118,12 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backends.MatriculaBackend',
 ]
 
+# Configuração do reCAPTCHA
+RECAPTCHA_PUBLIC_KEY = '6Ld3Mx8lAAAAACsB5XceQNlR_eqBC5TqQA74uqLa'
+RECAPTCHA_PRIVATE_KEY = '6Ld3Mx8lAAAAAPWGMf1-ajkewzwLWlCyKLD4fVLO'
+SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+RECAPTCHA_REQUIRED_SCORE = 0.87
+
 AUTH_USER_MODEL = 'accounts.user'
 
 # Internationalization
