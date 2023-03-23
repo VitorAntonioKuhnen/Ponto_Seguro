@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b(w!7eilg8r$)9rwqk6xmy1!1tptn_%ze)_9ba7m)g7%r*w3$)'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'home',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -119,8 +121,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuração do reCAPTCHA
-RECAPTCHA_PUBLIC_KEY = '6Ld3Mx8lAAAAACsB5XceQNlR_eqBC5TqQA74uqLa'
-RECAPTCHA_PRIVATE_KEY = '6Ld3Mx8lAAAAAPWGMf1-ajkewzwLWlCyKLD4fVLO'
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 RECAPTCHA_REQUIRED_SCORE = 0.87
 

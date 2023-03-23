@@ -88,9 +88,9 @@ html, body{
 #verificar {
     background-color: transparent;
     border-radius: 5px;
-    border: 1px solid #CED4DA;
-    height: 25vh;
-    width: 100%;
+    /* border: 1px solid #CED4DA; */
+    /* height: 25vh; */
+    /* width: 100%; */
 }
 
 
