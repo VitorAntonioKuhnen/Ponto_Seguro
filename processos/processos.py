@@ -1,3 +1,7 @@
+import random
+from home.models import Token
+from accounts.models import User
+
 #Import do Envio de E-mail
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -17,7 +21,8 @@ def enviaEmail(email, titulo, conteudo):
     mail_content = conteudo
 
     #O corpo e os anexos para o correio
-    message.attach(MIMEText(mail_content, 'html')) #Plain para enviar apenas o conteudo, e HTML para enviar um e-mail com HTML
+    message.attach(MIMEText(mail_content, 'text/html')) #Plain para enviar apenas o conteudo, e HTML para enviar um e-mail com HTML
+
     #Criar sessão SMTP para enviar o e-mail
     session = smtplib.SMTP('smtp.gmail.com', 587) #Usar gmail com porta
     session.starttls() #habilitar segurança
@@ -26,3 +31,13 @@ def enviaEmail(email, titulo, conteudo):
     session.sendmail(config('Email'), receiver_address, text)
     session.quit()
     return 'Email Enviado'
+
+
+def geradorToken(usuario):
+    user = User.objects.get(id=usuario)
+    numbers = [0,1,2,3,4,5,6,7,8,9]
+    resultado = ''
+    for i in range(6):
+        resultado +=  str(random.choice(numbers))
+    Token.objects.create(codToken=resultado, usuario_id=usuario) 
+    return resultado

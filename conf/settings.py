@@ -152,3 +152,13 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Envia Email
+
+DEFAULT_FROM_EMAIL = config('Email') 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #Enviado via SMTP caso queira no Console troque o "SMTP" por "CONSOLE"
+EMAIL_HOST_USER = config('Email')
+EMAIL_HOST_PASSWORD = config('SenhaApp')
+EMAIL_USE_TLS = True
+EMAIL_PORT = config('email_port')
+EMAIL_HOST = config('email_host')
