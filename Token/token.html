@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https: //fonts.googleapis.com/css2?family= Nunito :wght@200;300;400;500;600 & family= Open+Sans:wght@300;400;600 & display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="asserts/css/token.css">
+    <link rel="shortcut icon" href="asserts/image/logoPontoSeguro800px.png" type="image/x-icon">
+    <title>Token</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class=" alert-dismissible fade show">
+            <p> Validação de token</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Token gerado com sucesso!</strong>
+            <p> Verifique na sua caixa de e-mail.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <hr>
+        <form class="form py-sm-5">
+            <div class="token">
+                <p> Token</p>
+                <input id="input" type="text" class="form-control" placeholder="Digite seu e-mail" aria-label="Email">
+                <button id="btn-hover-verificar" class="btn-verificar ">Verificar token</button>
+            </div>
+            <span> Caso não tenha recebido o email com o token </span>
+            <a href="">gere novo token.</a>
+        </form>
+    </div>
+    <hr>
+    <footer>
+        <button id="btn-hover-cancelar" class="btn-cancelar">Cancelar</button>
+    </footer>
+</body>
+</html>
