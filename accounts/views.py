@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.urls import reverse
 from django.contrib import auth, messages
 from .models import User
 from .models import Token
@@ -52,7 +53,8 @@ def validacao(request):
                 if validEmail != '':
                     print('entrou aqui')
                     enviaEmail(validEmail.email, processos.geradorToken(validEmail.id))
-                    return render(request, 'token/token.html', {'matricula': validEmail.id})
+                    url = reverse('token', args=[validEmail.id])
+                    return redirect(url)
                 else:
                     messages.error(request, 'Informe um Email Válido!')
             else:
@@ -81,7 +83,6 @@ def token(request, id):
                 print('Token Invalido')
         return render(request, 'token/token.html', {'matricula': id})
     return render(request, 'token/token.html', {'matricula': id})
-
 
 # Precisa ser revisado pois dá erro ao efetuar o envio da mensagem pois não tem um retorno como deveria na tela
 def gerarToken(request, id):
