@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, Token
 
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('username', 'first_name', 'last_name', 'is_staff')
@@ -17,3 +17,11 @@ class UsuarioAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UsuarioAdmin)
+
+
+class TokenAdmin(admin.ModelAdmin):
+    list_display = ['codToken', 'usuario', 'datGer', 'horGer']
+    list_display_links = ['codToken', 'usuario']
+    search_fields = ['codToken', 'usuario', 'datGer', 'horGer']
+
+admin.site.register(Token, TokenAdmin)

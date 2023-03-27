@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import auth, messages
 from .models import User
+from .models import Token
 from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
@@ -41,30 +42,53 @@ def validacao(request):
     form = FormWithCaptcha() 
     if "validaSenha" in request.POST:
         email = request.POST.get('email')
-        print(email)
         if email != '': 
             form = FormWithCaptcha(request.POST)
             if form.is_valid():
-                validEmail = User.objects.get(email=email)
-                if validEmail is None:
-                    messages.error(request, 'Informe um Email Válido!')
-                    return(redirect, validacao) 
-                  
-                else:
+                validEmail = User.objects.get(email=email) #Revisar processo de busca de e-mail!!
+                print(validEmail)
+                print(validEmail.email)
+                print(validEmail != '')
+                if validEmail != '':
+                    print('entrou aqui')
                     enviaEmail(validEmail.email, processos.geradorToken(validEmail.id))
-                    return render(request, 'validacao/valida_Email.html',  {'form': form}) 
+                    return render(request, 'token/token.html', {'matricula': validEmail.id})
+                else:
+                    messages.error(request, 'Informe um Email Válido!')
             else:
                 test = messages.get_messages(request)
-                print(test)
                 messages.error(request, 'Selecione o reCAPTCHA!')
         else:
             messages.error(request, 'Informe um Email!')  
             test = messages.get_messages(request)
-            print(test) 
         return render(request, 'validacao/valida_Email.html',  {'form': form})           
     else:
         print('entrou no primeiro else')          
         return render(request, 'validacao/valida_Email.html',  {'form': form})
+
+def token(request, id):
+    print(id)
+    if "verificar" in request.POST:
+        codtoken = request.POST.get('codToken')
+        if codtoken != '':
+            tokenConfirm = Token.objects.filter(usuario=id, codToken=codtoken) 
+            print(tokenConfirm)
+            print(tokenConfirm.exists())
+            if tokenConfirm.exists():
+                print('Token Correto!')
+                return render(request, 'token/token.html', {'matricula': id})
+            else:
+                print('Token Invalido')
+        return render(request, 'token/token.html', {'matricula': id})
+    return render(request, 'token/token.html', {'matricula': id})
+
+
+# Precisa ser revisado pois dá erro ao efetuar o envio da mensagem pois não tem um retorno como deveria na tela
+def gerarToken(request, id):
+    usuario = User.objects.get(id=id)
+    enviaEmail(usuario.email, processos.geradorToken(usuario.id))
+    return render(request, 'token/token.html', {'matricula': id})
+
 
 
 def enviaEmail(email, token):

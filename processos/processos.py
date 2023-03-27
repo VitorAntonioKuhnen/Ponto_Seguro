@@ -1,6 +1,5 @@
 import random
-from home.models import Token
-from accounts.models import User
+from accounts.models import User, Token
 
 #Import do Envio de E-mail
 import smtplib
