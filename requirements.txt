@@ -1,6 +1,7 @@
 asgiref==3.6.0
 autopep8==2.0.2
 Django==4.1.7
+django-htmx==1.14.0
 django-recaptcha==3.0.0
 mysqlclient==2.1.1
 pycodestyle==2.10.0
