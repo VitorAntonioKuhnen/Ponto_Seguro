@@ -40,9 +40,14 @@ def login(request):
         return render(request, 'login/login.html')
     
 def validacao(request):
+    email = request.POST.get('email')
+    email = ''
     form = FormWithCaptcha() 
-    if "validaSenha" in request.POST:
+    # print("validaSenha" in request.POST)
+    # print(request.POST['validaSenha'])
+    if request.method == 'POST':
         email = request.POST.get('email')
+        print(email)
         if email != '': 
             form = FormWithCaptcha(request.POST)
             if form.is_valid():
@@ -58,11 +63,11 @@ def validacao(request):
                 else:
                     messages.error(request, 'Informe um Email Válido!')
             else:
-                test = messages.get_messages(request)
+                # test = messages.get_messages(request)
                 messages.error(request, 'Selecione o reCAPTCHA!')
         else:
             messages.error(request, 'Informe um Email!')  
-            test = messages.get_messages(request)
+            # test = messages.get_messages(request)
         return render(request, 'validacao/valida_Email.html',  {'form': form})           
     else:
         print('entrou no primeiro else')          
