@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.contrib import auth, messages
-from .models import User
-from .models import Token
+from .models import User, Token
 from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
@@ -43,8 +42,6 @@ def validacao(request):
     email = request.POST.get('email')
     email = ''
     form = FormWithCaptcha() 
-    # print("validaSenha" in request.POST)
-    # print(request.POST['validaSenha'])
     if request.method == 'POST':
         email = request.POST.get('email')
         print(email)
@@ -75,17 +72,16 @@ def validacao(request):
 
 def token(request, id):
     print(id)
-    if "verificar" in request.POST:
+    if request.method == 'POST':
         codtoken = request.POST.get('codToken')
         if codtoken != '':
-            tokenConfirm = Token.objects.filter(usuario=id, codToken=codtoken) 
-            print(tokenConfirm)
-            print(tokenConfirm.exists())
-            if tokenConfirm.exists():
+            if Token.objects.filter(usuario=id, codToken=codtoken).exists():
+                Token.objects.get(usuario=id, codToken=codtoken).delete()
                 print('Token Correto!')
                 return render(request, 'token/token.html', {'matricula': id})
             else:
-                print('Token Invalido')
+                    print('Token Invalido')        
+                    
         return render(request, 'token/token.html', {'matricula': id})
     return render(request, 'token/token.html', {'matricula': id})
 
@@ -98,7 +94,7 @@ def gerarToken(request, id):
 
 
 def enviaEmail(email, token):
-    html_content = render_to_string('email/token.html', {'token': token})
+    html_content = render_to_string('email/token copy.html', {'token': token})
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives('PontoSeguro - Token de Identificação', text_content, settings.EMAIL_HOST_USER, [email])
     email.attach_alternative(html_content, 'text/html')

@@ -157,7 +157,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Envia Email
 
-DEFAULT_FROM_EMAIL = config('Email') 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #Enviado via SMTP caso queira no Console troque o "SMTP" por "CONSOLE"
 EMAIL_HOST_USER = config('Email')
 EMAIL_HOST_PASSWORD = config('SenhaApp')
