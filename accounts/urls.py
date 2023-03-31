@@ -7,5 +7,6 @@ urlpatterns = [
     path('validacao/', views.validacao, name='validacao'),
     path('token/<int:id>/', views.token, name='token'),
     path('gerarToken/<int:id>/', views.gerarToken, name='gerarToken'),
+    path('trocaSenha/<int:id>/', views.trocaSenha, name='trocaSenha'),
     # path('logout/', views.logout, name='logout'),
 ]

@@ -6,11 +6,19 @@ from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
 import datetime
+from django.contrib.auth.hashers import make_password, check_password
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+
+def login(request):
+    auth.logout(request)
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, 'login/index.html')
 
 def login(request):
     if "login" in request.POST:
@@ -43,7 +51,7 @@ def validacao(request):
     email = ''
     form = FormWithCaptcha() 
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email').strip()
         print(email)
         if email != '': 
             form = FormWithCaptcha(request.POST)
@@ -73,12 +81,14 @@ def validacao(request):
 def token(request, id):
     print(id)
     if request.method == 'POST':
-        codtoken = request.POST.get('codToken')
+        codtoken = request.POST.get('codToken').strip()
         if codtoken != '':
             if Token.objects.filter(usuario=id, codToken=codtoken).exists():
                 Token.objects.get(usuario=id, codToken=codtoken).delete()
                 print('Token Correto!')
-                return render(request, 'token/token.html', {'matricula': id})
+                url = reverse('trocaSenha', args=[id])
+                return redirect(url)
+                #return render(request, 'token/token.html', {'matricula': id})
             else:
                     print('Token Invalido')        
                     
@@ -92,9 +102,12 @@ def gerarToken(request, id):
     return render(request, 'token/token.html', {'matricula': id})
 
 
+def trocaSenha(request, id):
+    return render(request, 'trocaSenha/trocaSenha.html')
+
 
 def enviaEmail(email, token):
-    html_content = render_to_string('email/token copy.html', {'token': token})
+    html_content = render_to_string('email/token.html', {'token': token})
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives('PontoSeguro - Token de Identificação', text_content, settings.EMAIL_HOST_USER, [email])
     email.attach_alternative(html_content, 'text/html')

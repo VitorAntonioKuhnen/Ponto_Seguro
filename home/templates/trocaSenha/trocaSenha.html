@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https: //fonts.googleapis.com/css2?family= Nunito :wght@200;300;400;500;600 & family= Open+Sans:wght@300;400;600 & display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style_Troca_Senha.css' %}">
+    <link rel="shortcut icon" href="{% static 'image/logo_400x400 branco.png' %}" type="image/x-icon">
+    <title>Nova Senha</title>
+</head>
+
+<body>
+    <div class="container col-sx-6 col-sm-6 col-md-8">
+        <div class="tamanho content col-xs-10">
+            <label class="logo">
+                <img src="{% static 'image/logo_400x400 branco.png' %}" alt="">
+            </label>
+            <p class=" text1">Informe sua Nova Senha</p>
+            <div class="column w-100 ">
+
+                <form class="form">
+                    <p class="form-text1"><b> Digite a sua nova senha.</b></p>
+                    <div id="input" class="input-group flex-nowrap w-100  col-sm-9">
+                        <input type="text" class="form-control w-100 " placeholder="Digite sua Senha">
+                        <input type="text" class="form-control w-100 " placeholder="Confirme sua Senha">
+                    </div>
+                    <button id="btn-hover" class="btn">Salvar nova Senha</button>
+                    <footer class="footer">
+                        <p class=""> © 2023
+                            <span> | Desenvolvido por</span>
+                            <img src="{% static 'image/logo_400x400 ponto seguro de lado.png' %}" alt="">
+        
+                        </p>
+                    </footer>
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+</body>
+
+</html>
