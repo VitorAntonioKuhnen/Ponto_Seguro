@@ -47,7 +47,7 @@ html, body {
 }
 .form-text1, .form-text2{
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 60px;
 }
 
 .text1 {
@@ -115,28 +115,33 @@ html, body {
 
 }
 
-.footer-login {
+.footer {
     margin-bottom: 5%;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     justify-content: space-around;
 }
 
-.footer-login > p > img {
+.footer > p > img {
     width: 50px;
     vertical-align: middle;
     font-size: 20px;
 }
 
-.footer-login span {
+.footer span {
     color: #ccc;
     margin-top: -2px;
 }
 
-.footer-login p {
+.footer p {
     color: #033159;
     font-size: 12px;
     margin-bottom: 10px;
+}
+
+.tamanho{
+    width: 350px;
+    height: 50%;
 }
 
 @media (max-width: 600px) {
