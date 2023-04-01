@@ -49,6 +49,12 @@ form {
     align-items: center;
 }
 
+/* #novo-token{
+    width: 100%;
+    height: 30px;
+    background-color: #FF4500;
+} */
+
 .token {
     display: flex;
     flex-direction: row;
@@ -118,6 +124,11 @@ footer {
     text-align: end;
 }
 
+.button{
+    list-style: none;
+    text-decoration: none;
+    color: black; 
+}
 @media (max-width: 320px) {
 
        .token {

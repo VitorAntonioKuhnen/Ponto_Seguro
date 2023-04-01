@@ -117,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'accounts.backends.MatriculaBackend',
@@ -128,7 +129,7 @@ RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 RECAPTCHA_REQUIRED_SCORE = 0.87
 
-AUTH_USER_MODEL = 'accounts.user'
+AUTH_USER_MODEL = 'accounts.Users'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

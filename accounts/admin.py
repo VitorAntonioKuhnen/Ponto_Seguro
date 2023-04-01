@@ -1,14 +1,15 @@
 from django.contrib import admin
-from .models import User, Token
+from django.contrib.auth.admin import UserAdmin
+from .models import Users, Token
 
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'is_staff')
+class UsuarioAdmin(UserAdmin):
+    list_display = ('username', 'first_name', 'last_name', 'is_staff', 'is_active')
     search_fields = ('username', 'first_name', 'last_name')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     per_page = 11
     fieldsets = (
         (None, {
-            'fields': ('username', 'matricula', 'password', 'first_name', 'last_name', 'email')
+            'fields': ('username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'is_active')
         }),
         ('Datas Importantes', {
             'fields': ('last_login', 'date_joined', 'dt_troca_senha')
@@ -16,7 +17,7 @@ class UsuarioAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(User, UsuarioAdmin)
+admin.site.register(Users, UsuarioAdmin)
 
 
 class TokenAdmin(admin.ModelAdmin):

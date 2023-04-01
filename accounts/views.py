@@ -1,12 +1,13 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import auth, messages
-from .models import User, Token
+from .models import Users, Token
 from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
 import datetime
 from django.contrib.auth.hashers import make_password, check_password
+from django.http import HttpResponse
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -20,23 +21,32 @@ def login(request):
     else:
         return render(request, 'login/index.html')
 
+
 def login(request):
     if "login" in request.POST:
         matricula = request.POST.get('matricula')
         senha = request.POST.get('senha')
         if matricula.isdigit():
-            username = User.objects.get(matricula=matricula)
+            print('Matricula digitada')
+            username = Users.objects.get(matricula=matricula)
             if username != '':
-                if username.dt_troca_senha != datetime.date.today():
-                    check = auth.authenticate(request, username=username, password=senha)
+                    print('usuario não é vazio')
+                    check = auth.authenticate(
+                        request, username=username, password=senha)
+
                     if check is not None:
-                        auth.login(request, check)
-                        return render(request, 'login/login.html')
+                        print('verificado')
+                        if datetime.date.today() < username.dt_troca_senha:
+                            print('entrou')
+                            auth.login(request, check)
+                            return render(request, 'login/login.html')
+                        else:
+                            print('Precisa efetuar a troca de senha')
+                            url = reverse('trocaSenha', args=[username.id])
+                            return redirect(url)
                     else:
                         messages.error(request, 'Usuario ou Senha Invalidas!!')
-                        return redirect(login) 
-                else:
-                    return render(request, 'validacao/valida_Email.html')   
+                        return redirect(login)  
             else:
                 messages.error(request, 'Usuario ou Senha Invalidas!!')
                 return redirect(login)   
@@ -46,21 +56,19 @@ def login(request):
     else:
         return render(request, 'login/login.html')
     
+
+
 def validacao(request):
     email = request.POST.get('email')
     email = ''
     form = FormWithCaptcha() 
     if request.method == 'POST':
         email = request.POST.get('email').strip()
-        print(email)
         if email != '': 
             form = FormWithCaptcha(request.POST)
             if form.is_valid():
-                validEmail = User.objects.get(email=email) #Revisar processo de busca de e-mail!!
-                print(validEmail)
-                print(validEmail.email)
-                print(validEmail != '')
-                if validEmail != '':
+                if Users.objects.filter(email=email):
+                    validEmail = Users.objects.get(email=email)
                     print('entrou aqui')
                     enviaEmail(validEmail.email, processos.geradorToken(validEmail.id))
                     url = reverse('token', args=[validEmail.id])
@@ -68,42 +76,87 @@ def validacao(request):
                 else:
                     messages.error(request, 'Informe um Email Válido!')
             else:
-                # test = messages.get_messages(request)
                 messages.error(request, 'Selecione o reCAPTCHA!')
         else:
             messages.error(request, 'Informe um Email!')  
-            # test = messages.get_messages(request)
         return render(request, 'validacao/valida_Email.html',  {'form': form})           
     else:
         print('entrou no primeiro else')          
         return render(request, 'validacao/valida_Email.html',  {'form': form})
 
+
+
 def token(request, id):
-    print(id)
     if request.method == 'POST':
         codtoken = request.POST.get('codToken').strip()
+
         if codtoken != '':
-            if Token.objects.filter(usuario=id, codToken=codtoken).exists():
-                Token.objects.get(usuario=id, codToken=codtoken).delete()
+            if check_password(codtoken, Token.objects.get(usuario=id).codToken):
                 print('Token Correto!')
                 url = reverse('trocaSenha', args=[id])
                 return redirect(url)
-                #return render(request, 'token/token.html', {'matricula': id})
             else:
+                    messages.error(request, 'Token Invalido!') 
                     print('Token Invalido')        
+        else:
+                messages.error(request, 'Informe um TOKEN para continuar') 
+                print('Informe um TOKEN para continuar')        
                     
-        return render(request, 'token/token.html', {'matricula': id})
-    return render(request, 'token/token.html', {'matricula': id})
+        return render(request, 'token/token.html', {'userId': id})
+    if Token.objects.filter(usuario=id).exists():
+        return render(request, 'token/token.html', {'userId': id})
+    else:
+        messages.error(request, 'Você não possui TOKENS para confirmar')
+        return redirect(validacao)
+
+
 
 # Precisa ser revisado pois dá erro ao efetuar o envio da mensagem pois não tem um retorno como deveria na tela
 def gerarToken(request, id):
-    usuario = User.objects.get(id=id)
+    print('entrou')
+    if Token.objects.filter(usuario=id).exists():
+        Token.objects.get(usuario=id).delete()   
+    usuario = Users.objects.get(id=id)
     enviaEmail(usuario.email, processos.geradorToken(usuario.id))
-    return render(request, 'token/token.html', {'matricula': id})
+    # messages.success(request, 'Token Referado! Confira seu e-mail')
+    # HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+    return HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+
+
+
+def cancelaTk(request, id):
+    if Token.objects.filter(usuario=id).exists():
+            Token.objects.get(usuario=id).delete()
+    return redirect(validacao)        
+
 
 
 def trocaSenha(request, id):
-    return render(request, 'trocaSenha/trocaSenha.html')
+    if request.method == 'POST':
+        print('entrou')
+        senha1 = request.POST.get('senha1')
+        senha2 = request.POST.get('senha2')
+        if senha1 == senha2 and senha1 != '' and senha2 != '':
+            print('entrou na senha ')
+            usuario = Users.objects.get(id=id)
+            usuario.password = make_password(senha1)
+            dt_atual = datetime.date.today()
+            usuario.dt_troca_senha = dt_atual.replace(month=dt_atual.month + 6)
+            usuario.save()
+            return render(request, 'trocaSenha/trocaSenha.html')
+        else:
+            messages.error(request, 'Senha digitadas vazias ou não coincidem')  
+            return render(request, 'trocaSenha/trocaSenha.html')    
+    if Token.objects.filter(usuario=id).exists() or Users.objects.filter(id=id, dt_troca_senha=datetime.date.today()):
+        print('Entrou na tela de Troca de Senha')
+        if Token.objects.filter(usuario=id).exists():
+            Token.objects.get(usuario=id).delete()
+        return render(request, 'trocaSenha/trocaSenha.html')
+    else:
+        print('Não entrou na tela de Troca de Senha')
+        messages.error(request, 'Não pode fazer este processo!')
+        return redirect(login)
+
 
 
 def enviaEmail(email, token):
