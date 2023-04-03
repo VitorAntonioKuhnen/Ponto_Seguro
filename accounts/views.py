@@ -8,6 +8,7 @@ from django.conf import settings
 import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse
+import re
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -91,13 +92,17 @@ def token(request, id):
         codtoken = request.POST.get('codToken').strip()
 
         if codtoken != '':
-            if check_password(codtoken, Token.objects.get(usuario=id).codToken):
-                print('Token Correto!')
-                url = reverse('trocaSenha', args=[id])
-                return redirect(url)
+            if Token.objects.filter(usuario=id).exists:
+                if check_password(codtoken, Token.objects.get(usuario=id).codToken):
+                    print('Token Correto!')
+                    url = reverse('trocaSenha', args=[id])
+                    return redirect(url)
+                else:
+                        messages.error(request, 'Informe um TOKEN Válido!') 
+                        print('Token Invalido!')        
             else:
-                    messages.error(request, 'Token Invalido!') 
-                    print('Token Invalido')        
+                    messages.error(request, 'Informe um TOKEN Válido!') 
+                    print('Informe um TOKEN Válido!')        
         else:
                 messages.error(request, 'Informe um TOKEN para continuar') 
                 print('Informe um TOKEN para continuar')        
@@ -111,22 +116,27 @@ def token(request, id):
 
 
 
-# Precisa ser revisado pois dá erro ao efetuar o envio da mensagem pois não tem um retorno como deveria na tela
+# Precisa ser revisado pois dá para acessar diretamente pelo link
 def gerarToken(request, id):
-    print('entrou')
-    if Token.objects.filter(usuario=id).exists():
-        Token.objects.get(usuario=id).delete()   
-    usuario = Users.objects.get(id=id)
-    enviaEmail(usuario.email, processos.geradorToken(usuario.id))
-    # messages.success(request, 'Token Referado! Confira seu e-mail')
-    # HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
-    return HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+    if request.method == "GET":
+        print('entrou')
+        if Token.objects.filter(usuario=id).exists():
+            Token.objects.get(usuario=id).delete()   
+        usuario = Users.objects.get(id=id)
+        enviaEmail(usuario.email, processos.geradorToken(usuario.id))
+        messages.success(request, 'Token Regerado! Confira seu e-mail')
+        # HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+        return HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+    else:
+        messages.error(request, "Você não possui acesso a está função!")
+        return redirect(login)
 
 
 
 def cancelaTk(request, id):
     if Token.objects.filter(usuario=id).exists():
             Token.objects.get(usuario=id).delete()
+    messages.success(request, 'Token cancelado com sucesso!')    
     return redirect(validacao)        
 
 
@@ -138,20 +148,32 @@ def trocaSenha(request, id):
         senha2 = request.POST.get('senha2')
         if senha1 == senha2 and senha1 != '' and senha2 != '':
             print('entrou na senha ')
-            usuario = Users.objects.get(id=id)
-            usuario.password = make_password(senha1)
-            dt_atual = datetime.date.today()
-            usuario.dt_troca_senha = dt_atual.replace(month=dt_atual.month + 6)
-            usuario.save()
-            return render(request, 'trocaSenha/trocaSenha.html')
+            regex = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+            if re.search(regex, senha1):
+                usuario = Users.objects.get(id=id)
+                usuario.password = make_password(senha1)
+                dt_atual = datetime.date.today()
+                usuario.dt_troca_senha = dt_atual.replace(month=dt_atual.month + 6)
+                usuario.save()
+                return render(request, 'trocaSenha/trocaSenha.html')
+            else:
+                messages.error(request, 'A senha precisa ter letras e números')  
+                return render(request, 'trocaSenha/trocaSenha.html') 
+
         else:
             messages.error(request, 'Senha digitadas vazias ou não coincidem')  
-            return render(request, 'trocaSenha/trocaSenha.html')    
-    if Token.objects.filter(usuario=id).exists() or Users.objects.filter(id=id, dt_troca_senha=datetime.date.today()):
-        print('Entrou na tela de Troca de Senha')
-        if Token.objects.filter(usuario=id).exists():
-            Token.objects.get(usuario=id).delete()
-        return render(request, 'trocaSenha/trocaSenha.html')
+            return render(request, 'trocaSenha/trocaSenha.html')  
+    
+    elif Users.objects.filter(id=id):
+        if Users.objects.get(id=id).dt_troca_senha <= datetime.date.today() or Token.objects.filter(usuario=id).exists():
+            print('Entrou na tela de Troca de Senha')
+            if Token.objects.filter(usuario=id).exists():
+                Token.objects.get(usuario=id).delete()
+            return render(request, 'trocaSenha/trocaSenha.html')
+        else:
+            print('Não entrou na tela de Troca de Senha')
+            messages.error(request, 'Não pode fazer este processo!')
+            return redirect(login)
     else:
         print('Não entrou na tela de Troca de Senha')
         messages.error(request, 'Não pode fazer este processo!')

@@ -69,7 +69,7 @@
                 <button id="btn-hover-verificar" name="verificar" class="btn-verificar" submit="submit">Verificar token</button>
             </div>
             <span> Caso não tenha recebido o email com o token </span>
-            <a href="" hx-get="{% url 'gerarToken' userId %}" hx-target=".alert" hx-swap="outerHTML" >gere novo token.</a>
+            <a href="" name="gerarNovo" hx-get="{% url 'gerarToken' userId %}" hx-target=".alert" hx-swap="outerHTML" submit="submit" >gere novo token.</a>
         </form>
     </div>
     <hr>
