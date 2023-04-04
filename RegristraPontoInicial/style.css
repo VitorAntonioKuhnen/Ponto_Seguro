@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2? family= Nunito:ital,wght@0,300;0,400;0,600;1,300;1,600 & family= Open+Sans:wght@300;400; 600 & display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+.principal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagem{
+    object-fit: cover;
+    border-radius: 50%!important;
+
+    padding: 0.15rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.usuario{
+    width: 10%;
+    height: 10%;
+}
+
+.alinhamento{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.escala{
+    display: flex;
+    gap: 20px;
+}
+
+.linha{
+    display: flex;
+    gap: 20px;
+}
