@@ -13,18 +13,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 20px;
+}
+
+.centro{
+    text-align: center;
 }
 
 .imagem{
     object-fit: cover;
-    border-radius: 50%!important;
+    border-radius: 100%;
+    width: 50%;
+    height: 70%;
 
     padding: 0.15rem;
     background-color: #fff;
     border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    max-width: 100%;
-    height: auto;
 }
 
 .usuario{
@@ -42,9 +46,38 @@
 .escala{
     display: flex;
     gap: 20px;
+    background-color: #d9d9d9;
+    width: 20rem;
+    height: 25px;
+    border-radius: 1.25rem;
+    justify-content: center;
+}
+
+.divisao{
+    background-color: black;
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    margin-top: 10px; 
 }
 
 .linha{
     display: flex;
     gap: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+.corResgitros{
+    background-color: #d9d9d9; 
+    border-radius: 1.25rem;
+    width: 5rem;
+    height: 25px;
+}
+
+.btregistrar{
+    background-color: rgb(32, 165, 32);
+    width: 10rem;
+    height: 2.5rem;
+    border-radius: 1.25rem; 
 }
