@@ -47,7 +47,7 @@ html, body {
 }
 .form-text1, .form-text2{
     font-size: 12px;
-    margin-top: 60px;
+    margin-top: 35px;
 }
 
 .text1 {
@@ -141,7 +141,7 @@ html, body {
 
 .tamanho{
     width: 350px;
-    height: 50%;
+    height: 65%;
 }
 
 @media (max-width: 600px) {

@@ -126,7 +126,10 @@ def gerarToken(request, id):
         enviaEmail(usuario.email, processos.geradorToken(usuario.id))
         messages.success(request, 'Token Regerado! Confira seu e-mail')
         # HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
-        return HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
+        return HttpResponse('''<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>Seu novo Token foi Regerado! Confira seu e-mail</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>''')
     else:
         messages.error(request, "Você não possui acesso a está função!")
         return redirect(login)

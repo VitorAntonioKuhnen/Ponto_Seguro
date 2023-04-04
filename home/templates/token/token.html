@@ -27,18 +27,9 @@
     <nav class="navbar">
         <div class=" alert-dismissible fade show">
             <p> Validação de token</p>
-            {% comment %} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> {% endcomment %}
         </div>
     </nav>
     <div class="container">
-        {% comment %} <div id="novo-token">
-            <div id="novo-token" class="alert alert-danger alert-dismissible fade show" role="alert">
-            {% for message in messages %}
-                    <p>{{message}}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            {% endfor %}
-                </div>
-        </div> {% endcomment %}
         {% if request.method == 'GET' %}
         <div id="gerado novo-token" class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Token gerado com sucesso!</strong>
@@ -53,14 +44,6 @@
                 </div>
             {% endfor %}
         {% endif %}
-        {% comment %} {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <p>{{message}}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %} {% endcomment %}
         <hr>
         <form class="form py-sm-5" method="POST"> {% csrf_token %}
             <div class="token">
