@@ -7,13 +7,27 @@
     list-style: none;
     text-decoration: none;
 }
+html, body, .principal{
+    width: 100%;
+    height: 100%;
+}
 
 .principal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: darkslategrey;    
+}
+
+.form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    height: 100%;
+    width: 60%;
+    background-color: #0331593a;
 }
 
 .centro{
@@ -23,12 +37,17 @@
 .imagem{
     object-fit: cover;
     border-radius: 100%;
-    width: 50%;
-    height: 70%;
-
+    height: 8rem;
+    width: 8rem;
     padding: 0.15rem;
     background-color: #fff;
     border: 1px solid #dee2e6;
+
+}
+
+.rem8{
+    height: 8rem;
+    width: 8rem;
 }
 
 .usuario{
@@ -43,22 +62,36 @@
     align-items: center;
 }
 
+
 .escala{
     display: flex;
-    gap: 20px;
-    background-color: #d9d9d9;
-    width: 20rem;
-    height: 25px;
-    border-radius: 1.25rem;
+    align-items: center;
     justify-content: center;
+    font-size: 20px;
+    background-color: #d9d9d9;
+    width: 22rem;
+    height: 35px;
+    gap: 20px;
+    border-radius: 1.25rem;
+}
+
+.registros{
+    background-color: #eeeeee; 
+    width: 30rem;
 }
 
 .divisao{
-    background-color: black;
-    width: 5px;
-    height: 5px;
+    background-color: rgb(0, 0, 0);
+    width: 4px;
+    height: 4px;
     border-radius: 100%;
-    margin-top: 10px; 
+}
+
+.data{
+    width: 6rem;
+    height: 100%; 
+    border-radius: 1.25rem;
+    background-color: #d9d9d9;
 }
 
 .linha{
@@ -69,15 +102,16 @@
 }
 
 .corResgitros{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #d9d9d9; 
     border-radius: 1.25rem;
-    width: 5rem;
-    height: 25px;
+    width: 6rem;
+    height: 35px;
+    font-size: 25px;
 }
 
-.btregistrar{
-    background-color: rgb(32, 165, 32);
-    width: 10rem;
-    height: 2.5rem;
-    border-radius: 1.25rem; 
+.nmsit{
+    font-size: small;
 }
