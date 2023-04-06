@@ -102,8 +102,18 @@ html, body, .principal{
 }
 
 .fundo{
-    background-color: #095f86;
+    background-color: #59717561;
     
+}
+
+.hrAtual{
+    font-family: Andale Mono, monospace;
+    /* text-align: center; */
+    font-weight: bold;
+}
+
+.horario{
+    text-align: center;
 }
 
 .tamanhoReg{
