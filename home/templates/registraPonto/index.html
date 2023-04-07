@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style_Registro_Ponto.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script defer src="{% static 'js/script_Registro_Ponto.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'image/LogoRedonda.png' %}" type="image/x-icon">
+    <title>Registro Ponto</title>
+</head>
+
+<body>
+    <div class="principal">
+        <form action="" class="form">
+            <div class="alinhamento">
+                <div class="centro rem8">
+                    {% if user.foto.url %}
+                        <img src="{{user.foto.url}}" class="imagem rem8" alt="">
+                    {% else %}
+                        <img src="" class="imagem rem8" alt="">
+                    {% endif %}
+                </div>
+                <h2 class=" font-weight-bold nome">{{user.first_name}} {{user.last_name}}</h2>
+                <p class="cargo">Desenvolvedor</p>
+                <div class="alinhamento">
+                    <h4 class="font-weight-bold">Escala</h4>
+                    <div class="escala">
+                        <span>08:00</span>
+                        <div class="divisao"></div>
+                        <span>12:00</span>
+                        <div class="divisao"></div>
+                        <span>13:12</span>
+                        <div class="divisao"></div>
+                        <span>18:00</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="w-100">
+            <div class="alinhamento registros">
+                <h4 class="font-weight-bold">Registros</h4>
+                <div class="linha fundo tamanhoReg">
+
+                    <div class="alinhamento">
+                        <span class="data">04/Abril <br>
+                            Terça-Feira
+                        </span>
+                    </div>
+                    <div class="alinhamento">
+                        <span class="nmsit">Entrada</span>
+                        <span class="corResgitros">08:00</span>
+                    </div>
+                    <div class="alinhamento">
+                        <span class="nmsit">Saida</span>
+                        <span class="corResgitros">12:00</span>
+                    </div>
+                    <div class="alinhamento">
+                        <span class="nmsit">Entrada</span>
+                        <span class="corResgitros">13:12</span>
+                    </div>
+                    <div class="alinhamento">
+                        <span class="nmsit">Saida</span>
+                        <span class="corResgitros">------</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="horario">
+                <h1 class="hrAtual font-weight-bold">Hora Atual</h1>
+                <div class="time">
+                <time class="h2 hrAtual font-weight-bold"></time>
+                </div>
+            </div>
+            <button class="btn  btn-success" type="button">Registrar Ponto</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

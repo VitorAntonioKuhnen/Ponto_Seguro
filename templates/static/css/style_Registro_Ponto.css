@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2? family= Nunito:ital,wght@0,300;0,400;0,600;1,300;1,600 & family= Open+Sans:wght@300;400; 600 & display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+html, body, .principal{
+    width: 100%;
+    height: 100%;
+}
+
+.principal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ecf0f1;    
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px;
+    height: 100%;
+    width: 60%;
+    background-color: #2E4D68;
+}
+
+.centro{
+    text-align: center;
+}
+
+.imagem{
+    object-fit: cover;
+    border-radius: 100%;
+    height: 8rem;
+    width: 8rem;
+    padding: 0.15rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+
+}
+
+.rem8{
+    height: 8rem;
+    width: 8rem;
+    margin-bottom: 15px;
+}
+
+.usuario{
+    width: 10%;
+    height: 10%;
+}
+
+.alinhamento{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.escala{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background-color: #ffffff;
+    width: 22rem;
+    height: 35px;
+    gap: 20px;
+    border-radius: 1.25rem;
+}
+
+.registros{
+    width: 80%;
+    height: 15%;
+}
+
+.divisao{
+    background-color: rgb(0, 0, 0);
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+}
+
+.data{
+    /* height: 100%;  */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.linha{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+.fundo{
+    background-color: #59717561;
+    box-shadow: 0px 0px 5px #00000075;
+}
+
+.hrAtual{
+    font-family: Andale Mono, monospace;
+    font-weight: 650;
+}
+
+.horario{
+    text-align: center;
+    border: rgba(0, 0, 0, 0.205) solid 1px;
+    border-radius: 0.5rem;
+    padding: 5px;
+    margin: 15px;
+}
+
+.tamanhoReg{
+    width: 100%;
+    height: 100%;
+    border-radius: 1.5rem;
+    padding: 5px;
+}
+
+.corResgitros{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; 
+    border-radius: 1.25rem;
+    width: 6rem;
+    height: 35px;
+    font-size: 25px;
+}
+
+.cargo{
+    color: white;
+}
+
+.nmsit{
+    font-size: small;
+    color: white;
+}
+
+.btn{
+    width: 40%!important;
+    height: 6%;
+    font-size: 1.3rem!important;
+    font-weight: bold!important;
+    padding: 0!important;
+}
+.time{
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px;
+    border-radius: 0.5rem;
+}
+.font-weight-bold{
+    color: white;
+}
+
+@media(max-width:1240px){
+    .form{
+        /* gap: 15px; */
+        width: 80%;
+    }
+
+    .registros {
+        width: 90%;
+        height: 15%;
+    }
+
+    .linha {
+        gap: 3%;
+    }
+}
+
+@media(max-width:850px){
+    .form{
+        width: 100%;
+    }
+
+    .registros {
+        width: 80%;
+        height: 15%;
+    }
+
+    .hrAtual {
+        font-size: 1.9rem;
+    }
+
+    .nome{
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    .data{
+        font-size: 15px;
+    }
+
+    .escala {
+        font-size: 15px;
+        width: 20rem;
+        height: 30px;
+        gap: 15px;
+    }
+}
+
+@media(max-width:740px){
+    .registros {
+        width: 80%;
+    }
+
+    .corResgitros {
+        width: 4rem;
+        height: 30px;
+        font-size: 20px;
+    }
+
+    .nmsit {
+        font-size: 75%;
+    }
+    
+    .data{
+        font-size: 13px;
+    }
+
+    .btn{
+        width: 50%!important;
+    }
+}
+
+@media(max-width:500px){
+    .registros {
+        width: 90%;
+        height: 15%;
+    }
+
+    .corResgitros {
+        height: 25px;
+        font-size: 20px;
+    }
+
+    .nmsit {
+        font-size: 70%;
+    }
+
+    .data{
+        font-size: 13px;
+    }
+
+    .hrAtual {
+        font-size: 1.5rem;
+    }
+
+    .font-weight-bold {
+        font-size: 1.3rem;
+    }
+}
+
+@media(max-width:450px){
+    .corResgitros {
+        width: 3rem;
+        height: 20px;
+        font-size: 15px;
+    }
+
+    .registros {
+        width: 98%;
+        height: 15%;
+    }
+
+    .btn{
+        width: 60%!important;
+    }
+}

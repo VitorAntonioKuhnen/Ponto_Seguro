@@ -1,12 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
+from home.models import Escala
 
 
 class Users(AbstractUser):
 
     matricula = models.IntegerField(unique=True)
     dt_troca_senha = models.DateField(default= now)
+    foto = models.ImageField(upload_to='imagens/usuario_img/%Y/%m/%d', blank=True, null=True)
+    email = models.EmailField(unique=True, blank=False, null=False)
+    escala = models.ForeignKey(Escala, on_delete=models.DO_NOTHING, blank=True, null=True)
+    justificar = models.BooleanField(blank=True, null=True)
+    dat_admissao = models.DateField(blank=True, null=True)
+    dat_inicia_trab = models.DateField(blank=True, null=True)
+
     def str(self):
         return self.username
     

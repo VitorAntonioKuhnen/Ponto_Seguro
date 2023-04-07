@@ -93,6 +93,12 @@ form {
     align-self: center;
 }
 
+.btGeraNovo{
+    border: none;
+    background-color: white;
+    color: #FF4500;
+}
+
 .btn-verificar:hover {
     background-color: #FFBD78;
     color: #fff;

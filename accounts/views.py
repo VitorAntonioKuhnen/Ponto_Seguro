@@ -10,6 +10,8 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse
 import re
 
+from home import views
+
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -40,7 +42,7 @@ def login(request):
                         if datetime.date.today() < username.dt_troca_senha:
                             print('entrou')
                             auth.login(request, check)
-                            return render(request, 'login/login.html')
+                            return redirect(views.RegistrarPonto)
                         else:
                             print('Precisa efetuar a troca de senha')
                             url = reverse('trocaSenha', args=[username.id])
@@ -118,21 +120,19 @@ def token(request, id):
 
 # Precisa ser revisado pois dá para acessar diretamente pelo link
 def gerarToken(request, id):
-    if request.method == "GET":
-        print('entrou')
+    if Token.objects.filter(usuario=id).exists():
+        print('Entrou Gerando novo Token')
         if Token.objects.filter(usuario=id).exists():
             Token.objects.get(usuario=id).delete()   
         usuario = Users.objects.get(id=id)
         enviaEmail(usuario.email, processos.geradorToken(usuario.id))
-        messages.success(request, 'Token Regerado! Confira seu e-mail')
-        # HttpResponse('Seu novo Token foi Regerado! Confira seu e-mail')
         return HttpResponse('''<div class="alert alert-success alert-dismissible fade show" role="alert">
                     <p>Seu novo Token foi Regerado! Confira seu e-mail</p>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>''')
     else:
         messages.error(request, "Você não possui acesso a está função!")
-        return redirect(login)
+        return redirect(validacao)
 
 
 
@@ -150,18 +150,35 @@ def trocaSenha(request, id):
         senha1 = request.POST.get('senha1')
         senha2 = request.POST.get('senha2')
         if senha1 == senha2 and senha1 != '' and senha2 != '':
-            print('entrou na senha ')
-            regex = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
-            if re.search(regex, senha1):
+            print('entrou na validação da senha ')
+            
+            # Verifica se possui no minimo 8 caracteres
+            if len(senha1) < 8:
+                messages.error(request, 'A senha precisa ter no minimo 8 Caracteres!')  
+                return render(request, 'trocaSenha/trocaSenha.html')
+
+            # Verificar se a senha contém letras
+            if not re.search(r'[a-zA-Z]', senha1):
+                messages.error(request, 'A senha precisa ter Letras!')  
+                return render(request, 'trocaSenha/trocaSenha.html')
+
+            # Verificar se a senha contém números
+            if not re.search(r'\d', senha1):
+                messages.error(request, 'A senha precisa ter Números!')  
+                return render(request, 'trocaSenha/trocaSenha.html')
+
+            # Verificar se a senha contém caracteres especiais
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', senha1):
+                messages.error(request, 'A senha precisa ter Caracteres Especiais!')  
+                return render(request, 'trocaSenha/trocaSenha.html')
+            else:
+                print('Trocando a senha')
                 usuario = Users.objects.get(id=id)
                 usuario.password = make_password(senha1)
                 dt_atual = datetime.date.today()
                 usuario.dt_troca_senha = dt_atual.replace(month=dt_atual.month + 6)
                 usuario.save()
-                return render(request, 'trocaSenha/trocaSenha.html')
-            else:
-                messages.error(request, 'A senha precisa ter letras e números')  
-                return render(request, 'trocaSenha/trocaSenha.html') 
+                return redirect(login)
 
         else:
             messages.error(request, 'Senha digitadas vazias ou não coincidem')  
