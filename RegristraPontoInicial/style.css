@@ -24,10 +24,10 @@ html, body, .principal{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    box-shadow: 0 0 15px;
     height: 100%;
     width: 60%;
-    background-color: #03315956;
+    background-color: #2E4D68;
 }
 
 .centro{
@@ -48,6 +48,7 @@ html, body, .principal{
 .rem8{
     height: 8rem;
     width: 8rem;
+    margin-bottom: 15px;
 }
 
 .usuario{
@@ -103,23 +104,27 @@ html, body, .principal{
 
 .fundo{
     background-color: #59717561;
-    
+    box-shadow: 0px 0px 5px #00000075;
 }
 
 .hrAtual{
     font-family: Andale Mono, monospace;
-    /* text-align: center; */
-    font-weight: bold;
+    font-weight: 650;
 }
 
 .horario{
     text-align: center;
+    border: rgba(0, 0, 0, 0.205) solid 1px;
+    border-radius: 0.5rem;
+    padding: 5px;
+    margin: 15px;
 }
 
 .tamanhoReg{
     width: 100%;
     height: 100%;
     border-radius: 1.5rem;
+    padding: 5px;
 }
 
 .corResgitros{
@@ -133,6 +138,143 @@ html, body, .principal{
     font-size: 25px;
 }
 
+.cargo{
+    color: white;
+}
+
 .nmsit{
     font-size: small;
+    color: white;
+}
+
+.btn{
+    width: 40%!important;
+    height: 6%;
+    font-size: 1.3rem!important;
+    font-weight: bold!important;
+    padding: 0!important;
+}
+.time{
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px;
+    border-radius: 0.5rem;
+}
+.font-weight-bold{
+    color: white;
+}
+
+@media(max-width:1240px){
+    .form{
+        /* gap: 15px; */
+        width: 80%;
+    }
+
+    .registros {
+        width: 90%;
+        height: 15%;
+    }
+
+    .linha {
+        gap: 3%;
+    }
+}
+
+@media(max-width:850px){
+    .form{
+        width: 100%;
+    }
+
+    .registros {
+        width: 80%;
+        height: 15%;
+    }
+
+    .hrAtual {
+        font-size: 1.9rem;
+    }
+
+    .nome{
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    .data{
+        font-size: 15px;
+    }
+
+    .escala {
+        font-size: 15px;
+        width: 20rem;
+        height: 30px;
+        gap: 15px;
+    }
+}
+
+@media(max-width:740px){
+    .registros {
+        width: 80%;
+    }
+
+    .corResgitros {
+        width: 4rem;
+        height: 30px;
+        font-size: 20px;
+    }
+
+    .nmsit {
+        font-size: 75%;
+    }
+    
+    .data{
+        font-size: 13px;
+    }
+
+    .btn{
+        width: 50%!important;
+    }
+}
+
+@media(max-width:500px){
+    .registros {
+        width: 90%;
+        height: 15%;
+    }
+
+    .corResgitros {
+        height: 25px;
+        font-size: 20px;
+    }
+
+    .nmsit {
+        font-size: 70%;
+    }
+
+    .data{
+        font-size: 13px;
+    }
+
+    .hrAtual {
+        font-size: 1.5rem;
+    }
+
+    .font-weight-bold {
+        font-size: 1.3rem;
+    }
+}
+
+@media(max-width:450px){
+    .corResgitros {
+        width: 3rem;
+        height: 20px;
+        font-size: 15px;
+    }
+
+    .registros {
+        width: 98%;
+        height: 15%;
+    }
+
+    .btn{
+        width: 60%!important;
+    }
 }
