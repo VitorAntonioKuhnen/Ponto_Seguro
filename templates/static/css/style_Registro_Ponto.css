@@ -161,6 +161,12 @@ html, body, .principal{
 }
 .font-weight-bold{
     color: white;
+    font-weight: 700!important;
+}
+
+.horas{
+    color: Black!important;
+    font-weight: 900!important;
 }
 
 @media(max-width:1240px){

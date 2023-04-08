@@ -3,16 +3,19 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Users, Token
 
 class UsuarioAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'is_staff', 'is_active')
-    search_fields = ('username', 'first_name', 'last_name')
+    list_display = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab', 'is_staff', 'is_active')
+    search_fields = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab',)
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    per_page = 11
+    per_page = 15
     fieldsets = (
         (None, {
             'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'is_active')
         }),
+        ('Registros', {
+            'fields': ('escala', 'justificar')
+        }),
         ('Datas Importantes', {
-            'fields': ('last_login', 'date_joined', 'dt_troca_senha')
+            'fields': ('dat_admissao', 'dat_inicia_trab', 'dt_troca_senha', 'last_login', 'date_joined')
         }),
     )
 

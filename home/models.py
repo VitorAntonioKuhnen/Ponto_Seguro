@@ -3,11 +3,22 @@ from django.db import models
 
 
 class Escala(models.Model):
-    horaEntM = models.TimeField()      
-    horaSaiM = models.TimeField()      
-    horaEntV = models.TimeField()      
-    horaSaiM = models.TimeField() 
+    nmEscala = models.CharField(max_length=90)
+    horaEntM = models.TimeField(blank=True, null=True)      
+    horaSaiM = models.TimeField(blank=True, null=True)      
+    horaEntV = models.TimeField(blank=True, null=True)      
+    horaSaiV = models.TimeField(blank=True, null=True) 
+    segunda = models.BooleanField()
+    terca = models.BooleanField()
+    quarta = models.BooleanField()
+    quinta = models.BooleanField()
+    sexta = models.BooleanField()
+    sabado = models.BooleanField()
+    domingo = models.BooleanField()
     status = models.BooleanField()
+
+    def __str__(self):
+        return self.nmEscala
 
     class Meta:
        db_table = 'escala' #Define o nome da tabela
@@ -16,13 +27,14 @@ class Escala(models.Model):
 
 class HistRegistro(models.Model):
     userReg = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING)
-    dataReg = models.DateField()
-    horaEntM = models.TimeField()      
-    horaSaiM = models.TimeField()      
-    horaEntV = models.TimeField()      
-    horaSaiM = models.TimeField()  
-    bancoHora = models.TimeField()
-    sitReg = models.BooleanField()
+    escala = models.ForeignKey(Escala, on_delete=models.DO_NOTHING, blank=True, null=True)
+    dataReg = models.DateField(blank=True, null=True)
+    horaEntM = models.TimeField(blank=True, null=True)      
+    horaSaiM = models.TimeField(blank=True, null=True)      
+    horaEntV = models.TimeField(blank=True, null=True)      
+    horaSaiV = models.TimeField(blank=True, null=True)  
+    bancoHora = models.TimeField(blank=True, null=True)
+    sitAPR = models.BooleanField()
 
     class Meta:
        db_table = 'histregistro'
@@ -33,6 +45,9 @@ class HistRegistro(models.Model):
 class TipoJustificativa(models.Model):
     tipoJustificativa = models.CharField(max_length= 70)
     sitJust = models.BooleanField()
+    
+    def __str__(self):
+        return self.tipoJustificativa
 
     class Meta:
        db_table = 'tipojustificativa'

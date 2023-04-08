@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import locale
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -134,7 +135,9 @@ AUTH_USER_MODEL = 'accounts.Users'
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+locale.setlocale(locale.LC_TIME, 'pt_BR')
+
+LANGUAGE_CODE = 'pt-BR'
 
 TIME_ZONE = 'America/Sao_Paulo'
 

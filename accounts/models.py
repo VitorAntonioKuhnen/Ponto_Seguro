@@ -15,7 +15,7 @@ class Users(AbstractUser):
     dat_admissao = models.DateField(blank=True, null=True)
     dat_inicia_trab = models.DateField(blank=True, null=True)
 
-    def str(self):
+    def __str__(self):
         return self.username
     
     def save(self, *args, **kwargs):
