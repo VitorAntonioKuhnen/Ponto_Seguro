@@ -11,7 +11,8 @@ class Users(AbstractUser):
     foto = models.ImageField(upload_to='imagens/usuario_img/%Y/%m/%d', blank=True, null=True)
     email = models.EmailField(unique=True, blank=False, null=False)
     escala = models.ForeignKey(Escala, on_delete=models.DO_NOTHING, blank=True, null=True)
-    justificar = models.BooleanField(blank=True, null=True)
+    justificar = models.BooleanField(blank=True, null=True, default=False)
+    hora_extra = models.BooleanField(blank=True, null=True, default=False)
     dat_admissao = models.DateField(blank=True, null=True)
     dat_inicia_trab = models.DateField(blank=True, null=True)
 

@@ -1,18 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Escala, HistRegistro, Justificativa, TipoJustificativa
+from .models import Escala, HistRegistro, Justificativa, TipoJustificativa, HoraExtra
 
 
 class EscalaAdmin(admin.ModelAdmin):
-    list_display = ['nmEscala', 'horaEntM', 'horaSaiM', 'horaEntV', 'horaSaiV', 'status']
-    list_display_links = ['nmEscala', 'horaEntM', 'horaSaiM', 'horaEntV', 'horaSaiV', 'status']
-    search_fields = ['nmEscala', 'horaEntM', 'horaSaiM', 'horaEntV', 'horaSaiV', 'status']
+    list_display = ['nmEscala', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'status']
+    list_display_links = ['nmEscala', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'status']
+    search_fields = ['nmEscala', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'status']
 
 admin.site.register(Escala, EscalaAdmin)
 
 
 class HistRegistroAdmin(admin.ModelAdmin):
-    list_display = ('userReg', 'escala', 'dataReg', 'horaEntM', 'horaSaiM', 'horaEntV', 'horaSaiV', 'bancoHora', 'sitAPR')
+    list_display = ('userReg', 'escala', 'dataReg', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'bancoHora', 'sitAPR')
     search_fields = ('userReg', 'dataReg')
     list_filter = ('userReg', 'dataReg', 'sitAPR')
     per_page = 8
@@ -21,7 +21,7 @@ class HistRegistroAdmin(admin.ModelAdmin):
             'fields': ('userReg', 'escala', 'dataReg', 'bancoHora', 'sitAPR')
         }),
         ('Registros', {
-            'fields': ('horaEntM', 'horaSaiM', 'horaEntV', 'horaSaiV')
+            'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
         }),
     )
 
@@ -43,3 +43,19 @@ class JustificativaAdmin(admin.ModelAdmin):
     search_fields = ['userReg', 'tipoJust', 'data', 'hora']
 
 admin.site.register(Justificativa, JustificativaAdmin)
+
+class HoraExtraAdmin(admin.ModelAdmin):
+    list_display = ['userExtra', 'userLib', 'dataLib', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4']
+    list_display_links = ['userExtra', 'userLib']
+    search_fields = ['userExtra', 'userLib', 'dataLib']
+    per_page = 7
+    fieldsets = (
+        (None, {
+            'fields': ('userExtra', 'userLib', 'dataLib')
+        }),
+        ('Registros de Horas Extras', {
+            'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
+        }),
+    )
+
+admin.site.register(HoraExtra, HoraExtraAdmin)

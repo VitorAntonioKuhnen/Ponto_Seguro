@@ -12,7 +12,7 @@ class UsuarioAdmin(UserAdmin):
             'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'is_active')
         }),
         ('Registros', {
-            'fields': ('escala', 'justificar')
+            'fields': ('escala', 'justificar', 'hora_extra')
         }),
         ('Datas Importantes', {
             'fields': ('dat_admissao', 'dat_inicia_trab', 'dt_troca_senha', 'last_login', 'date_joined')

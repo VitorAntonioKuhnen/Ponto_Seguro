@@ -33,32 +33,32 @@
                 <div class="alinhamento">
                     <h4 class="font-weight-bold">Escala</h4>
                     <div class="escala">
-                        {% if user.escala.horaEntM %}
-                            <span>{{user.escala.horaEntM}}</span>
+                        {% if user.escala.horEnt1 %}
+                            <span>{{user.escala.horEnt1}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
                         
                         <div class="divisao"></div>
 
-                        {% if user.escala.horaSaiM %}
-                            <span>{{user.escala.horaSaiM}}</span>
+                        {% if user.escala.horSai2 %}
+                            <span>{{user.escala.horSai2}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}   
 
                         <div class="divisao"></div>
 
-                        {% if user.escala.horaEntV %}
-                            <span>{{user.escala.horaEntV}}</span>
+                        {% if user.escala.horEnt3 %}
+                            <span>{{user.escala.horEnt3}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
 
                         <div class="divisao"></div>
 
-                        {% if user.escala.horaSaiV %}
-                            <span>{{user.escala.horaSaiV}}</span>
+                        {% if user.escala.horSai4 %}
+                            <span>{{user.escala.horSai4}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
@@ -77,8 +77,8 @@
                     </div>
                     <div class="alinhamento">
                         <span class="nmsit">Entrada</span>
-                        {% if histRegistro.horaEntM %}
-                            <span class="corResgitros">{{histRegistro.horaEntM}}</span>
+                        {% if histRegistro.horEnt1 %}
+                            <span class="corResgitros">{{histRegistro.horEnt1}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}
@@ -86,24 +86,24 @@
                     </div>
                     <div class="alinhamento">
                         <span class="nmsit">Saida</span>
-                        {% if histRegistro.horaSaiM %}
-                            <span class="corResgitros">{{histRegistro.horaSaiM}}</span>
+                        {% if histRegistro.horSai2 %}
+                            <span class="corResgitros">{{histRegistro.horSai2}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}
                     </div>
                     <div class="alinhamento">
                         <span class="nmsit">Entrada</span>
-                        {% if histRegistro.horaEntV %}
-                            <span class="corResgitros">{{histRegistro.horaEntV}}</span>
+                        {% if histRegistro.horEnt3 %}
+                            <span class="corResgitros">{{histRegistro.horEnt3}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}    
                     </div>
                     <div class="alinhamento">
                         <span class="nmsit">Saida</span>
-                        {% if histRegistro.horaSaiV %}
-                            <span class="corResgitros">{{histRegistro.horaSaiV}}</span>
+                        {% if histRegistro.horSai4 %}
+                            <span class="corResgitros">{{histRegistro.horSai4}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}    
