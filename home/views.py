@@ -16,6 +16,7 @@ def RegistrarPonto(request):
         context['histRegistro'] = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
 
     if request.method == 'POST':
+        ha = hora.now().time()
         numDiaSemana = data.today().weekday()
 
         if numDiaSemana == 0:
@@ -37,7 +38,6 @@ def RegistrarPonto(request):
             messages.error(request, 'Está na escala semanal correta!!')  
             print('Está na escala semanal correta!!')  
 
-            ha = hora.now().time()
             horaEnt1_soma = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=5)).time()
             horaEnt1_subtrai = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=-5)).time()
 
@@ -114,6 +114,27 @@ def RegistrarPonto(request):
             #    messages.error(request, "Você está fora da sua escala de trabalho!")
             #    return render(request, 'registraPonto/index.html', context) 
         else:
+            if not HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date()):
+                        HoraExtra.objects.create(userExtra_id = user.id, dataExtra=data.today().date(), horEnt1=ha)
+                        messages.error(request, "Hora Extra Registrada!") 
+                        return render(request, 'registraPonto/index.html', context)
+            else:
+                horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())     
+                if horExtra.horSai2 is None:
+                    horExtra.horSai2 = ha
+                    horExtra.save()
+                    messages.error(request, "Hora Extra Registrada!") 
+                    return render(request, 'registraPonto/index.html', context)
+                if horExtra.horEnt3 is None:
+                    horExtra.horEnt3 = ha
+                    horExtra.save()
+                    return render(request, 'registraPonto/index.html', context)
+                if horExtra.horSai4 is None:
+                    horExtra.horSai4 = ha
+                    horExtra.save()
+                    return render(request, 'registraPonto/index.html', context)
+                
+
             messages.error(request, 'Não está na escala da semana correta!!') 
         return render(request, 'registraPonto/index.html', context)     
     else:    
