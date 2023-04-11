@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import HistRegistro
-from accounts.models import Users
+from .models import HistRegistro, HoraExtra
 import calendar
-# import datetime as data
-from django.utils import timezone
 from datetime import datetime as hora, datetime as data, timedelta
 from django.contrib import messages
 
@@ -15,7 +12,7 @@ def RegistrarPonto(request):
     context['dataHoje'] = data.today().strftime("%d / %B")
     context['diaSemana'] = calendar.day_name[data.today().weekday()].capitalize()
     user = request.user
-    if HistRegistro.objects.filter(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date()):
+    if HistRegistro.objects.filter(userReg_id = user.id,  escala_id = user.escala.id, dataReg = data.today().date()):
         context['histRegistro'] = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
 
     if request.method == 'POST':
@@ -63,83 +60,59 @@ def RegistrarPonto(request):
             print(f'hora {horaSai4_subtrai} é menor ou igual a hora atual')
 
             temRegHistorico = HistRegistro.objects.filter(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())    
-            # Verifica se o usuario está dentro da sua escala
-            if ((horaEnt1_subtrai <= ha) and (horaSai2_subtrai > ha)):
-                print('Primeiro horario')   
-                if not temRegHistorico:
-                    HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horEnt1=ha)
-                else:
-                    altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
-
+            # Verifica se o usuario tem registro
+            if not temRegHistorico:
+                    HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horEnt1=ha) 
+                    return render(request, 'registraPonto/index.html', context) 
+                
+            else:
+                altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
+                print(altHist.horEnt3)
+                if altHist.horSai2 is None: 
                     altHist.horSai2 = ha
                     altHist.save()   
+                    return render(request, 'registraPonto/index.html', context) 
 
-            elif ((horaSai2_subtrai  <= ha) and (horaEnt3_subtrai > ha)):
-                print('Segundo horario') 
-                if not temRegHistorico:
-                    HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horSai2=ha)
-                else:
-                    altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
-                    altHist.horSai2 = ha
-                    altHist.save()   
-
-
-            elif ((horaEnt3_subtrai <= ha) and (horaSai4_subtrai > ha)):
-                print('Terceiro horario')  
-                if not temRegHistorico:
-                    HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horEnt3=ha)
-                else:
-                    altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
-
+                elif altHist.horEnt3 is None: 
                     if ((hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2)) >= timedelta(minutes=30)):
-                        print('Faz mais de 30 minutos que registrou o ultimo ponto no sistema')
-                        altHist.horEnt3 = ha
-                        altHist.save()   
-                        
+                            print('Faz mais de 30 minutos que registrou o ultimo ponto no sistema')
+                            altHist.horEnt3 = ha
+                            altHist.save()   
+                            return render(request, 'registraPonto/index.html', context) 
+                            
                     else:
                         horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
                         messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
-                    #     print(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
-                    # print(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
+                        print(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
+                        return render(request, 'registraPonto/index.html', context) 
 
-            elif (horaSai4_subtrai <= ha):
-                print('Quarto horario')   
-
-                if not temRegHistorico:
-                    HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horSai4=ha)
-                else:
-                    altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
-                    print(altHist.dataReg)
-                    print(data.today().date())
+                
+                elif altHist.horSai4 is None: 
                     altHist.horSai4 = ha
                     altHist.save()  
+                    return render(request, 'registraPonto/index.html', context)  
 
-
-                print(type(horaSai4_subtrai))  
-                print(type(ha))  
-                # Se estiver então verificda se já possui registro
-                if HistRegistro.objects.filter(userReg = user.id, escala = user.escala.id, dataReg = data.today()):
-
-                    if not (horaEnt1_soma >= ha) and (horaEnt1_subtrai  <= ha):
-                        messages.error(request, "Você não pode registrar o ponto")
-                        
-                    print(user.escala.id) 
-                    print(request.POST.get('horas'))
-                    # messages.error(request, "Problemas ao registrar ponto")  
-                    return render(request, 'registraPonto/index.html', context)
-                # else:
-                #     if user.escala.horaEntM != '':
-                #         #  Se o usuario tentar entrar 5 minutos antes do seu horario e até 5 minutos depois ele consegue
-                #         # Escala de entrada 08:00 - 5 = 07:55 for maior ou igual ao horario atual e a escala de entrada 08:00 + 5 = 08:05 for menor ou igual a hora atual ele cria o registro 
-                #         if (horaEnt1_subtrai  >= ha) and (horaEnt1_soma <= ha):
-                #             HistRegistro.objects.create(userReg = user.id, escala = user.escala.id, dataReg = data.date.today(), horaEntM = ha)
-                #         elif (horaSai2_subtrai  >= ha) and (horaSai2_soma <= ha):
-                #             HistRegistro.objects.create(userReg = user.id, escala = user.escala.id, dataReg = data.date.today(), horaSaiM = ha)
-                #     else:
-                #         HistRegistro.objects.create(userReg = user.id, escala = user.escala.id, dataReg = data.date.today(), horaEntV = ha)     
-            else:
-               messages.error(request, "Você está fora da sua escala de trabalho!")
-               return render(request, 'registraPonto/index.html', context) 
+                else:
+                    if not HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date()):
+                        HoraExtra.objects.create(userExtra_id = user.id, dataExtra=data.today().date(), horEnt1=ha) 
+                        return render(request, 'registraPonto/index.html', context)
+                    else:
+                        horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())     
+                        if horExtra.horSai2 is None:
+                            horExtra.horSai2 = ha
+                            horExtra.save()
+                            return render(request, 'registraPonto/index.html', context)
+                        if horExtra.horEnt3 is None:
+                            horExtra.horEnt3 = ha
+                            horExtra.save()
+                            return render(request, 'registraPonto/index.html', context)
+                        if horExtra.horSai4 is None:
+                            horExtra.horSai4 = ha
+                            horExtra.save()
+                            return render(request, 'registraPonto/index.html', context)
+            
+            #    messages.error(request, "Você está fora da sua escala de trabalho!")
+            #    return render(request, 'registraPonto/index.html', context) 
         else:
             messages.error(request, 'Não está na escala da semana correta!!') 
         return render(request, 'registraPonto/index.html', context)     

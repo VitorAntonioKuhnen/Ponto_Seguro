@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 # from accounts.models import Users
 
@@ -27,12 +28,14 @@ class Escala(models.Model):
 
 class HoraExtra(models.Model):
     userExtra = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING, related_name='userExtra')
-    userLib = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING, related_name='userLib')  
+    dataExtra = models.DateField(blank=True, null=True)
+    userLib = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='userLib')  
     dataLib = models.DateField(blank=True, null=True)
     horEnt1 = models.TimeField(blank=True, null=True)
     horSai2 = models.TimeField(blank=True, null=True)
     horEnt3 = models.TimeField(blank=True, null=True)
     horSai4 = models.TimeField(blank=True, null=True)
+    sitApr = models.BooleanField(blank=True, null=True)
 
     class Meta:
        db_table = 'horaextra'
