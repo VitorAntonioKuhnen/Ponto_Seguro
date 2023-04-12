@@ -14,55 +14,77 @@ def RegistrarPonto(request):
     user = request.user
     if HistRegistro.objects.filter(userReg_id = user.id,  escala_id = user.escala.id, dataReg = data.today().date()):
         context['histRegistro'] = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
+    if HoraExtra.objects.filter(userExtra_id = user.id, dataExtra = data.today().date()):
+        context['horaExtra'] = HoraExtra.objects.get(userExtra_id = user.id, dataExtra = data.today().date())    
+
+    numDiaSemana = data.today().weekday()
+    if numDiaSemana == 0:
+        diaSemana = user.escala.segunda
+    elif numDiaSemana == 1:
+        diaSemana = user.escala.terca
+    elif numDiaSemana == 2:
+        diaSemana = user.escala.quarta
+    elif numDiaSemana == 3:
+        diaSemana = user.escala.quinta
+    elif numDiaSemana == 4:
+        diaSemana = user.escala.sexta
+    elif numDiaSemana == 5:
+        diaSemana = user.escala.sabado
+    elif numDiaSemana == 6:
+        diaSemana = user.escala.domingo
+
+    context['extraSemana'] = diaSemana
 
     if request.method == 'POST':
         ha = hora.now().time()
-        numDiaSemana = data.today().weekday()
-
-        if numDiaSemana == 0:
-            diaSemana = user.escala.segunda
-        elif numDiaSemana == 1:
-            diaSemana = user.escala.terca
-        elif numDiaSemana == 2:
-            diaSemana = user.escala.quarta
-        elif numDiaSemana == 3:
-            diaSemana = user.escala.quinta
-        elif numDiaSemana == 4:
-            diaSemana = user.escala.sexta
-        elif numDiaSemana == 5:
-            diaSemana = user.escala.sabado
-        elif numDiaSemana == 6:
-            diaSemana = user.escala.domingo
-
         if diaSemana == True:
             messages.error(request, 'Está na escala semanal correta!!')  
             print('Está na escala semanal correta!!')  
+            
+            if user.escala.horEnt1 is not None:
+                horaEnt1_soma = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=5)).time()
+                horaEnt1_subtrai = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=-5)).time()
 
-            horaEnt1_soma = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=5)).time()
-            horaEnt1_subtrai = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=-5)).time()
+            if user.escala.horSai2 is not None:
+                horaSai2_soma = (hora.combine(hora.today(), user.escala.horSai2) + timedelta(minutes=5)).time()
+                horaSai2_subtrai = (hora.combine(hora.today(), user.escala.horSai2) + timedelta(minutes=-5)).time()
 
-            horaSai2_soma = (hora.combine(hora.today(), user.escala.horSai2) + timedelta(minutes=5)).time()
-            horaSai2_subtrai = (hora.combine(hora.today(), user.escala.horSai2) + timedelta(minutes=-5)).time()
-
-            horaEnt3_soma = (hora.combine(hora.today(), user.escala.horEnt3) + timedelta(minutes=5)).time()
-            horaEnt3_subtrai = (hora.combine(hora.today(), user.escala.horEnt3) + timedelta(minutes=-5)).time()
-
-            horaSai4_soma = (hora.combine(hora.today(), user.escala.horSai4) + timedelta(minutes=5)).time()
-            horaSai4_subtrai = (hora.combine(hora.today(), user.escala.horSai4) + timedelta(minutes=-5)).time()
+            if user.escala.horEnt3 is not None:
+                horaEnt3_soma = (hora.combine(hora.today(), user.escala.horEnt3) + timedelta(minutes=5)).time()
+                horaEnt3_subtrai = (hora.combine(hora.today(), user.escala.horEnt3) + timedelta(minutes=-5)).time()
+            
+            # if user.escala.horSai4 != '':
+            #     horaSai4_soma = (hora.combine(hora.today(), user.escala.horSai4) + timedelta(minutes=5)).time()
+            #     horaSai4_subtrai = (hora.combine(hora.today(), user.escala.horSai4) + timedelta(minutes=-5)).time()
             
             print((horaEnt1_subtrai <= ha) and (horaSai2_subtrai > ha))
             print(f'hora {horaEnt1_subtrai} é menor ou igual a hora atual e a hora de saida {horaSai2_subtrai} é maior que a hora atual')
-            print((horaSai2_subtrai  <= ha) and (horaEnt3_subtrai > ha))
-            print(f'hora {horaSai2_subtrai} é menor ou igual a hora atual e a hora de saida {horaEnt3_subtrai} é maior que a hora atual')
-            print((horaEnt3_subtrai <= ha) and (horaSai4_subtrai > ha))
-            print(f'hora {horaEnt3_subtrai} é menor ou igual a hora atual e a hora de saida {horaSai4_subtrai} é maior que a hora atual')
-            print((horaSai4_subtrai <= ha))
-            print(f'hora {horaSai4_subtrai} é menor ou igual a hora atual')
+            # print((horaSai2_subtrai  <= ha) and (horaEnt3_subtrai > ha))
+            # print(f'hora {horaSai2_subtrai} é menor ou igual a hora atual e a hora de saida {horaEnt3_subtrai} é maior que a hora atual')
+            # # print((horaEnt3_subtrai <= ha) and (horaSai4_subtrai > ha))
+            # print(f'hora {horaEnt3_subtrai} é menor ou igual a hora atual e a hora de saida {horaSai4_subtrai} é maior que a hora atual')
+            # print((horaSai4_subtrai <= ha))
+            # print(f'hora {horaSai4_subtrai} é menor ou igual a hora atual')
 
             temRegHistorico = HistRegistro.objects.filter(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())    
             # Verifica se o usuario tem registro
             if not temRegHistorico:
                     HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date(), horEnt1=ha) 
+
+
+                    #Validação para adicionar dados ao banco de horas
+                    altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
+                    if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt1_subtrai)):
+                        print('É menor que o horario padrão Então Saldo Negativo')
+                        # altHist.bancoHora = hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2).time()
+                        print(hora.combine(hora.today(), ha).time() - hora.combine(hora.today(), altHist.horSai2).time())
+                        # altHist.save()
+                    elif (hora.combine(hora.today(), horaEnt1_soma) < hora.combine(hora.today(), ha)):
+                        print('É maior que o horario padrão Então Saldo Negativo')
+                        altHist.bancoHora = (hora.combine(hora.today(), altHist.horSai2) - hora.combine(hora.today(), ha))
+                        altHist.save()   
+                    
+                    
                     return render(request, 'registraPonto/index.html', context) 
                 
             else:

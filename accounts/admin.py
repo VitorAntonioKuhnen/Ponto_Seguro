@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Users, Token
+from .models import Cargo, Users, Token
 
 class UsuarioAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab', 'is_staff', 'is_active')
     search_fields = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab',)
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    per_page = 15
+    per_page = 16
     fieldsets = (
         (None, {
-            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'is_active')
+            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'cargo', 'is_active', 'groups')
         }),
         ('Registros', {
             'fields': ('escala', 'justificar', 'hora_extra')
@@ -29,3 +29,10 @@ class TokenAdmin(admin.ModelAdmin):
     search_fields = ['codToken', 'usuario', 'datGer', 'horGer']
 
 admin.site.register(Token, TokenAdmin)
+
+class CargoAdmin(admin.ModelAdmin):
+    list_display = ['nmCargo', 'sitCargo']
+    list_display_links = ['nmCargo', 'sitCargo']
+    search_fields = ['nmCargo', 'sitCargo']
+
+admin.site.register(Cargo, CargoAdmin)

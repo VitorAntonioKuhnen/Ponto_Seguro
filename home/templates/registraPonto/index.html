@@ -29,7 +29,7 @@
                     {% endif %}
                 </div>
                 <h2 class="font-weight-bold nome">{{user.first_name}} {{user.last_name}}</h2>
-                <p class="cargo">Desenvolvedor</p>
+                <p class="cargo">{{user.cargo.nmCargo}}</p>
                 <div class="alinhamento">
                     <h4 class="font-weight-bold">Escala</h4>
                     <div class="escala">
@@ -66,6 +66,7 @@
                 </div>
             </div>
             <hr class="w-100">
+            {% if extraSemana == True and histRegistro.horSai4 is None%}
             <div class="alinhamento registros">
                 <h4 class="font-weight-bold">Registros</h4>
                 <div class="linha fundo tamanhoReg">
@@ -110,6 +111,52 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+                <div class="alinhamento registros">
+                    <h4 class="font-weight-bold">Hora Extra</h4>
+                    <div class="linha fundo tamanhoReg">
+
+                        <div class="alinhamento">
+                            <span class="data">{{dataHoje}} <br>
+                                {{diaSemana}}
+                            </span>
+                        </div>
+                        <div class="alinhamento">
+                            <span class="nmsit">Entrada</span>
+                            {% if horaExtra.horEnt1 %}
+                                <span class="corResgitros">{{horaExtra.horEnt1}}</span>
+                            {% else %}
+                                <span class="corResgitros">------</span>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="alinhamento">
+                            <span class="nmsit">Saida</span>
+                            {% if horaExtra.horSai2 %}
+                                <span class="corResgitros">{{horaExtra.horSai2}}</span>
+                            {% else %}
+                                <span class="corResgitros">------</span>
+                            {% endif %}
+                        </div>
+                        <div class="alinhamento">
+                            <span class="nmsit">Entrada</span>
+                            {% if horaExtra.horEnt3 %}
+                                <span class="corResgitros">{{horaExtra.horEnt3}}</span>
+                            {% else %}
+                                <span class="corResgitros">------</span>
+                            {% endif %}    
+                        </div>
+                        <div class="alinhamento">
+                            <span class="nmsit">Saida</span>
+                            {% if horaExtra.horSai4 %}
+                                <span class="corResgitros">{{horaExtra.horSai4}}</span>
+                            {% else %}
+                                <span class="corResgitros">------</span>
+                            {% endif %}    
+                        </div>
+                    </div>
+                </div>    
+            {% endif %}
 
             <div class="horario">
                 <h1 class="hrAtual font-weight-bold">Hora Atual</h1>
