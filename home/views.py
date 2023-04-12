@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import HistRegistro, HoraExtra
 import calendar
-from datetime import datetime as hora, datetime as data, timedelta
+from datetime import datetime as hora, datetime as data, timedelta, time
 from django.contrib import messages
 
 
@@ -74,14 +74,34 @@ def RegistrarPonto(request):
 
                     #Validação para adicionar dados ao banco de horas
                     altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
+                    horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
                     if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt1_subtrai)):
                         print('É menor que o horario padrão Então Saldo Negativo')
-                        # altHist.bancoHora = hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2).time()
-                        print(hora.combine(hora.today(), ha).time() - hora.combine(hora.today(), altHist.horSai2).time())
-                        # altHist.save()
+                        horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
+                        min_f = horPercorridas.seconds// 60
+
+
+                        resultado =  time(hour=min_f // 60, minute=min_f % 60)
+                        print(time(hour=min_f // 60))
+                        print(time(minute=min_f % 60))
+                        print(resultado)
+
+                        altHist.bancoHora = resultado
+                        altHist.save()
                     elif (hora.combine(hora.today(), horaEnt1_soma) < hora.combine(hora.today(), ha)):
                         print('É maior que o horario padrão Então Saldo Negativo')
-                        altHist.bancoHora = (hora.combine(hora.today(), altHist.horSai2) - hora.combine(hora.today(), ha))
+                        horPercorridas =  hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt1) 
+                        min_f = horPercorridas.seconds// 60
+
+
+                        resultado =  time(hour=min_f // 60, minute=min_f % 60)
+                        print(time(hour=min_f // 60))
+                        print(time(minute=min_f % 60))
+                        print(resultado)
+
+                        altHist.bancoHora = resultado # Precisa adicionar função para colocar horas negativas!!
+                        altHist.save()
+
                         altHist.save()   
                     
                     
@@ -105,7 +125,7 @@ def RegistrarPonto(request):
                     else:
                         horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
                         messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
-                        print(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2))
+                        print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2)))
                         return render(request, 'registraPonto/index.html', context) 
 
                 
