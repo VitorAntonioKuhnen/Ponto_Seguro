@@ -50,7 +50,7 @@ class HistRegistro(models.Model):
     horSai2 = models.TimeField(blank=True, null=True)      
     horEnt3 = models.TimeField(blank=True, null=True)      
     horSai4 = models.TimeField(blank=True, null=True)  
-    bancoHora = models.TimeField(blank=True, null=True)
+    bancoHoraMin = models.IntegerField(blank=True, null=True)
     sitAPR = models.BooleanField(default=False)
 
     class Meta:

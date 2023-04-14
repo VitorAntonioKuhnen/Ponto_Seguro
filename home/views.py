@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import HistRegistro, HoraExtra
 import calendar
 from datetime import datetime as hora, datetime as data, timedelta, time
+from django.utils import timezone
 from django.contrib import messages
 
 
@@ -78,31 +79,15 @@ def RegistrarPonto(request):
                     if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt1_subtrai)):
                         print('É menor que o horario padrão Então Saldo Negativo')
                         horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
-                        min_f = horPercorridas.seconds// 60
-
-
-                        resultado =  time(hour=min_f // 60, minute=min_f % 60)
-                        print(time(hour=min_f // 60))
-                        print(time(minute=min_f % 60))
-                        print(resultado)
-
-                        altHist.bancoHora = resultado
+                        altHist.bancoHoraMin = -(horPercorridas.seconds// 60)
                         altHist.save()
+
                     elif (hora.combine(hora.today(), horaEnt1_soma) < hora.combine(hora.today(), ha)):
                         print('É maior que o horario padrão Então Saldo Negativo')
-                        horPercorridas =  hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt1) 
-                        min_f = horPercorridas.seconds// 60
-
-
-                        resultado =  time(hour=min_f // 60, minute=min_f % 60)
-                        print(time(hour=min_f // 60))
-                        print(time(minute=min_f % 60))
-                        print(resultado)
-
-                        altHist.bancoHora = resultado # Precisa adicionar função para colocar horas negativas!!
-                        altHist.save()
-
-                        altHist.save()   
+                        horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
+                        print(-(horPercorridas.seconds// 60))
+                        altHist.bancoHoraMin = horPercorridas.seconds// 60
+                        altHist.save() 
                     
                     
                     return render(request, 'registraPonto/index.html', context) 
@@ -112,7 +97,42 @@ def RegistrarPonto(request):
                 print(altHist.horEnt3)
                 if altHist.horSai2 is None: 
                     altHist.horSai2 = ha
+
+                    horPercorridas =  hora.combine(hora.today(), user.escala.horSai2) - hora.combine(hora.today(), ha) 
+
+                    if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaSai2_subtrai)):
+                        print('É menor que o horario padrão Então Saldo Negativo')
+
+                        horPercorridas =   hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
+                        
+                        print(altHist.bancoHoraMin)
+                        print(horPercorridas.seconds// 60)
+
+                        if (altHist.bancoHoraMin > 0 ):
+                            altHist.bancoHoraMin = (horPercorridas.seconds// 60) - altHist.bancoHoraMin
+                        else:
+                            altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
+
+
+                    elif (hora.combine(hora.today(), horaSai2_soma) < hora.combine(hora.today(), ha)):
+                        print('É maior que o horario padrão Então Saldo Negativo')
+
+                        horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
+
+                        print(altHist.bancoHoraMin)
+                        print(-(horPercorridas.seconds// 60))
+                        print(altHist.bancoHoraMin)
+                        print(horPercorridas.seconds// 60)
+
+                        print(altHist.bancoHoraMin -  (-(horPercorridas.seconds// 60)))
+                        print(altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60)))
+                        if (altHist.bancoHoraMin > 0 ):
+                            altHist.bancoHoraMin = altHist.bancoHoraMin +  horPercorridas.seconds// 60 # Precisa adicionar função para colocar horas negativas!!
+                        else:
+                            altHist.bancoHoraMin = -(horPercorridas.seconds// 60) - altHist.bancoHoraMin    
+
                     altHist.save()   
+                    
                     return render(request, 'registraPonto/index.html', context) 
 
                 elif altHist.horEnt3 is None: 
