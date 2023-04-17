@@ -77,16 +77,17 @@ def RegistrarPonto(request):
                     altHist = HistRegistro.objects.get(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())
                     horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
                     if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt1_subtrai)):
-                        print('É menor que o horario padrão Então Saldo Negativo')
+                        print('É menor que o horario da escala Então Saldo é positivo')
                         horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
-                        altHist.bancoHoraMin = -(horPercorridas.seconds// 60)
+                        print(horPercorridas.seconds// 60)
+                        altHist.bancoHoraMin = horPercorridas.seconds// 60
                         altHist.save()
 
                     elif (hora.combine(hora.today(), horaEnt1_soma) < hora.combine(hora.today(), ha)):
-                        print('É maior que o horario padrão Então Saldo Negativo')
-                        horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
+                        print('É maior que o horario da escala Então Saldo Negativo')
+                        horPercorridas =  hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt1) 
                         print(-(horPercorridas.seconds// 60))
-                        altHist.bancoHoraMin = horPercorridas.seconds// 60
+                        altHist.bancoHoraMin = -(horPercorridas.seconds// 60)
                         altHist.save() 
                     
                     
@@ -103,12 +104,9 @@ def RegistrarPonto(request):
                     if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaSai2_subtrai)):
                         print('É menor que o horario padrão Então Saldo Negativo')
 
-                        horPercorridas =   hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
-                        
-                        print(altHist.bancoHoraMin)
-                        print(horPercorridas.seconds// 60)
+                        horPercorridas =  hora.combine(hora.today(), user.escala.horSai2) - hora.combine(hora.today(), ha) 
 
-                        if (altHist.bancoHoraMin > 0 ):
+                        if (altHist.bancoHoraMin < 0 ):
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) - altHist.bancoHoraMin
                         else:
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
@@ -127,7 +125,7 @@ def RegistrarPonto(request):
                         print(altHist.bancoHoraMin -  (-(horPercorridas.seconds// 60)))
                         print(altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60)))
                         if (altHist.bancoHoraMin > 0 ):
-                            altHist.bancoHoraMin = altHist.bancoHoraMin +  horPercorridas.seconds// 60 # Precisa adicionar função para colocar horas negativas!!
+                            altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60)) # Precisa analisar a função para colocar de horas negativas pois está dando o horario incorreto, lembrando que essa regra será mudado para a entrada no segundo periodo!!!
                         else:
                             altHist.bancoHoraMin = -(horPercorridas.seconds// 60) - altHist.bancoHoraMin    
 
