@@ -148,7 +148,7 @@ def RegistrarPonto(request):
                             elif (hora.combine(hora.today(), horaSai2_soma) < hora.combine(hora.today(), ha)):
                                 print('É maior que o horario padrão Então Saldo Negativo')
 
-                                horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai3)
+                                horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt3)
 
                                 if (altHist.bancoHoraMin > 0 ):
                                     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
