@@ -208,3 +208,7 @@ def enviaEmail(email, token):
     email.attach_alternative(html_content, 'text/html')
     email.send()
     return "enviado"
+
+def logout(request):
+    auth.logout(request)
+    return redirect('login')
