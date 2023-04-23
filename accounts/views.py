@@ -16,13 +16,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-
-def login(request):
-    auth.logout(request)
-    if request.method == 'POST':
-        pass
-    else:
-        return render(request, 'login/index.html')
+# Função para continuar logado no site
+# def login(request):
+#     auth.logout(request)
+#     if request.method == 'POST':
+#         pass
+#     else:
+#         return render(request, 'login/index.html')
 
 
 def login(request):
@@ -126,7 +126,7 @@ def gerarToken(request, id):
             Token.objects.get(usuario=id).delete()   
         usuario = Users.objects.get(id=id)
         enviaEmail(usuario.email, processos.geradorToken(usuario.id))
-        return HttpResponse('''<div class="alert alert-success alert-dismissible fade show" role="alert">
+        return HttpResponse('''<div class="alert alert-success alert-dismissible fade show" id="mensagem" role="alert">
                     <p>Seu novo Token foi Regerado! Confira seu e-mail</p>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>''')

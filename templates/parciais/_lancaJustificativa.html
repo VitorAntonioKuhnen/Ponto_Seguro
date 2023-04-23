@@ -1,0 +1,31 @@
+{% load static %}
+
+{% if user.justificar %}
+    <div class="modal fade show position-fixed" id="cor_fundo_just" tabindex="-1" style="display: block;" aria-modal="true"
+    role="dialog">
+        <div class="modal-dialog" id="topo">
+            <form method="POST" class="modal-content" style="height: 330px;"> {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Justifique o Motivo do Atraso</h1>
+                </div>
+                <div class="modal-body mb-4 h-100">
+                    <div class="mb-4 h-100">
+                        <div class="mb-4 h-100">
+                            <select name="tipoJust" class="w-50 mb-2 form-select form-select-sm" id="">  
+                                <option disabled selected>Selecione uma Justificativa</option>
+                                {% for justificativa in tpJust %}
+                                    <option value="{{justificativa.id}}">{{justificativa.tipoJustificativa}}</option> 
+                                {% endfor %}  
+                            </select>
+
+                            <textarea name="txtJust" class=" h-100 form-control" style="height: 100%;" id="message-text"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="btjustificar" class="btn btn-primary" type="submit">Enviar Justificativa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}

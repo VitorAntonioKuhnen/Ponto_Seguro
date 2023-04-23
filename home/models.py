@@ -72,6 +72,7 @@ class TipoJustificativa(models.Model):
        verbose_name_plural = 'Tipos de Justificativas'
 
 class Justificativa(models.Model):
+    txtJust = models.TextField()
     tipoJust = models.ForeignKey(TipoJustificativa, on_delete=models.DO_NOTHING)
     data = models.DateField()
     hora = models.TimeField()

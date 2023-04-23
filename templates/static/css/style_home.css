@@ -35,8 +35,7 @@ footer {
 }
 
 .espacamento{
-    margin: 10px 15px;
-    /* bottom: 0; */
+    margin: 10px 1%;
 }
 
 .backGroundColor{
@@ -62,4 +61,15 @@ footer {
 .removeScroll{
     overflow-y: hidden;
 
+}
+
+#buttonExit{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+}
+
+.zindex-2{
+    z-index: 2000 !important;
 }

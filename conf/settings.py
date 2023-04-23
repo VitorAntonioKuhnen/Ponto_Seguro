@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import locale
 from decouple import config
+from django.contrib.messages import constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -172,3 +173,11 @@ EMAIL_HOST_PASSWORD = config('SenhaApp')
 EMAIL_USE_TLS = True
 EMAIL_PORT = config('email_port')
 EMAIL_HOST = config('email_host')
+
+MESSAGE_TAGS = {
+    constants.ERROR: 'text-bg-danger',
+    constants.WARNING: 'text-bg-warning',
+    constants.DEBUG: 'text-bg-primary',
+    constants.SUCCESS: 'text-bg-success',
+    constants.INFO: 'text-bg-info',
+}
