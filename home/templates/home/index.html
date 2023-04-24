@@ -49,7 +49,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body">
+                <form class="offcanvas-body" action="{% url 'mostrahtml' %}" method="POST"> {% csrf_token %}
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-business-time"></i>
@@ -61,7 +61,8 @@
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>
-                            <a class="nav-link" aria-current="page" href="" hx-get="{% url 'mostrahtml' %}" hx-target="mostraHTML" hx-swap="outerHTML">Registro de Ponto</a>
+                            {% comment %} <button name="registroPonto" class="nav-link" aria-current="page" type="submit" hx-get="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Registro de Ponto</button> {% endcomment %}
+                            <a class="nav-link" aria-current="page" href="" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Registro de Ponto</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-person-circle-check"></i>
@@ -85,7 +86,7 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
+                </form>
             </div>
         </div>
     </nav>
@@ -93,12 +94,7 @@
         <main class="alinhamento tamanhos removeScroll">
             <img src="{% static 'image/BackGround PontoSeguro.png' %}" class="position-fixed" alt="">
             <div class="position-relative tamanhos removeScroll ">
-                <iframe class="tamanhos removeScroll mostraHTML" src="" frameborder="0"></iframe>
-                {% comment %} <iframe class="tamanhos removeScroll" src="https://www.youtube.com/embed/z4plH2K2uHY"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe> {% endcomment %}
-
+                <embed class="tamanhos removeScroll" id="mostraHTML" src="" type="">
             </div>
 
         </main>
@@ -119,6 +115,13 @@
         {% include  'parciais/_lancaJustificativa.html' %}
 
     </div>
+    {% if atualiza_page  %}
+        <script>
+            location.reload();
+        </script>
+    {% endif %}
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </body>
 
 </html>

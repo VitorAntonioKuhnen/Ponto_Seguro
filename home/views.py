@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from .models import HistRegistro, HoraExtra, TipoJustificativa, Justificativa
 import calendar
 from datetime import datetime as hora, datetime as data, timedelta
 from django.contrib import messages
 from django.http import HttpResponse
+from accounts import views
 
+reload = False
 
 @login_required
 def RegistrarPonto(request):
+    global reload
     context = {}
     context['dataHoje'] = data.today().strftime("%d / %B")
     context['diaSemana'] = calendar.day_name[data.today().weekday()].capitalize()
@@ -102,6 +106,9 @@ def RegistrarPonto(request):
                         print(horPercorridas) 
                         print(horPercorridas.seconds// 60)
                         print(altHist.bancoHoraMin)
+                        
+                        user.justificar = True
+                        user.save()
 
                         if (altHist.bancoHoraMin < 0 ):
                             altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
@@ -112,8 +119,6 @@ def RegistrarPonto(request):
                         print('É maior que o horario padrão Então Saldo Negativo')
 
                         horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
-                        user.justificar = True
-                        user.save()
 
                         if (altHist.bancoHoraMin < 0 ):
                             altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
@@ -122,7 +127,9 @@ def RegistrarPonto(request):
                     
                     altHist.save()   
                     messages.success(request, f'Segunda Saida Registrada com Sucesso {str(altHist.horSai2)}')
-                    return redirect(inicio)
+                    reload = True
+                    # return redirect(inicio) 
+                    return redirect(views.logout)
                 
                 #Terceiro registro da Escala
                 elif altHist.horEnt3 is None: 
@@ -188,6 +195,9 @@ def RegistrarPonto(request):
                         print(horPercorridas.seconds// 60)
                         print(altHist.bancoHoraMin)
 
+                        user.justificar = True
+                        user.save()
+
                         if (altHist.bancoHoraMin < 0 ):
                             altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
                         else:
@@ -198,16 +208,15 @@ def RegistrarPonto(request):
 
                         horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai4)
 
-                        user.justificar = True
-                        user.save()
-
                         if (altHist.bancoHoraMin < 0 ):
                             altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
                         else:
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     altHist.save()  
                     messages.success(request, f'Quarta Saida Registrada com Sucesso {str(altHist.horSai4)}') 
-                    return redirect(inicio)
+                    reload = True
+                    # return redirect(inicio) 
+                    return redirect(views.logout)
 
                 else:
                     if not HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date()):
@@ -266,8 +275,13 @@ def RegistrarPonto(request):
 
 @login_required
 def inicio(request):
+    global reload
     user = request.user
     context = {}
+    print(reload)
+    context['atualiza_page'] = reload
+    reload = False
+    print(reload)
     context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
     if request.method == 'POST':
         if "btjustificar" in request.POST:
@@ -288,6 +302,7 @@ def inicio(request):
                 user.save()
                 messages.success(request, 'Justificativa Registrada com Sucesso')
             return redirect("inicio")
+
         else:
             print("Sem justificativa")
 
@@ -296,6 +311,11 @@ def inicio(request):
         return render(request, 'home/index.html', context)
     
 
-@login_required
+
 def mostrahtml(request):
-     return HttpResponse(request, 'registraPonto/index.html')     
+    return HttpResponse(f'''<embed class="tamanhos removeScroll 21" id="mostraHTML" src="{reverse('RegistrarPonto')}" type="">''')
+
+def atualiza(request):
+    return redirect(views.logout)
+
+    
