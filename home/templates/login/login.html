@@ -81,7 +81,7 @@
     {% if messages %}
     {% for message in messages %}
 
-        <div class="toast align-items-center text-bg-danger border-0 show position-fixed" id="mensagem" style="position: fixed; top: 5px; right: 5px;" role="alert"
+        <div class="toast align-items-center {{message.tags}} border-0 show position-fixed" id="mensagem" style="position: fixed; top: 5px; right: 5px;" role="alert"
         aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">

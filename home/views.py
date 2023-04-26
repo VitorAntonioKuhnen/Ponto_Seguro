@@ -4,7 +4,7 @@ from django.urls import reverse
 from .models import HistRegistro, HoraExtra, TipoJustificativa, Justificativa
 import calendar
 from datetime import datetime as hora, datetime as data, timedelta
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.http import HttpResponse
 from accounts import views
 
@@ -90,7 +90,7 @@ def RegistrarPonto(request):
                     
                     
                     altHist.save() 
-                    messages.success(request, f'Primeira Entrada Registrada com Sucesso {str(altHist.horEnt1)}') 
+                    messages.success(request, f'Primeira Entrada Registrada com Sucesso {str(altHist.horEnt1)[:-6]}') 
                     return redirect(inicio)
             
             #Segundo registro da Escala    
@@ -99,8 +99,8 @@ def RegistrarPonto(request):
                 if altHist.horSai2 is None: 
                     altHist.horSai2 = ha
 
-                    if (hora.combine(hora.today(), horaSai2_subtrai) > hora.combine(hora.today(), ha)):
-                        print('É menor que o horario atual Então Saldo Positivo')
+                    if (hora.combine(hora.today(), horaSai2_subtrai) < hora.combine(hora.today(), ha)):
+                        print('Escala é menor que o horario atual Então Saldo Negativo')
 
                         horPercorridas =  hora.combine(hora.today(), user.escala.horSai2) - hora.combine(hora.today(), ha)
                         print(horPercorridas) 
@@ -115,8 +115,8 @@ def RegistrarPonto(request):
                         else:
                             altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin    
 
-                    elif (hora.combine(hora.today(), horaSai2_soma) < hora.combine(hora.today(), ha)):
-                        print('É maior que o horario padrão Então Saldo Negativo')
+                    elif (hora.combine(hora.today(), horaSai2_soma) > hora.combine(hora.today(), ha)):
+                        print('Escala é maior que o horario atual Então Saldo Positivo')
 
                         horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
 
@@ -126,10 +126,9 @@ def RegistrarPonto(request):
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     
                     altHist.save()   
-                    messages.success(request, f'Segunda Saida Registrada com Sucesso {str(altHist.horSai2)}')
-                    reload = True
-                    # return redirect(inicio) 
-                    return redirect(views.logout)
+                    messages.success(request, f'Segunda Saida Registrada com Sucesso {str(altHist.horSai2)[:-6]}')
+                    auth.logout(request)
+                    return redirect(views.login)
                 
                 #Terceiro registro da Escala
                 elif altHist.horEnt3 is None: 
@@ -159,7 +158,7 @@ def RegistrarPonto(request):
                                     altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
 
 
-                            elif (hora.combine(hora.today(), horaSai2_soma) < hora.combine(hora.today(), ha)):
+                            elif (hora.combine(hora.today(), horaEnt3_soma) < hora.combine(hora.today(), ha)):
                                 print('É maior que o horario padrão Então Saldo Negativo')
 
                                 horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt3)
@@ -174,7 +173,7 @@ def RegistrarPonto(request):
 
                             altHist.save()   
 
-                            messages.success(request, f'Terceira Entrada Registrada com Sucesso {str(altHist.horEnt3)}')
+                            messages.success(request, f'Terceira Entrada Registrada com Sucesso {str(altHist.horEnt3)[:-6]}')
                             return redirect(inicio) 
                             
                     else:
@@ -213,34 +212,43 @@ def RegistrarPonto(request):
                         else:
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     altHist.save()  
-                    messages.success(request, f'Quarta Saida Registrada com Sucesso {str(altHist.horSai4)}') 
+                    messages.success(request, f'Quarta Saida Registrada com Sucesso {str(altHist.horSai4)[:-6]}') 
                     reload = True
-                    # return redirect(inicio) 
-                    return redirect(views.logout)
+                    auth.logout(request)
+                    return redirect(views.login)
 
                 else:
                     if not HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date()):
                         HoraExtra.objects.create(userExtra_id = user.id, dataExtra=data.today().date(), horEnt1=ha) 
-                        messages.success(request, f'Primeira Entrada Extra Registrada com Sucesso {str(HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date()).horEnt1)}') 
+                        messages.success(request, f'Primeira Entrada Extra Registrada com Sucesso {str(HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date()).horEnt1)[:-6]}') 
                         return redirect(inicio)
                     else:
                         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())     
                         if horExtra.horSai2 is None:
                             horExtra.horSai2 = ha
-                            messages.success(request, f'Segunda Saida Extra Registrada com Sucesso {str(horExtra.horSai2)}') 
+                            messages.success(request, f'Segunda Saida Extra Registrada com Sucesso {str(horExtra.horSai2)[:-6]}') 
                             horExtra.save()
+                            auth.logout(request)
+                            return redirect(views.login)
                             # return render(request, 'registraPonto/index.html', context)
-                        if horExtra.horEnt3 is None:
-                            horExtra.horEnt3 = ha
-                            messages.success(request, f'Terceira Entrada Extra Registrada com Sucesso {str(horExtra.horSai2)}') 
-                            horExtra.save()
-                            # return render(request, 'registraPonto/index.html', context)
-                        if horExtra.horSai4 is None:
+                        elif horExtra.horEnt3 is None:
+                            if ((hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)) >= timedelta(minutes=30)):
+                                horExtra.horEnt3 = ha
+                                messages.success(request, f'Terceira Entrada Extra Registrada com Sucesso {str(horExtra.horSai2)[:-6]}') 
+                                horExtra.save()
+                                return redirect(inicio) 
+                            else:
+                                horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2))
+                                messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
+                                print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
+                                return render(request, 'registraPonto/index.html', context)    
+                        elif horExtra.horSai4 is None:
                             horExtra.horSai4 = ha
-                            messages.success(request, f'Quarta Saida Extra Registrada com Sucesso {str(horExtra.horSai2)}') 
+                            messages.success(request, f'Quarta Saida Extra Registrada com Sucesso {str(horExtra.horSai2)[:-6]}') 
                             horExtra.save()
-                            # return render(request, 'registraPonto/index.html', context)   
-                        return redirect(inicio)    
+                            auth.logout(request)
+                            return redirect(views.login)
+                            # return render(request, 'registraPonto/index.html', context)      
             
             #    messages.error(request, "Você está fora da sua escala de trabalho!")
             #    return render(request, 'registraPonto/index.html', context) 
@@ -256,18 +264,29 @@ def RegistrarPonto(request):
                     horExtra.horSai2 = ha
                     horExtra.save()
                     messages.success(request, f'Segunda Saida Extra Registrada com Sucesso {str(horExtra.horSai2)}') 
+                    auth.logout(request)
+                    return redirect(views.login)
                     
-                if horExtra.horEnt3 is None:
-                    horExtra.horEnt3 = ha
-                    horExtra.save()
-                    messages.success(request, f'Terceira Entrada Extra Registrada com Sucesso {str(horExtra.horSai2)}')
+                elif horExtra.horEnt3 is None:
+                            if ((hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)) >= timedelta(minutes=30)):
+                                horExtra.horEnt3 = ha
+                                messages.success(request, f'Terceira Entrada Extra Registrada com Sucesso {str(horExtra.horSai2)[:-6]}') 
+                                horExtra.save()
+                                return redirect(inicio) 
+                            else:
+                                horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2))
+                                messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
+                                print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
+                                return render(request, 'registraPonto/index.html', context)   
                     
-                if horExtra.horSai4 is None:
+                elif horExtra.horSai4 is None:
                     horExtra.horSai4 = ha
                     horExtra.save()
                     messages.success(request, f'Quarta Saida Extra Registrada com Sucesso {str(horExtra.horSai2)}')
+                    auth.logout(request)
+                    return redirect(views.login)
                     
-                return redirect(inicio)    
+                   
             
         # return render(request, 'registraPonto/index.html', context)     
     else:    
@@ -313,7 +332,7 @@ def inicio(request):
 
 
 def mostrahtml(request):
-    return HttpResponse(f'''<embed class="tamanhos removeScroll 21" id="mostraHTML" src="{reverse('RegistrarPonto')}" type="">''')
+    return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('RegistrarPonto')}" type="">''')
 
 def atualiza(request):
     return redirect(views.logout)

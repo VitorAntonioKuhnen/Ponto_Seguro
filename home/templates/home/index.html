@@ -25,6 +25,7 @@
 </head>
 
 <body>
+    {% if request.path == '/' %}
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
@@ -45,7 +46,7 @@
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
                 aria-labelledby="offcanvasDarkNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">PontoSeguro</h5>
+                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">PontoSeguro - {{request.path}}</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
                 </div>
@@ -62,11 +63,12 @@
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>
                             {% comment %} <button name="registroPonto" class="nav-link" aria-current="page" type="submit" hx-get="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Registro de Ponto</button> {% endcomment %}
-                            <a class="nav-link" aria-current="page" href="" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Registro de Ponto</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'RegistrarPonto' %}">Registro de Ponto</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-person-circle-check"></i>
                             <a class="nav-link" aria-current="page" href="#">Aprova Ponto</a>
+                            <a class="nav-link" aria-current="page" href="" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Aprova Ponto</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
@@ -90,6 +92,7 @@
             </div>
         </div>
     </nav>
+    {% endif %}
     <div class="wrapper backGroundColor topo">
         <main class="alinhamento tamanhos removeScroll">
             <img src="{% static 'image/BackGround PontoSeguro.png' %}" class="position-fixed" alt="">
