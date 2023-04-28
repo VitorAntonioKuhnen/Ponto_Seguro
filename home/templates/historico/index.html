@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https: //fonts.googleapis.com/css2?family= Nunito :wght@200;300;400;500;600 & family= Open+Sans:wght@300;400;600 & display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/style_historico.css' %}">
+  <link rel="shortcut icon" href="{% static 'image/LogoRedonda.png' %}" type="image/x-icon">
+  <script src="{% static 'js/script_pesquisa_historico.js' %}"></script>
+  <title>Histórico</title>
+
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="alert-dismissible fade show">
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <form id="select" class="d-grid col-12 p-md-4">
+      <div id="calendario" class="input-group">
+        <label for="" class="data">Data</label>
+        <input type="date" class="form-control">
+      </div>
+      <div id="justificativa" class="">
+        <label>Justificativa </label>
+        <select class="form-select" aria-label=".form-select-sm">
+          <option selected value="1">Sim</option>
+          <option value="2">Não</option>
+        </select>
+      </div>
+      <div id="status">
+        <label for="" class="status">Status</label>
+        <select name="role" class="form-select form-select-sm" aria-label=".form-select-sm">
+          <option selected value="1">Todos</option>
+          <option value="2">Aprovados</option>
+          <option value="3">Reprovados</option>
+          <option value="4">Aguardando Aprovação</option>
+        </select>
+      </div>
+    </form>
+    <div id="btn" class="btn-buscar mx-md-4">
+      <button type="button" class="btn btn-sm">Buscar</button>
+    </div>
+  </nav>
+  <!-- Container -->
+  <div id="container" class="container mt-3">
+    <h4>Histórico</h4>
+    <br>
+    <form action="" class="form-filtro d-flex flex-row mb-3 ">
+      <div class="filtro-registro">
+        <select name="role" class="filtro form-control form-select" aria-label="">
+          <option selected value="1">10</option>
+          <option value="2">15</option>
+        </select>
+      </div>
+      <input type="text" id="myInput" onkeyup="myFunction()" class="pesquisar form-control" placeholder="Pesquisar">
+    </form>
+    <!-- Content -->
+    <div class="content overflow-auto p-4 rounded">
+      <table id="myTable" class="table table-hover table-striped table-bordered">
+        <thead>
+          <tr>
+            <th id="title" scope="col">Escala</th>
+            <th id="title" scope="col">Data de Registro</th>
+            <th id="title" scope="col">Ent. Mat.</th>
+            <th id="title" scope="col">Sai. Mat.</th>
+            <th id="title" scope="col">Ent. Vesp.</th>
+            <th id="title" scope="col">Sai. Vesp.</th>
+            <th id="title" scope="col">Banco de Horas</th>
+            <th id="title" scope="col">Resp. Superior</th>
+            <th id="title" scope="col">Status</th>
+            <th id="title" scope="col">Justificativa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>01/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>02/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>03/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>06/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>07/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>08/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>09/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>10/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>13/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th scope="row">08h/12h às 13:12/18h</th>
+            <td>14/03/2023</td>
+            <td>08:00</td>
+            <td>12:00</td>
+            <td>13:12</td>
+            <td>18:00</td>
+            <td>00:00</td>
+            <td>José Chanel</td>
+            <td>Aprovado</td>
+            <td>Sim</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <!-- Footer -->
+    <footer>
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+        </ul>
+      </nav>
+    </footer>
+
+</body>
+
+</html>

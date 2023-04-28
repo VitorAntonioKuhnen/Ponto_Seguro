@@ -332,9 +332,9 @@ def inicio(request):
 
 
 def mostrahtml(request):
-    return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('RegistrarPonto')}" type="">''')
+    return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('atualiza')}" type="">''')
 
 def atualiza(request):
-    return redirect(views.logout)
+    return render(request, 'historico/index.html')
 
     
