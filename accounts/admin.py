@@ -3,13 +3,13 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Cargo, Users, Token
 
 class UsuarioAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab', 'is_staff', 'is_active')
-    search_fields = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab',)
+    list_display = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab', 'superior', 'is_staff', 'is_active')
+    search_fields = ('username', 'first_name', 'last_name', 'dat_admissao', 'dat_inicia_trab', 'superior')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     per_page = 16
     fieldsets = (
         (None, {
-            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'cargo', 'is_active', 'groups')
+            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'superior', 'cargo', 'is_active', 'groups')
         }),
         ('Registros', {
             'fields': ('escala', 'justificar', 'hora_extra')

@@ -6,3 +6,8 @@
 #topo{
     top: 20%;
 }
+
+.confButton{
+    border: none !important;
+    background-color: #212529 !important;
+}

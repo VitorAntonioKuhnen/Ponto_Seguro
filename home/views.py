@@ -7,12 +7,10 @@ from datetime import datetime as hora, datetime as data, timedelta
 from django.contrib import messages, auth
 from django.http import HttpResponse
 from accounts import views
-
-reload = False
+from django.db.models import Q
 
 @login_required
 def RegistrarPonto(request):
-    global reload
     context = {}
     context['dataHoje'] = data.today().strftime("%d / %B")
     context['diaSemana'] = calendar.day_name[data.today().weekday()].capitalize()
@@ -213,7 +211,6 @@ def RegistrarPonto(request):
                             altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     altHist.save()  
                     messages.success(request, f'Quarta Saida Registrada com Sucesso {str(altHist.horSai4)[:-6]}') 
-                    reload = True
                     auth.logout(request)
                     return redirect(views.login)
 
@@ -294,13 +291,8 @@ def RegistrarPonto(request):
 
 @login_required
 def inicio(request):
-    global reload
     user = request.user
     context = {}
-    print(reload)
-    context['atualiza_page'] = reload
-    reload = False
-    print(reload)
     context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
     if request.method == 'POST':
         if "btjustificar" in request.POST:
@@ -330,11 +322,31 @@ def inicio(request):
         return render(request, 'home/index.html', context)
     
 
-
 def mostrahtml(request):
-    return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('atualiza')}" type="">''')
+    # botao = request.POST.get('hx-request')
+    botao = request.POST.get('hist')
+    # botao = request.body.get('hist')
+    # botao = request.headers.get('')
+    print(botao)
+    print("Request acima")
+    if  'historico' in request.GET:
+        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('historico')}" type="">''')
+    elif botao ==  "aprovaPonto":
+        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
+    elif botao == "cadastroEscalas":
+        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
+    else:
+        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
 
-def atualiza(request):
+
+def historico(request):
     return render(request, 'historico/index.html')
+
+
+def aprovaPonto(request):
+    context = {}
+    user = request.user
+    context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR=False))
+    return render(request, 'aprovaPonto/index.html',context)
 
     

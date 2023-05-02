@@ -50,25 +50,27 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
                 </div>
-                <form class="offcanvas-body" action="{% url 'mostrahtml' %}" method="POST"> {% csrf_token %}
+                <form class="offcanvas-body" method="POST"> {% csrf_token %}
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-business-time"></i>
-                            <a class="nav-link active" aria-current="page" href="#">Cadastro de Escalas</a>
+                            <button name="cadastroEscalas" class="confButton nav-link" aria-current="page" type="submit" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Cadastro de Escalas</button>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-clock-rotate-left"></i>
-                            <a class="nav-link" aria-current="page" href="#" hx-get="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Histórico de Ponto</a>
+                            <button name="historico" class="confButton nav-link" aria-current="page" type="submit" 
+                            hx-post="{% url 'mostrahtml' %}" 
+                            hx-target="#mostraHTML" 
+                            hx-swap="outerHTML">
+                            Histórico de Ponto</button>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>
-                            {% comment %} <button name="registroPonto" class="nav-link" aria-current="page" type="submit" hx-get="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Registro de Ponto</button> {% endcomment %}
                             <a class="nav-link" aria-current="page" href="{% url 'RegistrarPonto' %}">Registro de Ponto</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-person-circle-check"></i>
-                            <a class="nav-link" aria-current="page" href="#">Aprova Ponto</a>
-                            <a class="nav-link" aria-current="page" href="" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Aprova Ponto</a>
+                            <button name="aprovaPonto" class="confButton nav-link" aria-current="page" type="submit" hx-post="{% url 'mostrahtml' %}" hx-target="#mostraHTML" hx-swap="outerHTML">Aprova Ponto</button>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
