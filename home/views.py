@@ -324,17 +324,17 @@ def inicio(request):
 
 def mostrahtml(request):
     # botao = request.POST.get('hx-request')
-    botao = request.POST.get('hist')
     # botao = request.body.get('hist')
     # botao = request.headers.get('')
+    botao = request.POST.get('hist')
     print(botao)
     print("Request acima")
-    if  'historico' in request.GET:
+    if  botao == 'historico':  #'historico' in request.GET:
         return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('historico')}" type="">''')
     elif botao ==  "aprovaPonto":
         return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
     elif botao == "cadastroEscalas":
-        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
+        return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('cadastroEscalas')}" type="">''')
     else:
         return HttpResponse(f'''<embed class="tamanhos removeScrol" id="mostraHTML" src="{reverse('aprovaPonto')}" type="">''')
 

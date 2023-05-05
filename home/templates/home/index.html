@@ -58,11 +58,22 @@
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-clock-rotate-left"></i>
-                            <button name="historico" class="confButton nav-link" aria-current="page" type="submit" 
+                            <!-- <button name="historico" class="confButton nav-link" aria-current="page" type="submit" 
                             hx-post="{% url 'mostrahtml' %}" 
                             hx-target="#mostraHTML" 
-                            hx-swap="outerHTML">
-                            Histórico de Ponto</button>
+                            hx-swap="outerHTML"
+                            data-button-name="historico"
+                            hx-post-data='{"hist": "historico"}'>
+                            Histórico de Ponto</button> -->
+                            <input type="button" value="Histórico de Ponto" 
+                            name="historico"
+                            class="confButton nav-link"
+                            hx-post="{% url 'mostrahtml' %}" 
+                            hx-target="#mostraHTML" 
+                            hx-swap="outerHTML"
+                            data-button-name="historico"
+                            hx-post-data='{"hist": "historico"}'       
+                            > 
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>

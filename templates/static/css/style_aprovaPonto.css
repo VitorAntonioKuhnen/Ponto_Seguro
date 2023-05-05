@@ -40,7 +40,7 @@ html, body {
 h4, #title {
     color: #033159b4;
     margin-top: 5px;
-    font-family: 'poppins', sans-serif
+    font-family: 'poppins', sans-serif;
 }
 
 h4 {
@@ -68,23 +68,26 @@ h4 {
     width: 100%;
 }
 
-
 .pagination li a {
     background-color: #033159b4;
     color: #ffffff;
 }
 
+.pagination {
+    margin-right: 115px;
+}
 
 footer {
     display: flex;
     justify-content: start;
     text-align: start;
     width: 100%;
+    background-color: #ECECEC;
 }
 
-
 #btn {
-    justify-content: start;
+    justify-content: flex-start;
+    padding-left: 110px;
 }
 
 #btn-export:hover, #btn-salvar:hover {
@@ -92,7 +95,6 @@ footer {
     cursor: pointer;
     background-color: #03315952;
     color: #F4F4F4F4;
-    border-radius: 4px;
 }
 
 .btn-buscar1, .btn-buscar2 {
@@ -103,7 +105,7 @@ footer {
     color: #033159b4;
     background-color: #FFFFFF;
     font-size: 16PX;
-    border: 1px solid #033159b4;
+    border: 1px solid #ECECEC;
 }
 
 /* Tablet 768px */
@@ -112,6 +114,14 @@ footer {
     .navbar {
         width: 100%;
         height: 10vh;
+    }
+
+    .pagination {
+        margin-right: 35px;
+    }
+
+    #btn {
+        padding-left: 25px;
     }
 
     #btn-export:hover, #btn-salvar:hover {
@@ -148,9 +158,14 @@ footer {
         width: 100%;
     }
 
+    .pagination {
+        margin: 1px 0 10px 0;
+    }
+
     #btn {
         flex-direction: column-reverse;
         width: 100%;
+        padding: 12px;
     }
 
     #btn-export:hover, #btn-salvar:hover {
@@ -176,5 +191,9 @@ footer {
 
     i {
         margin: 0 10px 0 10px;
+    }
+
+    footer {
+        background-color: #ffffff;
     }
 }
