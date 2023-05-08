@@ -1,14 +1,5 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block titulo %}Ponto Seguro{% endblock  %}
-{% block main %}
-<main class="alinhamento tamanhos removeScroll position-fixed">
-    <img src="{% static 'image/BackGround PontoSeguro.png' %}" alt="">
-</main>
-{% endblock  %}
-
-{% comment %}
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -119,7 +110,7 @@
         <main class="alinhamento tamanhos removeScroll">
             <img src="{% static 'image/BackGround PontoSeguro.png' %}" class="position-fixed" alt="">
             <div class="position-relative tamanhos removeScroll ">
-                <embed class="tamanhos removeScroll" id="mostraHTML" src="" type="">
+                {% block main %}{% endblock  %}
             </div>
 
         </main>
@@ -149,5 +140,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </body>
 
-</html> {% endcomment %}
-
+</html>

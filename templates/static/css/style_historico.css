@@ -14,9 +14,12 @@
     background-color: #033159b4;
     justify-content: start;
     color: #ffffff;
-    padding-left: 50px;
     font-size: 14px;
     width: 100%;
+}
+
+.filtros{
+    margin-top: 116px;
 }
 
 .navbar div {

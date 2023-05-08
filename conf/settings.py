@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    # 'home.middleware.BloqueiaAcessoMiddleware', #Modo de bloquear o acesso a urls especificas
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'

@@ -1,25 +1,14 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https: //fonts.googleapis.com/css2?family= Nunito :wght@200;300;400;500;600 & family= Open+Sans:wght@300;400;600 & display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  
+{% block css %}
   <link rel="stylesheet" href="{% static 'css/style_aprovaPonto.css' %}">
-  <link rel="shortcut icon" href="{% static 'image/LogoRedonda.png' %}" type="image/x-icon">
-  <script src="{% static 'js/script_pesquisa_historico.js' %}"></script>
-  <title>Aprova Ponto</title>
-</head>
-<body>
+{% endblock  %}
+
+{% block titulo %}Aprova Ponto{% endblock  %}
+
+{% block main %}
+
   <!-- Navbar -->
   <nav class="navbar">
     <div class="alert-dismissible fade show">
@@ -32,80 +21,41 @@
     <h4>Aprovação</h4>
     <br>
     <form action="" class="form-filtro ">
-      <div class="filtro-registro">
+      {% comment %} <div class="filtro-registro">
         <div class="input-group mb-3">
           <span class="input-group-text">Mostrar</span>
-          <select name="role" class="filtro form-control form-select" aria-label="">
+          <select name="numReg_Page" class="filtro form-control form-select" aria-label="">
             <option selected value="1">10</option>
             <option value="2">15</option>
           </select>
         </div>
-      </div>
+      </div> {% endcomment %}
       <div id="pesquisar" class="px-16 mb-2">
         <input type="text" id="myInput" onkeyup="myFunction()" class="pesquisar form-control"
           placeholder="Pesquisar nome">
       </div>
     </form>
+
+    <div id="justificativa"></div>
+    <div id="ajustes"></div>
+
     <!-- Content -->
-    <div class="content overflow-auto p-4 rounded">
-      <table id="myTable" class="table table-hover table-striped table-bordered">
-        <thead>
-          <tr>
-            <th id="title" scope="col">Matrícula</th>
-            <th id="title" scope="col">Nome</th>
-            <th id="title" scope="col">Data da solicitação</th>
-            <th id="title" scope="col">Escala</th>
-            <th id="title" scope="col">Entrada</th>
-            <th id="title" scope="col">Saida</th>
-            <th id="title" scope="col">Segunda Entrada</th>
-            <th id="title" scope="col">Segunda Saida</th>
-            <th id="title" scope="col">Justificativa</th>
-            <th id="title" scope="col">Rejeitar</th>
-            <th id="title" scope="col">Aprovar</th>
-            <th id="title" scope="col">Observação</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for registros in histReg %}
-        <tr>
-          <th scope="row">{{registros.userReg.matricula}}</th>
-          <td>{{registros.userReg.get_full_name}}</td>
-          <td>{{registros.dataReg}}</td>
-          <td>{{registros.escala.nmEscala}}</td>
-          <td>{{registros.horEnt1}}</td>
-          <td>{{registros.horSai2}}</td>
-          <td>{{registros.horEnt3}}</td>
-          <td>{{registros.horSai4}}</td>
-          <td>Inclusão de marcação manual em 01/04/2023 (esqueci de marcar)</td>
-          <td>
-            <div class="form-check">
-              <input class="form-check-input bg-danger" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-          </td>
-          <td>
-            <div class="form-check">
-              <input class="form-check-input checkbox bg-success " type="checkbox" value="" id="flexCheckDefault">
-            </div>
-          </td>
-          <td>
-            <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-              <label for="floatingTextarea">Escreva aqui</label>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+    <div class="content overflow-auto p-4 rounded" >
+      <div id="tabelaApr">
+        <!-- Tabela para a Aprovação -->
+        {% include 'parciais/tabela_aprovacao.html' %}
+      </div>
     </div>
   </div>
-  <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center justify-content-md-end">
+  <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+      {% if histReg.has_previous %}
+      <li class="page-item"><a class="page-link" href="?&page={{histReg.previous_page_number}}">Anterior</a></li>
+      {% endif %}
+      <li class="page-item page-link">{{histReg.number}} de {{histReg.paginator.num_pages}}</li>
+      {% if histReg.has_next %}
+      <li class="page-item"><a class="page-link" href="?&page={{histReg.next_page_number}}">Próximo</a></li>
+      {% endif %}
     </ul>
   </nav>
   <!-- Footer -->
@@ -121,6 +71,9 @@
       </button>
     </div>
   </footer>
-</body>
+{% endblock  %}
 
-</html>
+{% block js %}
+  <script src="{% static 'js/script_pesquisa_historico.js' %}"></script> 
+  <script src="{% static 'js/script_remove_div.js' %}"></script> 
+{% endblock  %}

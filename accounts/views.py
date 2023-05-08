@@ -33,6 +33,7 @@ def login(request):
             print('Matricula digitada')
             username = Users.objects.get(matricula=matricula)
             if username != '':
+                    auth.logout(request)
                     print('usuario não é vazio')
                     check = auth.authenticate(
                         request, username=username, password=senha)

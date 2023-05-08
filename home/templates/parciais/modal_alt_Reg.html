@@ -1,0 +1,42 @@
+<div class="modal fade show" id="modal" tabindex="-1" style="display: block; background-color: #00000057;" aria-modal="true" role="dialog">
+    <div class=" mt-4 modal-dialog">
+      <form class="modal-content" action="{% url 'altRegistro' historico.id %}" method="POST"> {% csrf_token %}
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" >Editar Registro</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="fecharModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="mb-3">
+              <label for="" class="col-form-label">Usuario: {{historico.userReg}}</label>
+              <label for="" class="d-flex"> Data: {{historico.dataReg}}</label>
+
+              <label for="" class="mt-3 col-form-label">Registros</label>
+              <div class=" d-flex justify-content-center gap-3 times">
+                <div>
+                  <label for="ent1" class="col-form-label">1º Entrada</label>
+                  <input type="time" class="form-control" id="ent1" name="ent1" value="{{historico.horEnt1}}">
+                </div>
+                <div>
+                  <label for="sai1" class="col-form-label">1º Saida</label>
+                  <input type="time" class="form-control" id="sai1" name="sai1" value="{{historico.horSai2}}">
+                </div>
+                <div>
+                  <label for="ent2" class="col-form-label">2º Entrada</label>
+                  <input type="time" class="form-control" id="ent2" name="ent2" value="{{historico.horEnt3}}">
+                </div>
+                <div>
+                  <label for="sai2" class="col-form-label">2º Saída</label>
+                  <input type="time" class="form-control" id="sai2" name="sai2" value="{{historico.horSai4}}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="fecharModal()">Fechar</button>
+          <button type="submit" class="btn btn-primary" >Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>

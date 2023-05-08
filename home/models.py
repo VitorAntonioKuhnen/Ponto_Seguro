@@ -46,12 +46,17 @@ class HistRegistro(models.Model):
     userReg = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING)
     escala = models.ForeignKey(Escala, on_delete=models.DO_NOTHING, blank=True, null=True)
     dataReg = models.DateField(blank=True, null=True)
-    horEnt1 = models.TimeField(blank=True, null=True)      
-    horSai2 = models.TimeField(blank=True, null=True)      
-    horEnt3 = models.TimeField(blank=True, null=True)      
-    horSai4 = models.TimeField(blank=True, null=True)  
+    horEnt1 = models.TimeField(blank=True, null=True) 
+    altEnt1 = models.BooleanField(blank=True, null=True, default=False)    
+    horSai2 = models.TimeField(blank=True, null=True) 
+    altSai2 = models.BooleanField(blank=True, null=True, default=False)     
+    horEnt3 = models.TimeField(blank=True, null=True) 
+    altEnt3 = models.BooleanField(blank=True, null=True, default=False)         
+    horSai4 = models.TimeField(blank=True, null=True) 
+    altSai4 = models.BooleanField(blank=True, null=True, default=False) 
     bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
-    sitAPR = models.BooleanField(default=False)
+    sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
+
 
     class Meta:
        db_table = 'histregistro'
@@ -74,9 +79,13 @@ class TipoJustificativa(models.Model):
 class Justificativa(models.Model):
     txtJust = models.TextField()
     tipoJust = models.ForeignKey(TipoJustificativa, on_delete=models.DO_NOTHING)
+    histRegistro = models.ForeignKey('home.HistRegistro', on_delete=models.DO_NOTHING)
     data = models.DateField()
     hora = models.TimeField()
     userReg = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING)
+    
+    def __str__(self):
+        return self.txtJust
 
     class Meta:
        db_table = 'justificativa'

@@ -1,0 +1,114 @@
+<div id="tabelaApr">
+<table id="myTable" class="table table-hover table-striped table-bordered">
+    <thead>
+      <tr>
+        <th id="title" scope="col">Matrícula</th>
+        <th id="title" scope="col">Nome</th>
+        <th id="title" scope="col">Data da solicitação</th>
+        <th id="title" scope="col">Escala</th>
+        <th id="title" scope="col">Primeira Entrada</th>
+        <th id="title" scope="col">Primeira Saida</th>
+        <th id="title" scope="col">Segunda Entrada</th>
+        <th id="title" scope="col">Segunda Saida</th>
+        <th id="title" scope="col">Justificativa</th>
+        <th id="title" scope="col">Rejeitar</th>
+        <th id="title" scope="col">Aprovar</th>
+        <th id="title" scope="col">Alterar Registro</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for registros in histReg %}
+    <tr>
+      <th scope="row">{{registros.userReg.matricula}}</th>
+      <td>{{registros.userReg.get_full_name}}</td>
+      <td>{{registros.dataReg}}</td>
+      <td>{{registros.escala.nmEscala}}</td>
+      <td> 
+        {% if registros.horEnt1 != None %}
+          {% if registros.altEnt1 == True %}
+            <span style="color: red;">{{registros.horEnt1}} *</span>
+          {% else %}
+            {{registros.horEnt1}}
+          {% endif %}
+        {% else %}
+          ------
+        {% endif %}
+      </td>
+      <td>
+        {% if registros.horSai2 != None %}
+          {% if registros.altSai2 == True %}
+            <span style="color: red;">{{registros.horSai2}} *</span>
+          {% else %}
+            {{registros.horSai2}}
+          {% endif %}
+        {% else %}
+          ------
+        {% endif %}
+
+      </td>
+      <td>
+        {% if registros.horEnt3 != None %}
+          {% if registros.altEnt3 == True %}
+            <span style="color: red;">{{registros.horEnt3}} *</span>
+          {% else %}
+            {{registros.horEnt3}}
+          {% endif %}
+        {% else %}
+          ------              
+        {% endif %}
+
+      </td>
+      <td>
+        {% if registros.horSai4 != None %}
+          {% if registros.altSai4 == True %}
+            <span style="color: red;">{{registros.horSai4}} *</span>
+          {% else %}
+            {{registros.horSai4}}
+          {% endif %}
+        {% else %}
+          ------  
+        {% endif %}
+      </td>
+      <td>
+        <a href="" hx-post="{% url 'justificativas' registros.id %}" hx-target="#justificativa" class="alinhamento">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+          </svg>
+        </a>
+      </td>
+      <td>
+        <a href="" hx-delete="{% url 'desaprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Desaprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-lg" style="color: red;" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+          </svg>
+        </a>
+      </td>
+      <td>
+        <a href="" hx-delete="{% url 'aprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Aprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-check-lg" style="color: green;" viewBox="0 0 16 16">
+            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+          </svg>
+          </a>
+      </td>
+      <td>
+        <span>
+          <a href="" hx-post="{% url 'ajuste' registros.id %}" hx-target="#ajustes" class="alinhamento">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+          </a>
+        </span>
+      </td>
+      {% comment %} <td>
+        <div class="form-floating">
+          <textarea class="form-control" id="floatingTextarea" name="observacao{{registros.id}}"></textarea>
+          <label for="floatingTextarea">Escreva aqui</label>
+        </div>
+      </td> {% endcomment %}
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div> 
