@@ -70,15 +70,33 @@
         {% endif %}
       </td>
       <td>
-        <a href="" hx-post="{% url 'justificativas' registros.id %}" hx-target="#justificativa" class="alinhamento">
+        <a href="" hx-post="{% url 'justificativas' registros.id %}" data-target="justificativas{{registros.id}}" hx-target="#justificativa" class="alinhamento">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
           </svg>
         </a>
+
+        <!-- <div class="modal fade show" id="justificativas{{registros.id}}" tabindex="-1" style="display: block; background-color: #00000057;" aria-modal="true" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" >Justificativa</h1>
+                <button type="button" class="btn-close" onclick="fecharModal()" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>{mostraJust}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
       </td>
       <td>
-        <a href="" hx-delete="{% url 'desaprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Desaprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML">
+        <a href="" id="load" hx-delete="{% url 'desaprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Desaprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-lg" style="color: red;" viewBox="0 0 16 16">
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
           </svg>
@@ -112,3 +130,13 @@
     </tbody>
   </table>
 </div> 
+
+<div id="outerdiv"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+
+  // $(document).on('click', '#load', function () {
+  //   $('#outerdiv').append('<div id="innerdiv" class="border pad">Hi there!</div>');
+  // });
+</script>

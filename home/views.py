@@ -10,7 +10,14 @@ from django.http import HttpResponse
 from accounts import views
 from django.db.models import Q
 
+#Paginação Django
 from django.core.paginator import Paginator
+
+#Envio de E-mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 @login_required
 def RegistrarPonto(request):
@@ -467,5 +474,17 @@ def desaprovar(request, id):
     historico = HistRegistro.objects.get(id = id)
     historico.sitAPR = 'REJ'
     historico.save()
+    enviaEmail('vitorkuhnen14@gmail.com', 'Vítor')
     messages.error(request, 'Registro Rejeitado com Sucesso!')
     return render(request, 'parciais/tabela_aprovacao.html', context)
+
+
+
+
+def enviaEmail(email, user):
+    # html_content = render_to_string('email/token.html', {'token': token})
+    # text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives('PontoSeguro - Token de Identificação', '12', settings.EMAIL_HOST_USER, [email])
+    # email.attach_alternative(html_content, 'text/html')
+    email.send()
+    return "enviado"
