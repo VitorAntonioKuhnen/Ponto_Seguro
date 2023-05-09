@@ -70,29 +70,39 @@
         {% endif %}
       </td>
       <td>
-        <a href="" hx-post="{% url 'justificativas' registros.id %}" data-target="justificativas{{registros.id}}" hx-target="#justificativa" class="alinhamento">
+        {% comment %} <a href="" hx-post="{% url 'justificativas' registros.id %}" data-bs-target="justificativas{{registros.id}}" hx-target="#justificativa" class="alinhamento">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+          </svg>
+        </a> {% endcomment %}
+
+
+        {% comment %} Para adicionar o click precisa ter os seguintes componentes data-bs-toggle="" data-bs-target="" onde o target precisa ter a mesma chave do modal {% endcomment %}
+        <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#justificativas{{registros.id}}">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
           </svg>
         </a>
 
-        <!-- <div class="modal fade show" id="justificativas{{registros.id}}" tabindex="-1" style="display: block; background-color: #00000057;" aria-modal="true" role="dialog">
+        {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
+        <div class="modal fade" id="justificativas{{registros.id}}" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" >Justificativa</h1>
-                <button type="button" class="btn-close" onclick="fecharModal()" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>{mostraJust}</p>
+                <p>{{registros.horSai4}}</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
       </td>
       <td>
