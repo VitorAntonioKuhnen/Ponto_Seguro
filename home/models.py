@@ -57,7 +57,7 @@ class HistRegistro(models.Model):
     bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
     sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
     # Verificar
-    justificativas = models.ManyToManyField('home.Justificativa', blank=True, null=True)
+    justificativas = models.ManyToManyField('home.Justificativa', blank=True)
 
 
     class Meta:

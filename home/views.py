@@ -363,6 +363,12 @@ def aprovaPonto(request):
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
+    justificativas = []
+    # if registros:
+    #     for just in registros:
+    #         print(just)
+    #         justificativas.append(just)
+    context['justificativas'] = justificativas        
     if request.method == 'POST':
         if "btjustificar" in request.POST:
             print("Este method é De envio de justificativa")
