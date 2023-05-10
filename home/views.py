@@ -389,38 +389,8 @@ def aprovaPonto(request):
     
         return render(request, 'aprovaPonto/index.html',context)
     else:
+        print('entrou aqui')
         return render(request, 'aprovaPonto/index.html',context)
-
-@login_required
-def justificativas(request, id):
-    historico = HistRegistro.objects.get(id = id)
-    justificativas = Justificativa.objects.filter(histRegistro_id = historico.id)
-    mostraJust = ''
-    for just in justificativas:
-        mostraJust += f'Tipo de Justificativa: {just.tipoJust} <br>Resposta: {just.txtJust} <br>Data: {just.data} <br><br>'
-
-    return HttpResponse(f'''  <div class="modal fade show" id="modal" tabindex="-1" style="display: block; background-color: #00000057;" aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" >Justificativa</h1>
-          <button type="button" class="btn-close" onclick="fecharModal()" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>{mostraJust}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>''')
-
-@login_required
-def ajuste(request, id):
-    historico = HistRegistro.objects.get(id = id)
-
-    return render(request, 'parciais/modal_alt_Reg.html', {'historico': historico}) 
 
 @login_required    
 def altRegistro(request, id):
@@ -474,17 +444,18 @@ def desaprovar(request, id):
     historico = HistRegistro.objects.get(id = id)
     historico.sitAPR = 'REJ'
     historico.save()
-    enviaEmail('vitorkuhnen14@gmail.com', 'Vítor')
+    enviaEmail('vitorkuhnen14@gmail.com', 'Vítor', 'Registro de Ponto Rejeitado - Ponto Seguro ')
     messages.error(request, 'Registro Rejeitado com Sucesso!')
     return render(request, 'parciais/tabela_aprovacao.html', context)
 
 
 
 
-def enviaEmail(email, user):
+def enviaEmail(email, user, titulo):
     # html_content = render_to_string('email/token.html', {'token': token})
-    # text_content = strip_tags(html_content)
-    email = EmailMultiAlternatives('PontoSeguro - Token de Identificação', '12', settings.EMAIL_HOST_USER, [email])
-    # email.attach_alternative(html_content, 'text/html')
+    text_content = strip_tags('<div>Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!</div>')
+    conteudo = 'Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!'
+    email = EmailMultiAlternatives(titulo, text_content, settings.EMAIL_HOST_USER, [email])
+    email.attach_alternative('<div>Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!</div>', 'text/html')
     email.send()
     return "enviado"

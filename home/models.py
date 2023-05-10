@@ -56,6 +56,8 @@ class HistRegistro(models.Model):
     altSai4 = models.BooleanField(blank=True, null=True, default=False) 
     bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
     sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
+    # Verificar
+    justificativas = models.ManyToManyField('home.Justificativa', blank=True, null=True)
 
 
     class Meta:
@@ -79,7 +81,7 @@ class TipoJustificativa(models.Model):
 class Justificativa(models.Model):
     txtJust = models.TextField()
     tipoJust = models.ForeignKey(TipoJustificativa, on_delete=models.DO_NOTHING)
-    histRegistro = models.ForeignKey('home.HistRegistro', on_delete=models.DO_NOTHING)
+    # histRegistro = models.ForeignKey('home.HistRegistro', models.CASCADE, related_name='Justificativa') #models.ForeignKey('home.HistRegistro', on_delete=models.DO_NOTHING)
     data = models.DateField()
     hora = models.TimeField()
     userReg = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING)

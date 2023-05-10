@@ -95,7 +95,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>{{registros.horSai4}}</p>
+                <p>{{registros.justificativas.id}}</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -121,32 +121,59 @@
       </td>
       <td>
         <span>
-          <a href="" hx-post="{% url 'ajuste' registros.id %}" hx-target="#ajustes" class="alinhamento">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-          </a>
+        <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#ajustes{{registros.id}}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+          </svg>
+        </a>
         </span>
-      </td>
-      {% comment %} <td>
-        <div class="form-floating">
-          <textarea class="form-control" id="floatingTextarea" name="observacao{{registros.id}}"></textarea>
-          <label for="floatingTextarea">Escreva aqui</label>
+        <div class="modal fade" id="ajustes{{registros.id}}" aria-hidden="true">
+          <div class=" mt-4 modal-dialog">
+            <form class="modal-content" action="{% url 'altRegistro' registros.id %}" method="POST"> {% csrf_token %}
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" >Editar Registro</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div>
+                  <div class="mb-3">
+                    <label for="" class="col-form-label">Usuario: {{registros.userReg}}</label>
+                    <label for="" class="d-flex"> Data: {{registros.dataReg}}</label>
+      
+                    <label for="" class="mt-3 col-form-label">Registros</label>
+                    <div class=" d-flex justify-content-center gap-3 times">
+                      <div>
+                        <label for="ent1" class="col-form-label">1º Entrada</label>
+                        <input type="time" class="form-control" id="ent1" name="ent1" value="{{registros.horEnt1}}">
+                      </div>
+                      <div>
+                        <label for="sai1" class="col-form-label">1º Saida</label>
+                        <input type="time" class="form-control" id="sai1" name="sai1" value="{{registros.horSai2}}">
+                      </div>
+                      <div>
+                        <label for="ent2" class="col-form-label">2º Entrada</label>
+                        <input type="time" class="form-control" id="ent2" name="ent2" value="{{registros.horEnt3}}">
+                      </div>
+                      <div>
+                        <label for="sai2" class="col-form-label">2º Saída</label>
+                        <input type="time" class="form-control" id="sai2" name="sai2" value="{{registros.horSai4}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loading">Salvar</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </td> {% endcomment %}
+      </td>
     </tr>
     {% endfor %}
     </tbody>
   </table>
 </div> 
-
-<div id="outerdiv"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<script>
-
-  // $(document).on('click', '#load', function () {
-  //   $('#outerdiv').append('<div id="innerdiv" class="border pad">Hi there!</div>');
-  // });
-</script>

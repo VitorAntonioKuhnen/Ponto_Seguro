@@ -15,15 +15,15 @@ class HistRegistroAdmin(admin.ModelAdmin):
     list_display = ('userReg', 'escala', 'dataReg', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'bancoHoraMin', 'sitAPR')
     search_fields = ('userReg', 'dataReg')
     list_filter = ('userReg', 'dataReg', 'sitAPR')
-    per_page = 8
-    fieldsets = (
-        (None, {
-            'fields': ('userReg', 'escala', 'dataReg', 'bancoHoraMin', 'sitAPR')
-        }),
-        ('Registros', {
-            'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
-        }),
-    )
+    # per_page = 8
+    # fieldsets = (
+    #     (None, {
+    #         'fields': ('userReg', 'escala', 'dataReg', 'bancoHoraMin', 'sitAPR')
+    #     }),
+    #     ('Registros', {
+    #         'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
+    #     }),
+    # )
 
 
 admin.site.register(HistRegistro, HistRegistroAdmin)
