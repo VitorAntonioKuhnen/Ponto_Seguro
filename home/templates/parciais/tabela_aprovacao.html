@@ -95,7 +95,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>{{justificativas.txtJust}}</p>
+                {% comment %} {% for reg in registros %} {% endcomment %}
+                {% for just in registros.justificativas.all %}
+                  <p>Tipo de Justificativa: {{just.tipoJust}}</p>
+                  <p>Descrição: {{just}}</p>
+                  <br>
+                  {% endfor %}
+                {% comment %} {% endfor %} {% endcomment %}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

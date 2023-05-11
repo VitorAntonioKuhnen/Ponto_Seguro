@@ -54,10 +54,10 @@ class HistRegistro(models.Model):
     altEnt3 = models.BooleanField(blank=True, null=True, default=False)         
     horSai4 = models.TimeField(blank=True, null=True) 
     altSai4 = models.BooleanField(blank=True, null=True, default=False) 
-    bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
+    #Processo inativado temporariamente
+    # bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
     sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
-    # Verificar
-    justificativas = models.ManyToManyField('home.Justificativa', blank=True)
+    justificativas = models.ManyToManyField('home.Justificativa')
 
 
     class Meta:

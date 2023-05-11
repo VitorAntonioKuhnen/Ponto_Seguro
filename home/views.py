@@ -81,19 +81,19 @@ def RegistrarPonto(request):
                     horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
                     if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt1_subtrai)):
                         print('É menor que o horario da escala Então Saldo é positivo')
-                        horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
-                        print(horPercorridas.seconds// 60)
-                        altHist.bancoHoraMin = horPercorridas.seconds// 60
+                        # horPercorridas =  hora.combine(hora.today(), user.escala.horEnt1) - hora.combine(hora.today(), ha) 
+                        # print(horPercorridas.seconds// 60)
+                        # altHist.bancoHoraMin = horPercorridas.seconds// 60
 
                     elif (hora.combine(hora.today(), horaEnt1_soma) < hora.combine(hora.today(), ha)):
                         print('É maior que o horario da escala Então Saldo Negativo')
-                        horPercorridas =  hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt1) 
-                        print(-(horPercorridas.seconds// 60))
+                        # horPercorridas =  hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt1) 
+                        # print(-(horPercorridas.seconds// 60))
 
                         user.justificar = True
                         user.save()
 
-                        altHist.bancoHoraMin = -(horPercorridas.seconds// 60)
+                        # altHist.bancoHoraMin = -(horPercorridas.seconds// 60)
                         
                     
                     
@@ -110,28 +110,28 @@ def RegistrarPonto(request):
                     if (hora.combine(hora.today(), horaSai2_subtrai) < hora.combine(hora.today(), ha)):
                         print('Escala é menor que o horario atual Então Saldo Negativo')
 
-                        horPercorridas =  hora.combine(hora.today(), user.escala.horSai2) - hora.combine(hora.today(), ha)
-                        print(horPercorridas) 
-                        print(horPercorridas.seconds// 60)
-                        print(altHist.bancoHoraMin)
+                        # horPercorridas =  hora.combine(hora.today(), user.escala.horSai2) - hora.combine(hora.today(), ha)
+                        # print(horPercorridas) 
+                        # print(horPercorridas.seconds// 60)
+                        # print(altHist.bancoHoraMin)
                         
                         user.justificar = True
                         user.save()
 
-                        if (altHist.bancoHoraMin < 0 ):
-                            altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
-                        else:
-                            altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin    
+                        # if (altHist.bancoHoraMin < 0 ):
+                        #     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
+                        # else:
+                        #     altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin    
 
                     elif (hora.combine(hora.today(), horaSai2_soma) > hora.combine(hora.today(), ha)):
                         print('Escala é maior que o horario atual Então Saldo Positivo')
 
-                        horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
+                        # horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai2)
 
-                        if (altHist.bancoHoraMin < 0 ):
-                            altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
-                        else:
-                            altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
+                        # if (altHist.bancoHoraMin < 0 ):
+                        #     altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
+                        # else:
+                        #     altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     
                     altHist.save()   
                     messages.success(request, f'Segunda Saida Registrada com Sucesso {str(altHist.horSai2)[:-6]}')
@@ -147,37 +147,37 @@ def RegistrarPonto(request):
                             if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt3_subtrai)):
                                 print('É menor que o horario padrão Então Saldo Positivo')
 
-                                horPercorridas =  hora.combine(hora.today(), user.escala.horEnt3) - hora.combine(hora.today(), ha)
+                                # horPercorridas =  hora.combine(hora.today(), user.escala.horEnt3) - hora.combine(hora.today(), ha)
 
-                                print(horPercorridas) 
-                                print(horPercorridas.seconds// 60)
-                                print(altHist.bancoHoraMin)
+                                # print(horPercorridas) 
+                                # print(horPercorridas.seconds// 60)
+                                # print(altHist.bancoHoraMin)
 
 
-                                if (altHist.bancoHoraMin < 0 ):
-                                    print(altHist.bancoHoraMin)
+                                # if (altHist.bancoHoraMin < 0 ):
+                                #     print(altHist.bancoHoraMin)
 
-                                    altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
+                                #     altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
 
-                                    print((-(horPercorridas.seconds// 60))) 
-                                    print(altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60)))
-                                    print((-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin)
-                                else:
-                                    altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
+                                #     print((-(horPercorridas.seconds// 60))) 
+                                #     print(altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60)))
+                                #     print((-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin)
+                                # else:
+                                #     altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
 
 
                             elif (hora.combine(hora.today(), horaEnt3_soma) < hora.combine(hora.today(), ha)):
                                 print('É maior que o horario padrão Então Saldo Negativo')
 
-                                horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt3)
+                                # horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horEnt3)
                                 
                                 user.justificar = True
                                 user.save()
 
-                                if (altHist.bancoHoraMin > 0 ):
-                                    altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
-                                else:
-                                    altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin
+                                # if (altHist.bancoHoraMin > 0 ):
+                                #     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
+                                # else:
+                                #     altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin
 
                             altHist.save()   
 
@@ -197,28 +197,28 @@ def RegistrarPonto(request):
                     if (hora.combine(hora.today(), horaSai4_subtrai) > hora.combine(hora.today(), ha)):
                         print('É menor que o horario atual Então Saldo Positivo')
 
-                        horPercorridas =  hora.combine(hora.today(), user.escala.horSai4) - hora.combine(hora.today(), ha)
-                        print(horPercorridas) 
-                        print(horPercorridas.seconds// 60)
-                        print(altHist.bancoHoraMin)
+                        # horPercorridas =  hora.combine(hora.today(), user.escala.horSai4) - hora.combine(hora.today(), ha)
+                        # print(horPercorridas) 
+                        # print(horPercorridas.seconds// 60)
+                        # print(altHist.bancoHoraMin)
 
                         user.justificar = True
                         user.save()
 
-                        if (altHist.bancoHoraMin < 0 ):
-                            altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
-                        else:
-                            altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin    
+                        # if (altHist.bancoHoraMin < 0 ):
+                        #     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
+                        # else:
+                        #     altHist.bancoHoraMin = (-(horPercorridas.seconds// 60)) + altHist.bancoHoraMin    
 
                     elif (hora.combine(hora.today(), horaSai4_soma) < hora.combine(hora.today(), ha)):
                         print('É maior que o horario padrão Então Saldo Negativo')
 
-                        horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai4)
+                        # horPercorridas = hora.combine(hora.today(), ha) - hora.combine(hora.today(), user.escala.horSai4)
 
-                        if (altHist.bancoHoraMin < 0 ):
-                            altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
-                        else:
-                            altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
+                        # if (altHist.bancoHoraMin < 0 ):
+                        #     altHist.bancoHoraMin =  altHist.bancoHoraMin + (horPercorridas.seconds// 60)
+                        # else:
+                        #     altHist.bancoHoraMin = (horPercorridas.seconds// 60) + altHist.bancoHoraMin    
                     altHist.save()  
                     messages.success(request, f'Quarta Saida Registrada com Sucesso {str(altHist.horSai4)[:-6]}') 
                     auth.logout(request)
@@ -320,7 +320,8 @@ def inicio(request):
                 
             else:
                 histRegistro = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
-                Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, histRegistro_id = histRegistro.id, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
+                just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
+                histRegistro.justificativas.add(just_criada)
                 user.justificar = False
                 user.save()
                 messages.success(request, 'Justificativa Registrada com Sucesso')
@@ -364,11 +365,13 @@ def aprovaPonto(request):
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
     justificativas = []
-    # if registros:
-    #     for just in registros:
-    #         print(just)
-    #         justificativas.append(just)
-    context['justificativas'] = justificativas        
+    if registros:
+        for reg in registros:
+            for just in reg.justificativas.all():
+
+                print(just)
+                # justificativas.append(just.justificativas.txtJust)
+    # context['justificativas'] = justificativas        
     if request.method == 'POST':
         if "btjustificar" in request.POST:
             print("Este method é De envio de justificativa")
