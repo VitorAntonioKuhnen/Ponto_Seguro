@@ -97,8 +97,8 @@
               <div class="modal-body">
                 {% comment %} {% for reg in registros %} {% endcomment %}
                 {% for just in registros.justificativas.all %}
-                  <p>Tipo de Justificativa: {{just.tipoJust}}</p>
-                  <p>Descrição: {{just}}</p>
+                  <div><b>Tipo de Justificativa:</b> {{just.tipoJust}}</div>
+                  <div><b>Descrição:</b> {{just}}</div>
                   <br>
                   {% endfor %}
                 {% comment %} {% endfor %} {% endcomment %}
