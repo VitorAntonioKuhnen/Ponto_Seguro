@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import HistRegistro, HoraExtra, TipoJustificativa, Justificativa
+from .models import HistRegistro, HoraExtra, TipoJustificativa, Justificativa, Escala
 import calendar
 from datetime import datetime as hora, datetime as data, timedelta
 from django.utils.dateparse import parse_time
@@ -18,6 +18,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+
+#Exportação de PDF
+from io import BytesIO
+from django.template.loader import get_template
+from xhtml2pdf import pisa 
+import uuid
+
 
 @login_required
 def RegistrarPonto(request):
@@ -353,26 +360,76 @@ def mostrahtml(request):
 
 @login_required
 def historico(request):
-    return render(request, 'historico/index.html')
+    context = {}
+    user = request.user
+    registros = HistRegistro.objects.filter(Q(userReg__id = user.id)).order_by('-dataReg')
+    context['escalas'] = Escala.objects.filter(status=True)
+    paginator = Paginator(registros, 10)
+    page = request.GET.get('page')
+    context['histReg'] = paginator.get_page(page)
+
+    if request.method == 'GET':
+        if "filtrar" in request.GET:
+            print('Filtrar')
+            filtros = Q(userReg__id = user.id)
+            status = request.GET.get('status')
+            justificativa = request.GET.get('justificativa')
+            date = request.GET.get('data')
+            escala = request.GET.get('escala')
+            
+            #Filtro por Status
+            if(status == 'APR') or (status == 'PEN') or (status == 'REJ'):
+                filtros &=  Q(sitAPR = status)
+            
+            #Filtro por Justificativa
+            if(justificativa != 'todas'):
+                if (justificativa == 'sim'):
+                    filtros &= ~Q(justificativas__isnull=True)           
+                elif (justificativa == 'nao'):
+                    filtros &= ~Q(justificativas__isnull=False)
+
+            #Filtro por Data
+            if(date):
+                filtros &= Q(dataReg = date)
+
+            #Filtro por Escala
+            if escala != 'todas':
+                filtros &= Q(escala_id = escala)                       
+            
+            registros = HistRegistro.objects.filter(filtros).order_by('-dataReg')  
+            if not registros:
+                messages.warning(request, 'Não possue registros para o filtro utilizado!')
+
+            paginator = Paginator(registros, 10)
+            page = request.GET.get('page')
+            context['histReg'] = paginator.get_page(page) 
+
+        #Analisar e criar um formato para exportar o PDF
+        if "exportar" in request.GET:
+            export_pdf(request)
+            messages.success(request, 'Arquivo Exportado com sucesso!')    
+
+    return render(request, 'historico/index.html', context)
 
 @login_required
 def aprovaPonto(request):
     context = {}
     user = request.user
-    registros = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN'))
-    # context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
+    registros = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')).order_by('-dataReg')
+    context['escalas'] = Escala.objects.filter(status=True)
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
-    justificativas = []
-    if registros:
-        for reg in registros:
-            for just in reg.justificativas.all():
-
-                print(just)
-                # justificativas.append(just.justificativas.txtJust)
-    # context['justificativas'] = justificativas        
+    filtros = Q(userReg__superior__id = user.id)
+    nome = request.GET.get('nome')
+    matricula = request.GET.get('matricula')
+    status = request.GET.get('status')
+    justificativa = request.GET.get('justificativa')
+    date = request.GET.get('data')
+    escala = request.GET.get('escala') 
     if request.method == 'POST':
+        print("POST")
+        print(justificativa)
         if "btjustificar" in request.POST:
             print("Este method é De envio de justificativa")
             tipoJust = request.POST.get('tipoJust')
@@ -392,47 +449,121 @@ def aprovaPonto(request):
                 user.save()
                 messages.success(request, 'Justificativa Registrada com Sucesso')
             return redirect("aprovaPonto")
+        elif "btAltReg" in request.POST:
+                inpId = request.POST.get('inpID')
+                historico = HistRegistro.objects.get(id = inpId)
+                ent1 = request.POST.get('ent1')
+                sai1 = request.POST.get('sai1')
+                ent2 = request.POST.get('ent2')
+                sai2 = request.POST.get('sai2')
 
+                if historico.horEnt1 != parse_time(ent1):
+                    print('Primeiro')
+                    historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
+                    historico.altEnt1 = True
+
+                if historico.horSai2 != parse_time(sai1):
+                    print('Segundo')
+                    historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
+                    historico.altSai2 = True
+
+                if historico.horEnt3 != parse_time(ent2):
+                    print('Terceiro')   
+                    historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
+                    historico.altEnt3 = True
+
+                if historico.horSai4 != parse_time(sai2):
+                    print('Quarto')
+                    historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
+                    historico.altSai4 = True
+                historico.save()
+                messages.success(request, 'Registro Alterado com Sucesso!!')
         else:
             print("Sem justificativa")
     
         return render(request, 'aprovaPonto/index.html',context)
-    else:
-        print('entrou aqui')
-        return render(request, 'aprovaPonto/index.html',context)
+    elif request.method == 'GET':
+        print("GET")
+        print(justificativa)
+        if "filtrar" in request.GET:
+            print('Filtrar')
+            # filtros = Q(userReg__superior__id = user.id)
+            # nome = request.GET.get('nome').strip()
+            # matricula = request.GET.get('matricula').strip()
+            # status = request.GET.get('status')
+            # justificativa = request.GET.get('justificativa')
+            # date = request.GET.get('data')
+            # escala = request.GET.get('escala')
+            
+            #Filtro por Nome
+            if(nome):
+                filtros &= Q(userReg__first_name__icontains=nome) | Q(userReg__last_name__icontains=nome)
+            
+            #Filtro por Matricula
+            if(matricula):
+                filtros &= Q(userReg__matricula = matricula)
+            
+            #Filtro por Status
+            if(status == 'APR') or (status == 'PEN') or (status == 'REJ'):
+                filtros &=  Q(sitAPR = status)
+            
+            #Filtro por Justificativa
+            if(justificativa != 'todas'):
+                if (justificativa == 'sim'):
+                    filtros &= ~Q(justificativas__isnull=True)           
+                elif (justificativa == 'nao'):
+                    filtros &= ~Q(justificativas__isnull=False)
 
-@login_required    
-def altRegistro(request, id):
-    print('teste')
-    historico = HistRegistro.objects.get(id = id)
-    ent1 = request.POST.get('ent1')
-    sai1 = request.POST.get('sai1')
-    ent2 = request.POST.get('ent2')
-    sai2 = request.POST.get('sai2')
+            #Filtro por Data
+            if(date):
+               filtros &= Q(dataReg = date)
 
-    if historico.horEnt1 != parse_time(ent1):
-        print('Primeiro')
-        historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
-        historico.altEnt1 = True
+            #Filtro por Escala
+            if escala != 'todas':
+                filtros &= Q(escala_id = escala)                       
+            
+            registros = HistRegistro.objects.filter(filtros).order_by('-dataReg')  
+            if not registros:
+                messages.warning(request, 'Não possue registros para o filtro utilizado!')
 
-    if historico.horSai2 != parse_time(sai1):
-        print('Segundo')
-        historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
-        historico.altSai2 = True
+            paginator = Paginator(registros, 10)
+            page = request.GET.get('page')
+            context['histReg'] = paginator.get_page(page) 
+    
+    return render(request, 'aprovaPonto/index.html',context)
 
-    if historico.horEnt3 != parse_time(ent2):
-        print('Terceiro')   
-        historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
-        historico.altEnt3 = True
+# @login_required    
+# def altRegistro(request, id):
+#     print('teste')
+#     historico = HistRegistro.objects.get(id = id)
+#     ent1 = request.POST.get('ent1')
+#     sai1 = request.POST.get('sai1')
+#     ent2 = request.POST.get('ent2')
+#     sai2 = request.POST.get('sai2')
 
-    if historico.horSai4 != parse_time(sai2):
-        print('Quarto')
-        historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
-        historico.altSai4 = True
-    historico.save()
-    messages.success(request, 'Registro Alterado com Sucesso!!')
+#     if historico.horEnt1 != parse_time(ent1):
+#         print('Primeiro')
+#         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
+#         historico.altEnt1 = True
 
-    return redirect('aprovaPonto')
+#     if historico.horSai2 != parse_time(sai1):
+#         print('Segundo')
+#         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
+#         historico.altSai2 = True
+
+#     if historico.horEnt3 != parse_time(ent2):
+#         print('Terceiro')   
+#         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
+#         historico.altEnt3 = True
+
+#     if historico.horSai4 != parse_time(sai2):
+#         print('Quarto')
+#         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
+#         historico.altSai4 = True
+#     historico.save()
+#     messages.success(request, 'Registro Alterado com Sucesso!!')
+
+#     return redirect('aprovaPonto')
 
 @login_required
 def aprovar(request, id): 
@@ -449,11 +580,13 @@ def aprovar(request, id):
 def desaprovar(request, id): 
     context = {}
     user = request.user
-    context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) 
     historico = HistRegistro.objects.get(id = id)
     historico.sitAPR = 'REJ'
     historico.save()
-    enviaEmail('vitorkuhnen14@gmail.com', 'Vítor', 'Registro de Ponto Rejeitado - Ponto Seguro ')
+    context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) 
+
+# vitorkuhnen14@gmail.com
+    enviaEmail('vitor.kuhnen@alunos.sc.senac.br', 'Vítor', 'Registro de Ponto Rejeitado - Ponto Seguro ')
     messages.error(request, 'Registro Rejeitado com Sucesso!')
     return render(request, 'parciais/tabela_aprovacao.html', context)
 
@@ -462,9 +595,125 @@ def desaprovar(request, id):
 
 def enviaEmail(email, user, titulo):
     # html_content = render_to_string('email/token.html', {'token': token})
-    text_content = strip_tags('<div>Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!</div>')
+    text_content = strip_tags('''
+    <div class="card">
+      <h1>Confirmação de registro de ponto</h1>
+      <p>
+        <span class="label">Data do registro:</span>
+        <span>15/05/2023</span>
+      </p>
+      <p>
+        <span class="label">Situação:</span>
+        <span>Rejeitado</span>
+      </p>
+      <p>
+        <span class="label">Registros feitos:</span>
+        <span>Tudo certinho</span>
+      </p>
+    </div>''')
     conteudo = 'Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!'
     email = EmailMultiAlternatives(titulo, text_content, settings.EMAIL_HOST_USER, [email])
-    email.attach_alternative('<div>Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!</div>', 'text/html')
+    email.attach_alternative('''<html>
+  <head>
+    <style>
+      .card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        margin: 10px;
+        padding: 20px;
+        max-width: 400px;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-top: 0;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .label {
+        font-weight: bold;
+        display: inline-block;
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Confirmação de registro de ponto</h1>
+      <p>
+        <span class="label">Data do registro:</span>
+        <span>15/05/2023</span>
+      </p>
+      <p>
+        <span class="label">Situação:</span>
+        <span>Rejeitado</span>
+      </p>
+      <p>
+        <span class="label">Registros feitos:</span>
+        <span>Tudo certinho</span>
+      </p>
+    </div>
+  </body>
+</html>''', 'text/html')
     email.send()
     return "enviado"
+
+def export_pdf(request): 
+    print('entrou')
+    context = {}
+    user = request.user
+    registros = HistRegistro.objects.filter(Q(userReg__id = user.id))
+    context['histReg'] = registros
+
+    template = get_template('cartaoPonto/index.html')
+    html = template.render(context)
+    reponse = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), reponse)
+    print(str(pdf))
+    file_name = uuid.uuid4()
+
+    try:
+        with open(str(settings.BASE_DIR) + f'/templates/static/{file_name}'.pdf, 'wb+') as output:
+            pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    except Exception as e:
+        print(e)
+    print(str(pdf))
+    print(str(file_name))
+    if pdf.err:
+        return '', False
+    return file_name, True        
+    # products = Product.objects.all() # lista todos os produtos 
+    # html_index = render_to_string('cartaoPonto/index.html', context)  
+    # weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
+    # pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif}')]) 
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename=CartaoPonto'+str(data.now())+'.pdf' 
+    # response['Content-Transfer-Encoding'] = 'binary'
+    # options = {
+    # 'page-size': 'A4',
+    # 'margin-top': '0mm',
+    # 'margin-right': '0mm',
+    # 'margin-bottom': '0mm',
+    # 'margin-left': '0mm',
+    # }
+    print('passou na exportação')
+    # Cria um arquivo temporário
+    # with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        # tmp_filename = tmp.name
+        
+        # Gera o arquivo PDF usando o PDFKIT e salva no arquivo temporário
+        # pdfkit.from_string(html_index, tmp_filename, options)    
+    # Remove o arquivo temporário
+    # os.remove(tmp_filename)
+
+    # pdfkit.from_file(html_index, 'C:\exportPDF', options=options)
+    # with tempfile.NamedTemporaryFile(delete=True) as output:
+    #     output.write(pdf)
+    #     output.flush() 
+    #     output.seek(0)
+    #     response.write(output.read()) 

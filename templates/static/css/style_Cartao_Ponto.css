@@ -1,0 +1,48 @@
+.infoColab, .infoSuper{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 50%;
+}
+
+.dimenciona{
+    display: flex;
+}
+
+.tamanho{
+    width: 100%;
+}
+
+.f-direction-column{
+    flex-direction: column;
+}
+
+.alinha{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.espacamento-right{
+    padding-right: 5px;
+}
+.espacamento_bottom{
+    padding-bottom: 20px;
+}
+.espacamento_top{
+    padding-top: 20px;
+}
+
+.h-137{
+    height: 137px;
+}
+
+.border_1px{
+    border: 1px solid black;
+}
+
+.alinha_end{
+    justify-content: end;
+    align-items: end;
+    text-align: end;
+}

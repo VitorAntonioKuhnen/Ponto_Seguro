@@ -9,38 +9,68 @@
 
 {% block main %}
   <!-- Navbar -->
-  <nav class="navbar filtros">
-    <div class="alert-dismissible fade show">
-      <button type="button" class="btn-close" aria-label="Close"></button>
+  <div class="accordion marginTop56" id="filtros">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Filtros
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#filtros">
+        <div>
+          <nav class="navbar">
+            <form action="{% url 'historico' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET"> {% csrf_token %}
+              <div id="select" class="d-flex w-100 gap-5 md-width">
+                <div class="d-flex flex-column gap-3 w-50 tamanho_w_100">
+                  <div id="status">
+                    <label for="" class="status">Status</label>
+                    <select name="status" class="form-select" aria-label=".form-select-sm">
+                      <option selected value="todos">Todos</option>
+                      <option value="APR">Aprovados</option>
+                      <option value="REJ">Rejeitados</option>
+                      <option value="PEN">Pendentes</option>
+                    </select>
+                  </div>
+                  <div id="justificativa" class="">
+                    <label>Justificativa </label>
+                    <select name="justificativa" class="form-select" aria-label=".form-select-sm">
+                      <option selected value="todas">Todas</option>
+                      <option value="sim">Sim</option>
+                      <option value="nao">Não</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="d-flex flex-column gap-3 w-50 tamanho_w_100">
+                  <div id="calendario" class="">
+                    <label>Data</label>
+                    <input name="data" type="date" class="form-control">
+                  </div>
+                  <div id="justificativa" class="">
+                    <label>Escalas </label>
+                    <select name="escala" class="form-select" aria-label=".form-select-sm">
+                      <option selected value="todas">Todas</option>
+                      {% for escala in escalas %}
+                      <option value="{{escala.id}}">{{escala.nmEscala}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex gap-3">
+                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light">Buscar</button>
+                <button name="exportar" type="submit" class="btn w-25 btn-outline-light">
+                  <i class="fa-sharp fa-solid fa-file-export" style="color: #033159;"></i>
+                  Exportar Cartão Ponto
+                </button>
+              </div>  
+            </form>
+          </nav>
+        </div>
+      </div>
     </div>
-    <form id="select" class="d-grid col-12 p-md-4">
-      <div id="calendario" class="input-group">
-        <label for="" class="data">Data</label>
-        <input type="date" class="form-control">
-      </div>
-      <div id="justificativa" class="">
-        <label>Justificativa </label>
-        <select class="form-select" aria-label=".form-select-sm">
-          <option selected value="1">Sim</option>
-          <option value="2">Não</option>
-        </select>
-      </div>
-      <div id="status">
-        <label for="" class="status">Status</label>
-        <select name="role" class="form-select form-select-sm" aria-label=".form-select-sm">
-          <option selected value="1">Todos</option>
-          <option value="2">Aprovados</option>
-          <option value="3">Reprovados</option>
-          <option value="4">Aguardando Aprovação</option>
-        </select>
-      </div>
-    </form>
-    <div id="btn" class="btn-buscar mx-md-4">
-      <button type="button" class="btn btn-sm">Buscar</button>
-    </div>
-  </nav>
+  </div>
   <!-- Container -->
-  <div id="container" class="container mt-3">
+  <div id="container" class="container">
     <h4>Histórico</h4>
     <br>
     <form action="" class="form-filtro d-flex flex-row mb-3 ">
@@ -63,149 +93,132 @@
             <th id="title" scope="col">Sai. Mat.</th>
             <th id="title" scope="col">Ent. Vesp.</th>
             <th id="title" scope="col">Sai. Vesp.</th>
-            <th id="title" scope="col">Banco de Horas</th>
             <th id="title" scope="col">Resp. Superior</th>
             <th id="title" scope="col">Status</th>
             <th id="title" scope="col">Justificativa</th>
           </tr>
         </thead>
         <tbody>
+          {% for registro in histReg %}
           <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>01/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>02/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>03/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>06/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>07/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>08/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>09/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>10/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>13/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
-          <tr>
-            <th scope="row">08h/12h às 13:12/18h</th>
-            <td>14/03/2023</td>
-            <td>08:00</td>
-            <td>12:00</td>
-            <td>13:12</td>
-            <td>18:00</td>
-            <td>00:00</td>
-            <td>José Chanel</td>
-            <td>Aprovado</td>
-            <td>Sim</td>
-          </tr>
+            <td scope="row">{{registro.escala.nmEscala}}</td>
+            <td>{{registro.dataReg}}</td>
+            <td> 
+              {% if registro.horEnt1 != None %}
+                {% if registro.altEnt1 == True %}
+                  <span style="color: red;">{{registro.horEnt1}} *</span>
+                {% else %}
+                  {{registro.horEnt1}}
+                {% endif %}
+              {% else %}
+                ------
+              {% endif %}
+            </td>
+            <td>
+              {% if registro.horSai2 != None %}
+                {% if registro.altSai2 == True %}
+                  <span style="color: red;">{{registro.horSai2}} *</span>
+                {% else %}
+                  {{registro.horSai2}}
+                {% endif %}
+              {% else %}
+                ------
+              {% endif %}
+      
+            </td>
+            <td>
+              {% if registro.horEnt3 != None %}
+                {% if registro.altEnt3 == True %}
+                  <span style="color: red;">{{registro.horEnt3}} *</span>
+                {% else %}
+                  {{registro.horEnt3}}
+                {% endif %}
+              {% else %}
+                ------              
+              {% endif %}
+      
+            </td>
+            <td>
+              {% if registro.horSai4 != None %}
+                {% if registro.altSai4 == True %}
+                  <span style="color: red;">{{registro.horSai4}} *</span>
+                {% else %}
+                  {{registro.horSai4}}
+                {% endif %}
+              {% else %}
+                ------  
+              {% endif %}
+            </td>
+            
+            <td>
+              {{registro.userReg.superior.matricula}} {{registro.userReg.superior.get_full_name}}</td>
+            <td>
+              {% if registro.sitAPR == "PEN" %}
+                Pendente
+              {% elif registro.sitAPR == "REJ"%}
+                Rejeitado
+              {% elif registro.sitAPR == "APR"%}
+                Aprovado
+              {% endif %}
+            </td>
+            <td>
+              {% if registro.justificativas.all %}
+                <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#justificativas{{registro.id}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                  </svg>
+                </a>
 
+                {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
+                <div class="modal fade" id="justificativas{{registro.id}}" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" >Justificativa</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        {% comment %} {% for reg in registros %} {% endcomment %}
+                          {% for just in registro.justificativas.all %}
+                            <div><b>Tipo de Justificativa:</b> {{just.tipoJust}}</div>
+                            <div><b>Descrição:</b> {{just}}</div>
+                            <br>
+                          {% endfor %}
+                        {% comment %} {% endfor %} {% endcomment %}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% else %}
+                <div class="alinhamento colorBlue">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
-    <!-- Footer -->
-    <footer>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
-        </ul>
-      </nav>
-    </footer>
+    <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
+      <ul class="pagination">
+        {% if histReg.has_previous %}
+        <li class="page-item"><a class="page-link" href="?&page={{histReg.previous_page_number}}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item page-link">{{histReg.number}} de {{histReg.paginator.num_pages}}</li>
+        {% if histReg.has_next %}
+        <li class="page-item"><a class="page-link" href="?&page={{histReg.next_page_number}}">Próximo</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
 {% endblock  %}
 {% block js %}
   <script src="{% static 'js/script_pesquisa_historico.js' %}"></script>

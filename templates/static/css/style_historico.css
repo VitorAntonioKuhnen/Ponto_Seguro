@@ -18,51 +18,10 @@
     width: 100%;
 }
 
-.filtros{
-    margin-top: 116px;
-}
-
-.navbar div {
-    display: flex;
-    justify-content: flex-start;
-}
-
 #select {
     display: flex;
     width: 50%;
     font-size: 18px;
-    padding-left: 4%;
-}
-
-#calendario label {
-    padding-left: 9%;
-}
-
-#calendario input {
-    margin: 0 0 12px 33px;
-    height: 5vh;
-    border-radius: 3px;
-}
-
-#justificativa label {
-    padding-right: 2.1%;
-}
-
-#justificativa select {
-    margin: 0 0 12px 21px;
-    border-radius: 3px;
-    padding: 5px 0 1px 10px;
-
-}
-
-#status label {
-    padding-left: 45px;
-    margin-bottom: 5px;
-}
-
-#status select {
-    margin-left: 32px;
-    border-radius: 3px;
 }
 
 #btn:hover {
@@ -83,6 +42,24 @@
     margin-top: 6%;
     height: 32px;
 }
+.btn-buscar1 {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #033159b4;
+    background-color: #FFFFFF;
+    font-size: 16PX;
+    border: 1px solid #ECECEC;
+}
+
+#btn-export:hover {
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #03315952;
+    color: #F4F4F4F4;
+}
+
 
 /*--- container ---*/
 h4, #title {
@@ -110,7 +87,7 @@ h4 {
 }
 
 .content .table {
-    font-size: 12px;
+    font-size: 15px;
     margin: 0;
     width: 100%;
 }
@@ -120,16 +97,26 @@ h4 {
     color: #ffffff;
 }
 
-footer {
-    padding-top: 30px;
+.colorBlue{
+    color: #0d6efd;
+}
+
+.marginTop56{
+    margin-top: 56px;
+}
+
+#btn {
+    justify-content: flex-start;
+    padding-left: 110px;
 }
 
 /* Tablet 768px */
 @media (max-width: 768px) {
 
-    .navbar {
-        padding-left: 16px;
+    #btn {
+        padding-left: 25px;
     }
+
     #select {
         display: flex;
         width: 100%;
@@ -138,44 +125,12 @@ footer {
         margin-left: 0;
     }
 
-    #calendario,
-    #justificativa,
-    #status {
-        display: flex;
-        flex-direction: column;
-    }
-
-    #calendario label {
-        height: 26px;
-        padding-left: 1px;
-    }
-
-    #justificativa select {
-        margin: 0;
-    }
-
-    #justificativa label {
-        padding-left: 2px;
-        margin-top: 2px;
-    }
-
-    #calendario input {
-        width: 100%;
-        height: 28px;
-        margin: 0;
-    }
-
-    #status label {
-        margin: 2px 3px 0 0;
-        padding-left: 3px;
-    }
-
-    #status select {
-        margin-left: 0;
-    }
-
-    .navbar form {
-        margin-top: 35px;
+    #btn-export:hover {
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        background-color: #03315952;
+        color: #F4F4F4F4;
     }
 
     .form-filtro .pesquisar {
@@ -205,19 +160,25 @@ footer {
         background-color: #F4F4F4F4;
     }
 
-    .btn {
-        border: 0;
-    }
-
 }
 
 /* Mobile S | Mobile M | Mobile L */
 @media (max-width: 600px) {
 
-    .navbar {
+    #btn {
+        flex-direction: column-reverse;
         width: 100%;
-        padding-right: 13px;
-        padding-left: 16px;
+        padding: 12px;
+    }
+
+    .md-width{
+        width: 100%!important;
+        flex-direction: column;
+        gap: 1rem!important;
+    }
+
+    .tamanho_w_100{
+        width: 100%!important;
     }
 
     #select {
@@ -226,45 +187,6 @@ footer {
         font-size: 18px;
         padding-left: 0;
         margin-left: 0;
-    }
-
-    #calendario,
-    #justificativa,
-    #status {
-        display: flex;
-        flex-direction: column;
-    }
-
-    #calendario label {
-        height: 25px;
-        padding-left: 1px;
-    }
-
-    #calendario input {
-        width: 100%;
-        margin: 0;
-    }
-
-    #justificativa select {
-        margin: 0;
-    }
-
-    #status select {
-        margin-left: 0;
-    }
-
-    #justificativa label {
-        padding-left: 2px;
-        margin-top: 2px;
-    }
-
-    #status label {
-        margin: 2px 3px 0 0;
-        padding-left: 3px;
-    }
-
-    .navbar form {
-        margin-top: 35px;
     }
 
     .form-filtro .pesquisar {
@@ -284,9 +206,5 @@ footer {
 
     .btn:hover {
                background-color: #F4F4F4F4;
-    }
-
-    .btn {
-        border: 0;
     }
 }

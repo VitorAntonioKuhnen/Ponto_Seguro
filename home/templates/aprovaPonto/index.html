@@ -30,12 +30,70 @@
 
 
   <!-- Navbar -->
-  <nav class="navbar">
-    <div class="alert-dismissible fade show">
-      <button type="button" class="btn-close" aria-label="Close"></button>
+  <div class="accordion marginTop56" id="filtros">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Filtros
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#filtros">
+        <div>
+          <nav class="navbar">
+            <form action="{% url 'aprovaPonto' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET"> {% csrf_token %}
+              <div id="select" class="d-flex w-100 gap-5 md-width">
+                <div class="d-flex flex-column gap-3  w-50 tamanho_w_100">
+                  <div>
+                    <label>Nome</label>
+                    <input name="nome" type="text" class="form-control">
+                  </div>
+                  <div>
+                    <label>Matricula</label>
+                    <input name="matricula" type="number" class="form-control">
+                  </div>
+                </div>
+                <div class="d-flex flex-column gap-3 w-50 tamanho_w_100">
+                  <div id="status">
+                    <label for="" class="status">Status</label>
+                    <select name="status" class="form-select" aria-label=".form-select-sm">
+                      <option value="todos">Todos</option>
+                      <option value="APR">Aprovados</option>
+                      <option value="REJ">Rejeitados</option>
+                      <option selected value="PEN">Pendentes</option>
+                    </select>
+                  </div>
+                  <div id="justificativa" class="">
+                    <label>Justificativa </label>
+                    <select name="justificativa" class="form-select" aria-label=".form-select-sm">
+                      <option selected value="todas">Todas</option>
+                      <option value="sim">Sim</option>
+                      <option value="nao">Não</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="d-flex flex-column gap-3 w-50 tamanho_w_100">
+                  <div id="calendario" class="">
+                    <label>Data</label>
+                    <input name="data" type="date" class="form-control">
+                  </div>
+                  <div id="justificativa" class="">
+                    <label>Escalas </label>
+                    <select name="escala" class="form-select" aria-label=".form-select-sm">
+                      <option selected value="todas">Todas</option>
+                      {% for escala in escalas %}
+                      <option value="{{escala.id}}">{{escala.nmEscala}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light">Buscar</button>
+            </form>
+          </nav>
+        </div>
+      </div>
     </div>
-    </div>
-  </nav>
+  </div>
   <!-- Container -->
   <div id="container" class="container">
     <h4>Aprovação</h4>
