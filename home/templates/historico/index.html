@@ -58,10 +58,32 @@
               </div>
               <div class="d-flex gap-3">
                 <button name="filtrar" type="submit" class="btn w-25 btn-outline-light">Buscar</button>
-                <button name="exportar" type="submit" class="btn w-25 btn-outline-light">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exportaPonto" class="btn w-25 btn-outline-light">
                   <i class="fa-sharp fa-solid fa-file-export" style="color: #033159;"></i>
                   Exportar Cartão Ponto
                 </button>
+                    {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
+                <div class="modal fade" id="exportaPonto" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" >Informe um Periodo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <input type="date" class="form-control" name="periodoCP" id="">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="exportar">Exportar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% comment %} <button name="exportar" type="submit" class="btn w-25 btn-outline-light">
+                  <i class="fa-sharp fa-solid fa-file-export" style="color: #033159;"></i>
+                  Exportar Cartão Ponto
+                </button> {% endcomment %}
               </div>  
             </form>
           </nav>

@@ -410,9 +410,9 @@ def historico(request):
 
         #Analisar e criar um formato para exportar o PDF
         if "exportar" in request.GET:
-            print(export_pdf(request))
+            # print(export_pdf(request))
             
-            # print(generate_pdf(user, registros))
+            print(generate_pdf(user, registros))
             messages.success(request, 'Arquivo Exportado com sucesso!')    
 
     return render(request, 'historico/index.html', context)
