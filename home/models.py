@@ -57,7 +57,7 @@ class HistRegistro(models.Model):
     #Processo inativado temporariamente
     # bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
     sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
-    justificativas = models.ManyToManyField('home.Justificativa')
+    justificativas = models.ManyToManyField('home.Justificativa',  symmetrical=False)
 
 
     class Meta:

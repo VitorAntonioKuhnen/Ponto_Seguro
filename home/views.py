@@ -21,9 +21,13 @@ from django.conf import settings
 
 #Exportação de PDF
 from io import BytesIO
+import os
 from django.template.loader import get_template
 from xhtml2pdf import pisa 
 import uuid
+
+import tempfile
+import  pdfkit
 
 
 @login_required
@@ -406,7 +410,9 @@ def historico(request):
 
         #Analisar e criar um formato para exportar o PDF
         if "exportar" in request.GET:
-            export_pdf(request)
+            print(export_pdf(request))
+            
+            # print(generate_pdf(user, registros))
             messages.success(request, 'Arquivo Exportado com sucesso!')    
 
     return render(request, 'historico/index.html', context)
@@ -663,6 +669,35 @@ def enviaEmail(email, user, titulo):
     email.send()
     return "enviado"
 
+def generate_pdf(user, registros):
+    print('entrou')
+    print(registros)
+    context = {}
+    # registros = HistRegistro.objects.filter(Q(userReg__id = user.id))
+    context['histReg'] = registros
+    context['user'] = user
+    # Obtém o conteúdo HTML do template desejado
+    # html_string = ''
+    # for reg in registros:
+    #     html_string += f"<h1>{reg.dataReg}</h1>"
+        
+    html_string = render_to_string('cartaoPonto/index.html', context)
+    
+    # Cria um arquivo para armazenar o PDF temporariamente
+    result_file = os.path.join(settings.TEMP_ROOT, 'arquivo_temporario.pdf') #"C:/teste"
+
+    # Gera o PDF a partir do HTML usando o xhtml2pdf
+    with open(result_file, "w+b") as file:
+        pisa.CreatePDF(html_string, dest=file)
+
+    # Abre o arquivo PDF e o retorna como resposta
+    with open(result_file, "rb") as file:
+        response = HttpResponse(file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="arquivo.pdf"'
+        return response
+
+
+
 def export_pdf(request): 
     print('entrou')
     context = {}
@@ -670,25 +705,27 @@ def export_pdf(request):
     registros = HistRegistro.objects.filter(Q(userReg__id = user.id))
     context['histReg'] = registros
 
-    template = get_template('cartaoPonto/index.html')
-    html = template.render(context)
-    reponse = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), reponse)
-    print(str(pdf))
-    file_name = uuid.uuid4()
+    # template = get_template('cartaoPonto/index.html')
+    # html = template.render(context)
+    # reponse = BytesIO()
+    # pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), reponse)
+    # # print(str(pdf))
+    # file_name = uuid.uuid4()
+ 
+    # try:
+    #     with open(str(settings.BASE_DIR) + f'/templates/static/{file_name}.pdf', 'wb+') as output:
+    #         pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    # except Exception as e:
+    #     print(e)
+    # print(str(pdf))
+    # print(str(file_name))
+    # if pdf.err:
+    #     return '', False
+    # return file_name, True      
 
-    try:
-        with open(str(settings.BASE_DIR) + f'/templates/static/{file_name}'.pdf, 'wb+') as output:
-            pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
-    except Exception as e:
-        print(e)
-    print(str(pdf))
-    print(str(file_name))
-    if pdf.err:
-        return '', False
-    return file_name, True        
+
     # products = Product.objects.all() # lista todos os produtos 
-    # html_index = render_to_string('cartaoPonto/index.html', context)  
+    html_index = render_to_string('cartaoPonto/index.html', context)  
     # weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
     # pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif}')]) 
     # response = HttpResponse(content_type='application/pdf')
@@ -703,15 +740,14 @@ def export_pdf(request):
     # }
     print('passou na exportação')
     # Cria um arquivo temporário
-    # with tempfile.NamedTemporaryFile(delete=False) as tmp:
-        # tmp_filename = tmp.name
-        
-        # Gera o arquivo PDF usando o PDFKIT e salva no arquivo temporário
-        # pdfkit.from_string(html_index, tmp_filename, options)    
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp_filename = tmp.name
+    
+    # Gera o arquivo PDF usando o PDFKIT e salva no arquivo temporário
+    pdfkit.from_string(html_index, tmp_filename)
+    
     # Remove o arquivo temporário
-    # os.remove(tmp_filename)
-
-    # pdfkit.from_file(html_index, 'C:\exportPDF', options=options)
+    os.remove(tmp_filename)
     # with tempfile.NamedTemporaryFile(delete=True) as output:
     #     output.write(pdf)
     #     output.flush() 
