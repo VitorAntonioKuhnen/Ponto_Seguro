@@ -9,7 +9,7 @@
     <title>Folha Ponto</title>
 </head>
 <body>
-    <nav class="espacamento_bottom">
+    <!-- <nav class="espacamento_bottom">
         <div class="dimenciona">
             <div class="infoColab">
                 <fieldset>
@@ -70,20 +70,26 @@
 
             </div>
         </div>
-    </nav>
-    <table style="border-collapse: collapse; width: 100%; height: 54px;" border="1">
-      <tbody>
+    </nav> -->
+    <table border="1" style="width:500px; padding: 0px 1px;">
+      <tbody >
       <tr style="height: 18px;">
-      <td style="width: 50%; height: 18px;">Nome: {{user.get_full_name}}</td>
-      <td style="width: 50%; height: 18px;">Matricula: {{user.matricula}}</td>
+      <td style="width: 50%; height: 20px;"><b>Nome:</b> {{user.get_full_name}}</td>
+      <td style="width: 50%; height: 20px;"><b>Matricula:</b> {{user.matricula}}</td>
       </tr>
       <tr style="height: 18px;">
-      <td style="width: 50%; height: 18px;">Cargo:</td>
-      <td style="width: 50%; height: 18px;">Empresa:</td>
+      <td style="width: 50%; height: 20px;"><b>Cargo:</b></td>
+      <td style="width: 50%; height: 20px;"><b>Empresa:</b></td>
       </tr>
-      <tr style="height: 18px;">
-      <td style="width: 50%; height: 18px;">Escala:</td>
-      <td style="width: 50%; height: 18px;">Observação:</td>
+      <tr style="height: 50px;">
+      <td style="width: 50%; height: 50px;"><b>Escala:</b> <br><br>
+        08:00/18:00 Á 13:12/18:00
+      </td>
+      <td style="width: 50%; height: 50px;"><b>Observação:</b> <br>
+      <b>Admissão:</b> 27/05/2021 
+        <br>
+      <b>Mês/Ano:</b>  04/2023
+      </td>
       </tr>
       </tbody>
       </table>
@@ -136,6 +142,8 @@
             </table>
           </div>
     </main>
+    <br>
+    <br>
     <footer class="dimenciona alinha_end f-direction-column espacamento_top">
         <div>
         <span>___________________</span>

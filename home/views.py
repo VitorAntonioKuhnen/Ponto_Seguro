@@ -402,15 +402,11 @@ def historico(request):
             page = request.GET.get('page')
             context['histReg'] = paginator.get_page(page) 
 
-        #Analisar e criar um formato para exportar o PDF
+        #Gerar e Exportar PDF de Cartão ponto conforme a competência 
         if "exportar" in request.GET:
             comp = request.GET.get('periodoCP')
             print(comp)
             mes, ano = comp.split('/')
-            # mes, ano = '04/2023'.split('/')
-            print(mes)
-            print(ano)
-            print(comp)
             context = {}
             context['histReg'] = HistRegistro.objects.filter(Q(userReg__id = user.id), dataReg__month=mes, dataReg__year=ano).order_by('dataReg')
 
