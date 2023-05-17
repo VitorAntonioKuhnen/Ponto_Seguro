@@ -16,7 +16,7 @@
                 <legend>
                     Nome Funcionario
                 </legend>
-                <h4>Vítor Antônio Kuhnen </h4>
+                <h4>{{user.get_full_name}} </h4>
                 </fieldset>
                 <div class="">
                 <fieldset>
@@ -24,7 +24,7 @@
                     Cargo
                 </legend>
                 
-                <h4>Desenvolvedor </h4>
+                <h4>Desenvolvedor</h4>
                 </fieldset>
                 <fieldset class="h-137">
                     <legend>
@@ -71,6 +71,24 @@
             </div>
         </div>
     </nav>
+    <table style="border-collapse: collapse; width: 100%; height: 54px;" border="1">
+      <tbody>
+      <tr style="height: 18px;">
+      <td style="width: 50%; height: 18px;">Nome: {{user.get_full_name}}</td>
+      <td style="width: 50%; height: 18px;">Matricula: {{user.matricula}}</td>
+      </tr>
+      <tr style="height: 18px;">
+      <td style="width: 50%; height: 18px;">Cargo:</td>
+      <td style="width: 50%; height: 18px;">Empresa:</td>
+      </tr>
+      <tr style="height: 18px;">
+      <td style="width: 50%; height: 18px;">Escala:</td>
+      <td style="width: 50%; height: 18px;">Observação:</td>
+      </tr>
+      </tbody>
+      </table>
+      <br>
+      <br>
     <main class="espacamento_bottom">
         <div class="dimenciona alinha">
             <table id="myTable" class="border_1px tamanho">
@@ -87,106 +105,32 @@
                 </tr>
               </thead >
               <tbody >
+                {% for reg in histReg %}
                 <tr>
-                  <th scope="row">1</th>
-                  <td>01/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{reg.dataReg}}</td>
+                  <td>{{reg.horEnt1}}</td>
+                  <td>{{reg.horSai2}}</td>
+                  <td>{{reg.horEnt3}}</td>
+                  <td>{{reg.horSai4}}</td>
+                  <td>
+                    {% if reg.sitAPR == "PEN" %}
+                      Pendente
+                    {% elif reg.sitAPR == "REJ"%}
+                      Rejeitado
+                    {% elif reg.sitAPR == "APR"%}
+                      Aprovado
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if reg.justificativas.all %}
+                      Sim
+                    {% else %}
+                      Não
+                    {% endif %}
+                  </td>
                 </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>02/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>03/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>06/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>07/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td>08/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">7</th>
-                  <td>09/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">8</th>
-                  <td>10/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">9</th>
-                  <td>13/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
-                <tr>
-                  <th scope="row">10</th>
-                  <td>14/03/2023</td>
-                  <td>08:00</td>
-                  <td>12:00</td>
-                  <td>13:12</td>
-                  <td>18:00</td>
-                  <td>Aprovado</td>
-                  <td>Sim</td>
-                </tr>
+                {% endfor %}
       
               </tbody>
             </table>

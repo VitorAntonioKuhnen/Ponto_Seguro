@@ -71,7 +71,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                          <input type="date" class="form-control" name="periodoCP" id="">
+                          <input type="text" id="competencia" class="form-control" name="periodoCP" placeholder="MM/YYYY">
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn btn-success" name="exportar">Exportar</button>
@@ -244,4 +244,14 @@
 {% endblock  %}
 {% block js %}
   <script src="{% static 'js/script_pesquisa_historico.js' %}"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#competencia').inputmask('99/9999', {
+        placeholder: 'MM/YYYY',
+        showMaskOnHover: false,
+        showMaskOnFocus: false
+      });
+    });
+  </script>
 {% endblock  %}
