@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+html, body {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/*--- navbar ---*/
+.navbar {
+    display: flex;
+    background-color: #033159b4;
+    justify-content: space-evenly;
+    font-size: 14px;
+    width: 100%;
+    height: auto;
+    
+}
+
+.navbar h4 {
+    color: #ffffff;
+}
+
+/*--- container ---*/
+h4, #title {
+    color: #033159b4;
+    margin-top: 5px;
+    font-family: 'poppins', sans-serif;
+}
+
+h4 {
+    margin: 20px 0 20px 0;
+}
+
+.form-filtro {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pesquisar {
+    width: 300px;
+}
+
+/* Content */
+.content {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.content .table {
+    font-size: 16px;
+    margin: 0;
+    width: 100%;
+}
+
+.btn-user {
+    border: none;
+    background-color: transparent;
+}
+
+
+td {
+    text-align: center;
+}
+
+.btn-icon {
+    margin: 15px 10px 15px 15px;
+}
+
+.btn-cadastro {
+    padding: 0 70px 0 55px;
+    margin-bottom: 13px;
+    font-size: 16px;
+    height: 40px;
+    background-color:  #03315952;
+}
+
+.btn-cadastro:hover {
+
+   border: 1px solid #03315952;
+}
+
+.pagination li a {
+    background-color: #033159b4;
+    color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        width: 100%;
+        height: auto;
+    }
+
+    .btn-cadastro {
+        padding: 0 40px 0 25px;
+    }
+    
+
+}
+
+/* Mobile S | Mobile M | Mobile L | Tablet 768px */
+@media (max-width: 768px) {
+
+    .navbar {
+        width: 100%;
+        height: auto;
+    }
+    .content .table {
+        font-size: 12px;
+    }
+
+    .form-filtro {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-cadastro, .pesquisar {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .btn-cadastro:hover{
+        border: 1px solid #033159b4; 
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        background-color: #03315952;
+        /* color: #F4F4F4F4; */
+    }
+
+    .btn-cadastro {
+        background-color: #03315952;
+        height: 40px;
+        /* border: none !important; */
+        /* color: #033159b4;
+        border: 1px solid #033159b4; */
+
+    }
+
+    .btn-icon {
+        margin: 15px 30px 15px 15px;
+        
+    }
+    
+    .pagination {
+        margin: 1px 0 10px 0;
+    }
+
+}
