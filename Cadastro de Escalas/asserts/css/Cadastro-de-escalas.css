@@ -50,6 +50,18 @@ h4 {
     width: 300px;
 }
 
+.btn-cadastro {
+    padding: 0 70px 0 55px;
+    margin-bottom: 13px;
+    font-size: 16px;
+    height: 40px;
+    background-color:  #03315952;
+}
+
+.btn-cadastro:hover {
+
+   border: 1px solid #03315952;
+}
 /* Content */
 .content {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -64,28 +76,22 @@ h4 {
 .btn-user {
     border: none;
     background-color: transparent;
+   
 }
 
-
-td {
-    text-align: center;
+.btn-user:hover{
+    transform: scale(1.2);
+    border-radius: 100%;
+    background-color: #ffffff;
+    color: #f4f4f4f4 !important;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-icon {
     margin: 15px 10px 15px 15px;
-}
-
-.btn-cadastro {
-    padding: 0 70px 0 55px;
-    margin-bottom: 13px;
-    font-size: 16px;
-    height: 40px;
-    background-color:  #03315952;
-}
-
-.btn-cadastro:hover {
-
-   border: 1px solid #03315952;
 }
 
 .pagination li a {
