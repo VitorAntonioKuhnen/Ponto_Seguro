@@ -12,11 +12,21 @@
     integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="asserts/css/cadastro-de-escalas.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+  <script defer src="asserts/js/pesquisar.js"></script>
+  <link rel="stylesheet" href="asserts/css/Cadastro-de-escalas.css" />
   <link rel="shortcut icon" href="asserts/image/logo.png" type="image/x-icon" />
   <title>Cadastro de Escalas</title>
-  <script defer src="asserts/js/pesquisar.js"></script>
 </head>
 
 <body>
@@ -24,25 +34,14 @@
   <nav class="navbar">
     <h4>Cadastro de Escalas</h4>
   </nav>
-
   <!-- Container -->
   <div id="container" class="container">
     <h4>Grupo de Escalas</h4>
     <br />
-    <!-- <form action="" class="form-filtro">
-      <div class="filtro-registro">
-        <div class="input-group mb-3">
-          <span class="input-group-text">Mostrar</span>
-          <select name="role" class="filtro form-control form-select" aria-label="">
-            <option selected value="1">10</option>
-            <option value="2">15</option>
-          </select>
-        </div>
-      </div> -->
     <form class="form-filtro">
       <div class="filtro-registro">
         <button type="button" class="btn-cadastro btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
             class="btn-icon text-success bi bi-plus-circle-fill" viewBox="0 0 16 16">
             <path
               d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
@@ -50,7 +49,7 @@
           Incluir
         </button>
         <button type="button" class="btn-cadastro btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
             class="btn-icon text-primary bi bi-pencil-square" viewBox="0 0 16 16">
             <path
               d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
@@ -60,7 +59,7 @@
           Editar
         </button>
         <button type="button" class="btn-cadastro btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
             class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
             <path
               d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
@@ -75,7 +74,6 @@
     </form>
     <!-- Content -->
     <div class="content overflow-auto p-4 rounded">
-
       <table id="myTable" class="table table-hover table-striped table-bordered">
 
         <thead>
@@ -84,19 +82,20 @@
             <th id="title" scope="col">Descrição</th>
             <th id="title" scope="col">Tipo de Horário</th>
             <th id="title" scope="col">Status</th>
-            <th id="title" scope="col">Incluir colaborador</th>
+            <th class="d-flex justify-content-center" id="title" scope="col">#</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">0001</th>
             <td>Escala Integral</td>
-            <td>08:00 às 18:00</td>
+            <td>8h/12h às 13h/18h</td>
             <td> </td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+                  class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -108,12 +107,13 @@
           <tr>
             <th scope="row">0002</th>
             <td>Escala Matutino</td>
-            <td>07:00 às 13:00</td>
+            <td>7h às 13h</td>
             <td></td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+                  class="text-primary bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -125,12 +125,13 @@
           <tr>
             <th scope="row">0003</th>
             <td>Escala Vespertino</td>
-            <td>12:00 às 18:00</td>
+            <td>12h às 18h</td>
             <td></td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+                  class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -142,12 +143,13 @@
           <tr>
             <th scope="row">0003</th>
             <td>Escala Vespertino</td>
-            <td>12:00 às 18:00</td>
+            <td>12h às 18h</td>
             <td></td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+                  class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -159,12 +161,13 @@
           <tr>
             <th scope="row">0004</th>
             <td>Escala Noturno</td>
-            <td>18:00 às 03:00</td>
+            <td>18h/22h às 23h/3h</td>
             <td></td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
-                <svg xmlns="http://www.w3.org/2000/svg"width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                  class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -176,12 +179,13 @@
           <tr>
             <th scope="row">0005</th>
             <td>Escala 5/1</td>
-            <td>08:00 às 16:00</td>
+            <td>8h/12h às 13h/17h</td>
             <td></td>
             <td class="d-flex justify-content-center">
-              <button class="btn-user">
+              <button title="Incluir Colaborador" class="btn-user" data-bs-toggle="modal"
+                data-bs-target="#add-colaborador-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                  class="text-primary bi bi-person-fill-add" viewBox="0 0 16 16">
+                  class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
                   <path
                     d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   <path
@@ -193,6 +197,8 @@
         </tbody>
       </table>
     </div>
+  </div>
+
   </div>
   <!-- Footer -->
   <footer>
@@ -206,7 +212,89 @@
       </ul>
     </nav>
   </footer>
-
+  <!-- Modal -->
+  <div class="modal fade" id="add-colaborador-modal" tabindex="-1" aria-labelledby="addColaboradorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header pl-5">
+          <h5 class="modal-title fs-5" id="titleModalLabel">Incluir Colaborador</h5>
+          <button title="Fechar" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="px-16 mb-2">
+                  <input type="text" class="form-control" placeholder="Buscar nome" />
+                </div>
+                <div class="content overflow-auto p-4 rounded">
+                  <table id="myTableModal" class="table table-hover table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Matrícula</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Jacinta da Silva</td>
+                        <td>28/03/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Matheus de Alecar</td>
+                        <td>30/04/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Juliano de Vasconcelos</td>
+                        <td>05/02/2023</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

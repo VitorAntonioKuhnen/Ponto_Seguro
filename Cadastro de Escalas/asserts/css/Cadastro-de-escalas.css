@@ -16,7 +16,7 @@ html, body {
 }
 
 /*--- navbar ---*/
-.navbar {
+.navbar, .modal-header{
     display: flex;
     background-color: #033159b4;
     justify-content: space-evenly;
@@ -26,7 +26,7 @@ html, body {
     
 }
 
-.navbar h4 {
+.navbar h4, h5 {
     color: #ffffff;
 }
 
@@ -46,6 +46,10 @@ h4 {
     justify-content: space-between;
 }
 
+.btn-icon {
+    margin: 15px 10px 15px 15px;
+}
+
 .pesquisar {
     width: 300px;
 }
@@ -62,6 +66,7 @@ h4 {
 
    border: 1px solid #03315952;
 }
+
 /* Content */
 .content {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -90,15 +95,22 @@ h4 {
     justify-content: center;
 }
 
-.btn-icon {
-    margin: 15px 10px 15px 15px;
-}
-
 .pagination li a {
     background-color: #033159b4;
     color: #ffffff;
 }
 
+
+/* modal */
+.modal-header{
+    background-color: #033159b4;
+}
+
+#titleModalLabel {
+    padding-left: 18px;
+}
+
+/* Responsivo */
 @media (max-width: 1024px) {
     .navbar {
         width: 100%;
@@ -139,16 +151,11 @@ h4 {
         cursor: pointer;
         border: none;
         background-color: #03315952;
-        /* color: #F4F4F4F4; */
     }
 
     .btn-cadastro {
         background-color: #03315952;
         height: 40px;
-        /* border: none !important; */
-        /* color: #033159b4;
-        border: 1px solid #033159b4; */
-
     }
 
     .btn-icon {
