@@ -670,3 +670,10 @@ def enviaEmail(email, user, titulo):
 </html>''', 'text/html')
     email.send()
     return "enviado"
+
+
+
+def cadastroEscala(request):
+    context = {}
+    context['escalas'] = Escala.objects.all() 
+    return render(request, 'cadastroEscala/index.html', context)

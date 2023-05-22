@@ -9,5 +9,6 @@ urlpatterns = [
     path('aprovaPonto/', views.aprovaPonto, name='aprovaPonto'),
     path('aprovar/<int:id>/', views.aprovar, name='aprovar'),
     path('desaprovar/<int:id>/', views.desaprovar, name='desaprovar'),
+    path('cadastroEscala', views.cadastroEscala, name='cadastroEscala'),
     # path('altRegistro/<int:id>/', views.altRegistro, name='altRegistro'),
 ]
