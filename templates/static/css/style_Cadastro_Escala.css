@@ -81,6 +81,8 @@ h4 {
 .btn-user {
     border: none;
     background-color: transparent;
+    width: 25px;
+    height: 25px;
    
 }
 
@@ -89,8 +91,7 @@ h4 {
     border-radius: 100%;
     background-color: #ffffff;
     color: #f4f4f4f4 !important;
-    width: 25px;
-    height: 25px;
+
     align-items: center;
     justify-content: center;
 }

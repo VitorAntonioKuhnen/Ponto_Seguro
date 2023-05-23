@@ -17,7 +17,7 @@ class Users(AbstractUser):
     hora_extra = models.BooleanField(blank=True, null=True, default=False)
     dat_admissao = models.DateField(blank=True, null=True)
     dat_inicia_trab = models.DateField(blank=True, null=True)
-    superior = models.ForeignKey('Users', on_delete=models.DO_NOTHING)
+    superior = models.ForeignKey('Users', on_delete=models.DO_NOTHING, blank=True, null=True)
 
 
     def __str__(self):

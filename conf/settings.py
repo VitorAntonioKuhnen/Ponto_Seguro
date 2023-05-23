@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'ponto_seguro',
 #         'USER': 'root',
-#         'PASSWORD': 'senha',
+#         'PASSWORD': 'Senac2021',
 #         'HOST':'localhost',
 #         'PORT':'3306',
 #     }
