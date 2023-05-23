@@ -86,12 +86,11 @@ h4 {
 .btn-user {
     border: none;
     background-color: transparent;
-   
 }
 
 .btn-user:hover{
-    transform: scale(1.2);
-    border-radius: 100%;
+    /* transform: scale(1.2); */
+    border-radius: 50%;
     background-color: #ffffff;
     color: #f4f4f4f4 !important;
     width: 25px;
@@ -104,7 +103,6 @@ h4 {
     background-color: #033159b4;
     color: #ffffff;
 }
-
 
 /* modal */
 .modal-header{
@@ -141,7 +139,7 @@ h4 {
         font-size: 12px;
     }
 
-    .form-filtro {
+    .form-filtro .filtro-registro{
         flex-direction: column;
         width: 100%;
     }
