@@ -52,6 +52,12 @@ h4 {
 
 .pesquisar {
     width: 300px;
+
+}
+
+#pesquisar {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn-cadastro {
@@ -63,7 +69,6 @@ h4 {
 }
 
 .btn-cadastro:hover {
-
    border: 1px solid #03315952;
 }
 
@@ -109,6 +114,7 @@ h4 {
 #titleModalLabel {
     padding-left: 18px;
 }
+
 
 /* Responsivo */
 @media (max-width: 1024px) {
@@ -166,5 +172,10 @@ h4 {
     .pagination {
         margin: 1px 0 10px 0;
     }
+
+    .times {
+        flex-direction: column;
+    }
+
 
 }
