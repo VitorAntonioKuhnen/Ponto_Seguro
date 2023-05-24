@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import auth, messages
 from .models import Users, Token
+from home.models import HistRegistro
 from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
@@ -9,6 +10,7 @@ import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse
 import re
+from datetime import datetime as data
 
 from home import views
 
@@ -42,8 +44,17 @@ def login(request):
                         print('verificado')
                         if datetime.date.today() < username.dt_troca_senha:
                             print('entrou')
+
                             auth.login(request, check)
                             return redirect(views.RegistrarPonto)
+                            # print(username.id)
+                            # registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
+                            # registro = HistRegistro.objects.get(userReg_id = registros.userReg.id , dataReg = data.today())
+                            # print(registro.horEnt1)
+                            # if (registro.horEnt1):
+                            #     return redirect(views.RegistrarPonto)
+                            # elif ((registro.horEnt1 != '') and (registro.horSai2)) or ((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4)) :
+                            #     return redirect(views.inicio)
                         else:
                             print('Precisa efetuar a troca de senha')
                             url = reverse('trocaSenha', args=[username.id])
