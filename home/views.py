@@ -120,8 +120,8 @@ def RegistrarPonto(request):
                         # print(horPercorridas.seconds// 60)
                         # print(altHist.bancoHoraMin)
                         
-                        user.justificar = True
-                        user.save()
+                        # user.justificar = True
+                        # user.save()
 
                         # if (altHist.bancoHoraMin < 0 ):
                         #     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))
@@ -207,8 +207,8 @@ def RegistrarPonto(request):
                         # print(horPercorridas.seconds// 60)
                         # print(altHist.bancoHoraMin)
 
-                        user.justificar = True
-                        user.save()
+                        # user.justificar = True
+                        # user.save()
 
                         # if (altHist.bancoHoraMin < 0 ):
                         #     altHist.bancoHoraMin = altHist.bancoHoraMin +  (-(horPercorridas.seconds// 60))

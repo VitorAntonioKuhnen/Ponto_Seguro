@@ -46,15 +46,23 @@ def login(request):
                             print('entrou')
 
                             auth.login(request, check)
-                            return redirect(views.RegistrarPonto)
-                            # print(username.id)
-                            # registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
-                            # registro = HistRegistro.objects.get(userReg_id = registros.userReg.id , dataReg = data.today())
-                            # print(registro.horEnt1)
-                            # if (registro.horEnt1):
-                            #     return redirect(views.RegistrarPonto)
-                            # elif ((registro.horEnt1 != '') and (registro.horSai2)) or ((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4)) :
-                            #     return redirect(views.inicio)
+                            # return redirect(views.RegistrarPonto)
+                            print(username.id)
+                            registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
+                            print(registros)
+                            if registros:
+                                registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
+                                print(registro.horEnt1)
+                                print(registro.horEnt1 != '')
+                                print((registro.horEnt1 != '') and (registro.horSai2 == None))
+                                print((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4 == None))
+                                if ((registro.horEnt1 != '') and (registro.horSai2 == None)) or ((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4 == None)) :
+                                    return redirect(views.inicio)
+                                else: 
+                                    return redirect(views.RegistrarPonto) 
+                            else :
+                                return redirect(views.RegistrarPonto)    
+
                         else:
                             print('Precisa efetuar a troca de senha')
                             url = reverse('trocaSenha', args=[username.id])
