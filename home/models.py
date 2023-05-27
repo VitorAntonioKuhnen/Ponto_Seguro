@@ -32,10 +32,15 @@ class HoraExtra(models.Model):
     userLib = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='userLib')  
     dataLib = models.DateField(blank=True, null=True)
     horEnt1 = models.TimeField(blank=True, null=True)
+    altEnt1 = models.BooleanField(blank=True, null=True, default=False)    
     horSai2 = models.TimeField(blank=True, null=True)
+    altSai2 = models.BooleanField(blank=True, null=True, default=False) 
     horEnt3 = models.TimeField(blank=True, null=True)
+    altEnt3 = models.BooleanField(blank=True, null=True, default=False) 
     horSai4 = models.TimeField(blank=True, null=True)
-    sitApr = models.BooleanField(blank=True, null=True)
+    altSai4 = models.BooleanField(blank=True, null=True, default=False)
+    sitAPR = models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
+    justificativas = models.ManyToManyField('home.Justificativa',  symmetrical=False)
 
     class Meta:
        db_table = 'horaextra'

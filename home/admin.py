@@ -46,17 +46,18 @@ class JustificativaAdmin(admin.ModelAdmin):
 admin.site.register(Justificativa, JustificativaAdmin)
 
 class HoraExtraAdmin(admin.ModelAdmin):
-    list_display = ['userExtra', 'dataExtra', 'userLib', 'dataLib', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitApr']
+    list_display = ['userExtra', 'dataExtra', 'userLib', 'dataLib', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitAPR']
     list_display_links = ['userExtra', 'userLib']
     search_fields = ['userExtra', 'userLib', 'dataLib']
     per_page = 8
     fieldsets = (
         (None, {
-            'fields': ('userExtra', 'dataExtra', 'userLib', 'dataLib', 'sitApr')
+            'fields': ('userExtra', 'dataExtra', 'userLib', 'dataLib', 'sitAPR', 'justificativas')
         }),
         ('Registros de Horas Extras', {
             'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
         }),
     )
+    readonly_fields = ('justificativas',)
 
 admin.site.register(HoraExtra, HoraExtraAdmin)

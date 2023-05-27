@@ -50,6 +50,10 @@
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-business-time"></i>
+                            <a class="nav-link" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+                        </li>
+                        <li class="nav-item d-flex-row">
+                            <i class="fa-solid fa-business-time"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'cadastroEscala' %}">Cadastro de Escalas</a>
                         </li>
                         <li class="nav-item d-flex-row">
@@ -60,27 +64,26 @@
                             <i class="fa-sharp fa-solid fa-clock "></i>
                             <a class="nav-link" aria-current="page" href="{% url 'RegistrarPonto' %}">Registro de Ponto</a>
                         </li>
-                        <li class="nav-item d-flex-row">
+                        {% comment %} <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-person-circle-check"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'aprovaPonto' %}">Aprova Ponto</a>
-                        </li>
+                        </li> {% endcomment %}
                         {% comment %} <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
-                        </li>
+                        </li>{% endcomment %}
+                        
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle d-flex d-flex-row" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Dropdown
+                                <i class="fa-solid fa-person-circle-check" style="color: white;"></i>
+                                Aprovação de Registros
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aprovaPonto' %}">Ponto Diario</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'aprovaPontoHE' %}">Hora Extra</a></li>
                             </ul>
-                        </li> {% endcomment %}
+                        </li> 
                     </ul>
                 </form>
             </div>

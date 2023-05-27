@@ -29,6 +29,7 @@ from django.utils.html import strip_tags
 
 def login(request):
     if "login" in request.POST:
+        auth.logout(request)
         matricula = request.POST.get('matricula')
         senha = request.POST.get('senha')
         if matricula.isdigit():
@@ -46,17 +47,10 @@ def login(request):
                             print('entrou')
 
                             auth.login(request, check)
-                            # return redirect(views.RegistrarPonto)
-                            print(username.id)
                             registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
-                            print(registros)
                             if registros:
                                 registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
-                                print(registro.horEnt1)
-                                print(registro.horEnt1 != '')
-                                print((registro.horEnt1 != '') and (registro.horSai2 == None))
-                                print((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4 == None))
-                                if ((registro.horEnt1 != '') and (registro.horSai2 == None)) or ((registro.horEnt1 != '') and (registro.horSai2 != '') and (registro.horEnt3 != '') and (registro.altSai4 == None)) :
+                                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
                                     return redirect(views.inicio)
                                 else: 
                                     return redirect(views.RegistrarPonto) 
