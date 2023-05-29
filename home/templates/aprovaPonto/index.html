@@ -98,8 +98,8 @@
   <div id="container" class="container">
     <h4>Aprovação</h4>
     <br>
-    <form action="" class="form-filtro ">
-      {% comment %} <div class="filtro-registro">
+    {% comment %} <form action="" class="form-filtro ">
+      <div class="filtro-registro">
         <div class="input-group mb-3">
           <span class="input-group-text">Mostrar</span>
           <select name="numReg_Page" class="filtro form-control form-select" aria-label="">
@@ -107,12 +107,12 @@
             <option value="2">15</option>
           </select>
         </div>
-      </div> {% endcomment %}
+      </div>
       <div id="pesquisar" class="px-16 mb-2">
         <input type="text" id="myInput" onkeyup="myFunction()" class="pesquisar form-control"
           placeholder="Pesquisar nome">
       </div>
-    </form>
+    </form> {% endcomment %}
 
     <!-- Content -->
     <div class="content overflow-auto p-4 rounded" >
@@ -133,19 +133,6 @@
       {% endif %}
     </ul>
   </nav>
-  <!-- Footer -->
-  <footer class="py-sm-4">
-    <div id="btn" class="d-flex button">
-      <button id="btn-export" type="button" class="btn-buscar1 btn m-md-2 d-flex py-md-3 px-md-3">
-        <i class="fa-sharp fa-solid fa-file-export" style="color: #033159;"></i>
-        Exportar
-      </button>
-      <button id="btn-salvar" type="button" class="btn-buscar1 btn m-md-2 d-flex py-md-3 px-md-4">
-        <i class="fa-solid fa-floppy-disk" style="color: #033159;"></i>
-        Salvar
-      </button>
-    </div>
-  </footer>
 {% endblock  %}
 
 {% block js %}

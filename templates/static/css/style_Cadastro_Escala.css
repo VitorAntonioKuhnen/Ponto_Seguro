@@ -46,10 +46,6 @@ h4 {
     justify-content: space-between;
 }
 
-.btn-icon {
-    margin: 15px 10px 15px 15px;
-}
-
 .pesquisar {
     width: 300px;
 }
@@ -63,7 +59,6 @@ h4 {
 }
 
 .btn-cadastro:hover {
-
    border: 1px solid #03315952;
 }
 
@@ -78,7 +73,7 @@ h4 {
     width: 100%;
 }
 
-.btn-user {
+.btn-table {
     border: none;
     background-color: transparent;
     width: 25px;
@@ -86,7 +81,7 @@ h4 {
    
 }
 
-.btn-user:hover{
+.btn-table:hover{
     transform: scale(1.2);
     border-radius: 100%;
     background-color: #ffffff;
@@ -111,6 +106,11 @@ h4 {
     padding-left: 18px;
 }
 
+.sessao{
+    height: 100vh;
+    padding-top: 78px;
+}
+
 /* Responsivo */
 @media (max-width: 1024px) {
     .navbar {
@@ -121,7 +121,7 @@ h4 {
     .btn-cadastro {
         padding: 0 40px 0 25px;
     }
-    
+
 
 }
 
@@ -146,6 +146,7 @@ h4 {
         width: 100%;
     }
 
+    
     .btn-cadastro:hover{
         border: 1px solid #033159b4; 
         border-radius: 4px;

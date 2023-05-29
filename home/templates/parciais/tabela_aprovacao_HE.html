@@ -21,9 +21,9 @@
       {% if histReg %}
       {% for registros in histReg %}
     <tr>
-      <th scope="row">{{registros.userReg.matricula}}</th>
-      <td>{{registros.userReg.get_full_name}}</td>
-      <td>{{registros.dataReg}}</td>
+      <th scope="row">{{registros.userExtra.matricula}}</th>
+      <td>{{registros.userExtra.get_full_name}}</td>
+      <td>{{registros.dataExtra}}</td>
       <td>{{registros.escala.nmEscala}}</td>
       <td> 
         {% if registros.horEnt1 != None %}

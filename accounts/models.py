@@ -37,7 +37,7 @@ class Users(AbstractUser):
 
 
 class Token(models.Model):
-    codToken = models.CharField(max_length=6)
+    codToken = models.CharField(max_length=255)
     usuario = models.ForeignKey(Users, on_delete=models.DO_NOTHING)
     datGer = models.DateField(auto_now_add=True)
     horGer = models.TimeField(auto_now_add=True)        

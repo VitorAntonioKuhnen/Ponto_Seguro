@@ -2,7 +2,6 @@ import random
 from accounts.models import Users, Token
 from home.models import HistRegistro, HoraExtra, Justificativa
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.contrib.auth.hashers import make_password
 from datetime import datetime as data, datetime as hora
 
@@ -23,6 +22,8 @@ def geradorToken(usuario):
     resultado = ''
     for i in range(6):
         resultado +=  str(random.choice(numbers))
+    print(resultado)
+
     Token.objects.create(codToken= make_password(resultado), usuario_id=usuario) 
     # Token.objects.create(codToken=resultado, usuario_id=usuario) 
     return resultado
@@ -39,7 +40,7 @@ def geraHtmlToPdf(TemplateHtml, context_dict={}):
 
 
 
-def gravaJustificativa(request, user, direcionaTela):
+def gravaJustificativa(request, user):
     print("Este method é De envio de justificativa")
     tipoJust = request.POST.get('tipoJust')
     txtJust = request.POST.get('txtJust').strip()
@@ -47,9 +48,10 @@ def gravaJustificativa(request, user, direcionaTela):
     print(txtJust)
     if(tipoJust is None):
         messages.error(request, 'Informe um tipo de Justificativa!')
-        return redirect(f"{direcionaTela}")
+        return False
     elif(txtJust == ''):
-        messages.error(request, 'Digite o Motivo do Atraso!')  
+        messages.error(request, 'Digite o Motivo do Atraso!') 
+        return False 
         
     else:
         numDiaSemana = data.today().weekday()
@@ -68,18 +70,30 @@ def gravaJustificativa(request, user, direcionaTela):
         elif numDiaSemana == 6:
             diaSemana = user.escala.domingo
 
-        histRegistro = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
-        just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
-
-        if (histRegistro.horSai4 == None) and (diaSemana == True):
-            print('dia comum')
-            histRegistro.justificativas.add(just_criada)
+        if HistRegistro.objects.filter(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date()):
+            histRegistro = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
+            just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
+            if (histRegistro.horSai4 == None) and (diaSemana == True):
+                print('dia comum')
+                histRegistro.justificativas.add(just_criada)
+            else:
+                print('hora extra ')
+                horaextra.justificativas.add(just_criada)
         else:
+            horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())   
+            just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
             print('hora extra ')
-            horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
             horaextra.justificativas.add(just_criada)   
 
         user.justificar = False
         user.save()
         messages.success(request, 'Justificativa Registrada com Sucesso')
-    return redirect(f"{direcionaTela}")
+        return True
+    
+    # print('Chegou até o fim do processo de Justificativa')    
+    # if direcionaTela != 'inicio':
+    #     print('tela é diferente de INICIO')
+    #     return redirect(f"{direcionaTela}")
+    # else:
+    #     print('tela é a de INICIO')
+    #     return render(request, 'home/index.html', context)

@@ -317,7 +317,11 @@ def inicio(request):
     print('tentou entrar aqui')    
     if request.method == 'POST':
         if "btjustificar" in request.POST:
-            processos.gravaJustificativa(request, user, "inicio")
+            if(user.justificar):
+                processos.gravaJustificativa(request, user)
+                return render(request, 'home/index.html', context) 
+            else:
+                return render(request, 'home/index.html', context)        
     else:
         registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
         print(registros)
@@ -325,18 +329,26 @@ def inicio(request):
             registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
             if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
                 return render(request, 'home/index.html', context)
-            # else:
-            #     horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
-            #     if horExtras:
-            #         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
-            #         if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
-            #             return render(request, 'home/index.html', context) 
-            #     else:    
-            #         return redirect(RegistrarPonto) 
-        else :
-            print('não tenho registros')
-            # return redirect(RegistrarPonto)    
-    return render(request, 'home/index.html', context)
+            else:
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        return render(request, 'home/index.html', context) 
+                else:    
+                    return redirect(RegistrarPonto) 
+        else:
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        return render(request, 'home/index.html', context) 
+                else:    
+                    return redirect(RegistrarPonto)        
+        # else :
+        #     print('não tenho registros')
+        #     return redirect(RegistrarPonto)    
+            # return render(request, 'home/index.html', context)
 
 @login_required
 def historico(request):
@@ -347,6 +359,15 @@ def historico(request):
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
+    if user.justificar:
+        context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
+    if request.method == 'POST':
+        if "btjustificar" in request.POST:
+            if(user.justificar):
+                processos.gravaJustificativa(request, user)
+                return render(request, 'historico/index.html', context)
+            else:
+                return render(request, 'historico/index.html', context)
 
     if request.method == 'GET':
         if "filtrar" in request.GET:
@@ -398,6 +419,30 @@ def historico(request):
             resposta = HttpResponse(pdf, content_type="application/pdf")   
             resposta['Content-Disposition'] = 'attachment; filename="CartaoPonto.pdf"'
             return resposta
+        else:
+            registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
+            if registros:
+                registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
+                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                    return render(request, 'historico/index.html', context)
+                else:
+                    horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                    if horExtras:
+                        horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                        if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                            return render(request, 'historico/index.html', context)
+                    else:    
+                        return redirect(RegistrarPonto) 
+            else :
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        return render(request, 'historico/index.html', context)
+                else:    
+                    return redirect(RegistrarPonto) 
+                # print('não tenho registros')
+                # return redirect(RegistrarPonto)
 
     return render(request, 'historico/index.html', context)
 
@@ -422,10 +467,13 @@ def aprovaPonto(request):
     date = request.GET.get('data')
     escala = request.GET.get('escala') 
     if request.method == 'POST':
-        print("POST")
-        print(justificativa)
         if "btjustificar" in request.POST:
-            processos.gravaJustificativa(request, user, "aprovaPonto")
+            if(user.justificar):
+                processos.gravaJustificativa(request, user)
+                return render(request, 'aprovaPonto/index.html',context)
+            else:
+                return render(request, 'aprovaPonto/index.html',context)          
+            
         elif "btAltReg" in request.POST:
                 inpId = request.POST.get('inpID')
                 historico = HistRegistro.objects.get(id = inpId)
@@ -506,6 +554,30 @@ def aprovaPonto(request):
             paginator = Paginator(registros, 10)
             page = request.GET.get('page')
             context['histReg'] = paginator.get_page(page) 
+        else:
+            registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
+            if registros:
+                registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
+                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                    return render(request, 'aprovaPonto/index.html',context)
+                else:
+                    horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                    if horExtras:
+                        horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                        if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                            return render(request, 'aprovaPonto/index.html',context) 
+                    else:    
+                        return redirect(RegistrarPonto) 
+            else :
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        return render(request, 'aprovaPonto/index.html',context) 
+                else:    
+                    return redirect(RegistrarPonto) 
+                # print('não tenho registros')
+                # return redirect(RegistrarPonto)       
     
     return render(request, 'aprovaPonto/index.html',context)
 
@@ -520,8 +592,6 @@ def aprovaPontoHE(request):
     context['histReg'] = paginator.get_page(page)
     if user.justificar:
         context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
-
-    filtros = Q(userReg__superior__id = user.id)
     
     nome = request.GET.get('nome')
     matricula = request.GET.get('matricula')
@@ -533,10 +603,15 @@ def aprovaPontoHE(request):
         print("POST")
         print(justificativa)
         if "btjustificar" in request.POST:
-            processos.gravaJustificativa(request, user, "aprovaPontoHE")
+            if(user.justificar):
+                processos.gravaJustificativa(request, user)
+                return render(request, 'aprovaPontoHE/index.html',context)  
+            else:
+                return render(request, 'aprovaPontoHE/index.html',context)          
+
         elif "btAltReg" in request.POST:
                 inpId = request.POST.get('inpID')
-                historico = HistRegistro.objects.get(id = inpId)
+                historico = HoraExtra.objects.get(id = inpId)
                 ent1 = request.POST.get('ent1')
                 sai1 = request.POST.get('sai1')
                 ent2 = request.POST.get('ent2')
@@ -566,27 +641,22 @@ def aprovaPontoHE(request):
         else:
             print("Sem justificativa")
     
-        return render(request, 'aprovaPonto/index.html',context)
+        return render(request, 'aprovaPontoHE/index.html',context)
     elif request.method == 'GET':
         print("GET")
         print(justificativa)
         if "filtrar" in request.GET:
             print('Filtrar')
-            # filtros = Q(userReg__superior__id = user.id)
-            # nome = request.GET.get('nome').strip()
-            # matricula = request.GET.get('matricula').strip()
-            # status = request.GET.get('status')
-            # justificativa = request.GET.get('justificativa')
-            # date = request.GET.get('data')
-            # escala = request.GET.get('escala')
-            
+
+            filtros = Q(userExtra__superior__id = user.id)
+
             #Filtro por Nome
             if(nome):
-                filtros &= Q(userReg__first_name__icontains=nome) | Q(userReg__last_name__icontains=nome)
+                filtros &= Q(userExtra__first_name__icontains=nome) | Q(userExtra__last_name__icontains=nome)
             
             #Filtro por Matricula
             if(matricula):
-                filtros &= Q(userReg__matricula = matricula)
+                filtros &= Q(userExtra__matricula = matricula)
             
             #Filtro por Status
             if(status == 'APR') or (status == 'PEN') or (status == 'REJ'):
@@ -601,55 +671,44 @@ def aprovaPontoHE(request):
 
             #Filtro por Data
             if(date):
-               filtros &= Q(dataReg = date)
+               filtros &= Q(dataExtra = date)
 
             #Filtro por Escala
             if escala != 'todas':
                 filtros &= Q(escala_id = escala)                       
-            
-            registros = HistRegistro.objects.filter(filtros).order_by('-dataReg')  
+            print(filtros)
+            registros = HoraExtra.objects.filter(filtros).order_by('-dataExtra')  
             if not registros:
                 messages.warning(request, 'Não possue registros para o filtro utilizado!')
 
             paginator = Paginator(registros, 10)
             page = request.GET.get('page')
             context['histReg'] = paginator.get_page(page) 
-    
-    return render(request, 'aprovaPonto/index.html',context)
-
-
-# @login_required    
-# def altRegistro(request, id):
-#     print('teste')
-#     historico = HistRegistro.objects.get(id = id)
-#     ent1 = request.POST.get('ent1')
-#     sai1 = request.POST.get('sai1')
-#     ent2 = request.POST.get('ent2')
-#     sai2 = request.POST.get('sai2')
-
-#     if historico.horEnt1 != parse_time(ent1):
-#         print('Primeiro')
-#         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
-#         historico.altEnt1 = True
-
-#     if historico.horSai2 != parse_time(sai1):
-#         print('Segundo')
-#         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
-#         historico.altSai2 = True
-
-#     if historico.horEnt3 != parse_time(ent2):
-#         print('Terceiro')   
-#         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
-#         historico.altEnt3 = True
-
-#     if historico.horSai4 != parse_time(sai2):
-#         print('Quarto')
-#         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
-#         historico.altSai4 = True
-#     historico.save()
-#     messages.success(request, 'Registro Alterado com Sucesso!!')
-
-#     return redirect('aprovaPonto')
+            return render(request, 'aprovaPontoHE/index.html',context) 
+        else: 
+            registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
+            if registros:
+                registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
+                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                    return render(request, 'aprovaPontoHE/index.html',context)
+                else:
+                    horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                    if horExtras:
+                        horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                        if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                            return render(request, 'aprovaPontoHE/index.html',context) 
+                    else:    
+                        return redirect(RegistrarPonto) 
+            else :
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        return render(request, 'aprovaPontoHE/index.html',context) 
+                else:    
+                    return redirect(RegistrarPonto) 
+                # print('não tenho registros')
+                # return redirect(RegistrarPonto)    
 
 @login_required
 def aprovar(request, id): 
@@ -752,6 +811,38 @@ def enviaEmail(email, user, titulo):
 
 
 def cadastroEscala(request):
+    user = request.user
     context = {}
     context['escalas'] = Escala.objects.all() 
+    if request.method == 'POST':
+        if "btjustificar" in request.POST:
+            if(user.justificar):
+                processos.gravaJustificativa(request, user)
+                render(request, 'cadastroEscala/index.html', context)
+            else:
+                render(request, 'cadastroEscala/index.html', context)
+    elif request.method == 'GET':         
+            registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
+            if registros:
+                registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
+                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                    render(request, 'cadastroEscala/index.html', context)
+                else:
+                    horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                    if horExtras:
+                        horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                        if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                            render(request, 'cadastroEscala/index.html', context) 
+                    else:    
+                        return redirect(RegistrarPonto) 
+            else :
+                horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
+                if horExtras:
+                    horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                    if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                        render(request, 'cadastroEscala/index.html', context) 
+                else:    
+                    return redirect(RegistrarPonto)                 
+                # print('não tenho registros')
+                # return redirect(RegistrarPonto)        
     return render(request, 'cadastroEscala/index.html', context)
