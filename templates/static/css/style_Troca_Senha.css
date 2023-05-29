@@ -50,6 +50,10 @@ html, body {
     margin-top: 35px;
 }
 
+#passwordHelp {
+    font-size: 10px;
+}
+
 .text1 {
     font-size: 18px;
     color: #033159;

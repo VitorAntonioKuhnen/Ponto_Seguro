@@ -33,11 +33,15 @@
 
                 <form class="form" method="POST"> {% csrf_token %}
                     <p class="form-text1"><b> Digite a sua nova senha.</b></p>
-                    <div id="input" class="input-group flex-nowrap w-100  col-sm-9">
+                    <div id="input" class=" flex-nowrap w-100 col-sm-9 gap-2">
                         <input name="senha1" type="password" class="form-control w-100 " placeholder="Digite sua Senha">
                         <input name="senha2" type="password" class="form-control w-100 " placeholder="Confirme sua Senha">
                     </div>
-                    <button id="btn-hover" class="btn" submit="submit">Salvar nova Senha</button>
+                    <div id="passwordHelp" class="form-text pb-4">
+                        Sua senha deve ter de 8 a 20 caracteres, conter letras e não deve conter espaços, caracteres
+                        especiais ou emoji.
+                    </div>
+                    <button name="btaltSenha" id="btn-hover" class="btn" submit="submit">Salvar nova Senha</button>
                     <footer class="footer">
                         <p class=""> © 2023
                             <span> | Desenvolvido por</span>
