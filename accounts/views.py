@@ -34,36 +34,40 @@ def login(request):
         senha = request.POST.get('senha')
         if matricula.isdigit():
             print('Matricula digitada')
-            username = Users.objects.get(matricula=matricula)
-            if username != '':
+            if Users.objects.filter(matricula=matricula) != None:
+                    username = Users.objects.get(matricula=matricula)
                     auth.logout(request)
                     print('usuario não é vazio')
-                    check = auth.authenticate(
-                        request, username=username, password=senha)
+                    if username.check_password(senha):
+                        check = auth.authenticate(
+                            request, username=username, password=senha)
 
-                    if check is not None:
-                        print('verificado')
-                        if datetime.date.today() < username.dt_troca_senha:
-                            print('entrou')
+                        if check is not None:
+                            print('verificado')
+                            if datetime.date.today() < username.dt_troca_senha:
+                                print('entrou')
 
-                            auth.login(request, check)
-                            registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
-                            if registros:
-                                registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
-                                if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
-                                    return redirect(views.inicio)
-                                else: 
-                                    return redirect(views.RegistrarPonto) 
-                            else :
-                                return redirect(views.RegistrarPonto)    
+                                auth.login(request, check)
+                                registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
+                                if registros:
+                                    registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
+                                    if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                                        return redirect(views.inicio)
+                                    else: 
+                                        return redirect(views.RegistrarPonto) 
+                                else :
+                                    return redirect(views.RegistrarPonto)    
 
+                            else:
+                                print('Precisa efetuar a troca de senha')
+                                url = reverse('trocaSenha', args=[username.id])
+                                return redirect(url)
                         else:
-                            print('Precisa efetuar a troca de senha')
-                            url = reverse('trocaSenha', args=[username.id])
-                            return redirect(url)
+                            messages.error(request, 'Usuario ou Senha Invalidas!!')
+                            return redirect(login)  
                     else:
                         messages.error(request, 'Usuario ou Senha Invalidas!!')
-                        return redirect(login)  
+                        return redirect(login)      
             else:
                 messages.error(request, 'Usuario ou Senha Invalidas!!')
                 return redirect(login)   
