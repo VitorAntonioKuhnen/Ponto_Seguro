@@ -821,6 +821,48 @@ def cadastroEscala(request):
                 render(request, 'cadastroEscala/index.html', context)
             else:
                 render(request, 'cadastroEscala/index.html', context)
+        elif "btCadastrar" in request.POST:
+            print('Cadastro de Escala')
+
+            nmEscala = request.POST.get('nmEscala').strip()
+            ent1 = request.POST.get('ent1')
+            ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
+            sai1 = request.POST.get('sai1')
+            sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
+            ent2 = request.POST.get('ent2')
+            ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
+            sai2 = request.POST.get('sai2')
+            sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
+
+
+            seg = request.POST.get('seg', False) == 'on'
+            terc = request.POST.get('terc', False) == 'on'
+            quart = request.POST.get('quart', False) == 'on'
+            quint = request.POST.get('quint', False) == 'on'
+            sext = request.POST.get('sext', False) == 'on'
+            sab = request.POST.get('sab', False) == 'on'
+            domin = request.POST.get('domin', False) == 'on'
+            status = request.POST.get('sitEscala', False) == 'on'
+
+            Escala.objects.create(nmEscala = nmEscala, 
+                                  horEnt1 = ent1, 
+                                  horSai2 = sai1,
+                                  horEnt3 = ent2, 
+                                  horSai4 = sai2, 
+                                  segunda = seg, 
+                                  terca= terc, 
+                                  quarta = quart, 
+                                  quinta = quint, 
+                                  sexta = sext, 
+                                  sabado = sab, 
+                                  domingo = domin, 
+                                  status = status)   
+            
+            messages.success(request, 'Escala Gravada com Sucesso!')
+            render(request, 'cadastroEscala/index.html', context) 
+        elif "btAlteraCadastro" in request.POST:
+            print('Altera Cadastro de Escala')      
+                
     elif request.method == 'GET':         
             registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
             if registros:

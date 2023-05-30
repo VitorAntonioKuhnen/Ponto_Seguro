@@ -87,7 +87,7 @@
 
                     <!-- Modal do Button Editar-->
                     <div class="modal fade" id="alterar{{escala.id}}" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel" aria-hidden="true">
-                      <form class="modal-dialog modal-lg" action="{% url 'aprovaPonto' %}" method="POST"> {% csrf_token %} 
+                      <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST"> {% csrf_token %} 
                         <div class="modal-content">
                           <!-- Modal Header -->
                           <div class="modal-header pl-5">
@@ -136,14 +136,65 @@
                                           </div>
                                           <div class="row mb-3">
                                             <div class="col-sm-10 offset-sm-2">
+                                              <b>Dias da Semana</b>
+                                              <div class=" d-flex justify-content-center gap-3 times pb-2">
+                                                <div>
+                                                  <label class="form-check-label" for="seg">
+                                                    Segunda
+                                                  </label>
+                                                  <input name="seg" class="form-check-input" type="checkbox" id="seg" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="terc">
+                                                    Terça
+                                                  </label>
+                                                  <input name="terc" class="form-check-input" type="checkbox" id="terc" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="quart">
+                                                    Quarta
+                                                  </label>
+                                                  <input name="quart" class="form-check-input" type="checkbox" id="quart" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="quint">
+                                                    Quinta
+                                                  </label>
+                                                  <input name="quint" class="form-check-input" type="checkbox" id="quint" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="sext">
+                                                    Sexta
+                                                  </label>
+                                                  <input name="sext" class="form-check-input" type="checkbox" id="sext" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="sab">
+                                                    Sábado
+                                                  </label>
+                                                  <input name="sab" class="form-check-input" type="checkbox" id="sab" />
+                                                </div>
+                                                <div>
+                                                  <label class="form-check-label" for="domin">
+                                                    Domingo
+                                                  </label>
+                                                  <input name="domin" class="form-check-input" type="checkbox" id="domin" />
+                                                </div>
+                                              </div>
+                                              <b>Situação</b>
                                               <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="gridCheck1" {% if escala.status %}checked{% endif %}/>
-                                                <label class="form-check-label" for="gridCheck1">
+                                                <input name="sitEscala" class="form-check-input" type="checkbox" id="sitEscala"  {% if escala.status %} checked {% endif %}/>
+                                                <label class="form-check-label" for="sitEscala">
                                                   Ativar
                                                 </label>
                                               </div>
                                             </div>
                                           </div>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                          <button name="btAlteraCadastro" type="submit" class="btn btn-success px-4">Alterar</button>
                                         </div>
                                       </div>
                                     </div>
@@ -152,11 +203,6 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                          <button type="button" class="btn btn-success px-4">Alterar</button>
                         </div>
                       </form>
                     </div>
@@ -199,7 +245,7 @@
       <!-- Modal do Button Incluir-->
       <div class="modal fade" id="cadastrar-escala-modal" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel"
       aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST"> {% csrf_token %}
           <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header pl-5">
@@ -218,12 +264,12 @@
                       <!-- Content -->
                       <div class="content-modal rounded">
                         <div class="modal-body">
-                          <form>
+                          <div>
                             <div class="mb-3">
                               <div class="row mb-3">
                                 <label for="input" class="col-sm-2 col-form-label">Descrição</label>
                                 <div class="col-sm-10">
-                                  <input type="" class="form-control" id="input">
+                                  <input name="nmEscala" type="" class="form-control" id="input">
                                   <div class=" d-flex justify-content-between gap-2 times ml-5">
                                     <div>
                                       <label for="ent1" class="col-form-label">1º Entrada</label>
@@ -247,15 +293,66 @@
                             </div>
                             <div class="row mb-3">
                               <div class="col-sm-10 offset-sm-2">
+                                <b>Dias da Semana</b>
+                                <div class=" d-flex justify-content-center gap-3 times pb-2">
+                                  <div>
+                                    <label class="form-check-label" for="seg">
+                                      Segunda
+                                    </label>
+                                    <input name="seg" class="form-check-input" type="checkbox" id="seg" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="terc">
+                                      Terça
+                                    </label>
+                                    <input name="terc" class="form-check-input" type="checkbox" id="terc" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="quart">
+                                      Quarta
+                                    </label>
+                                    <input name="quart" class="form-check-input" type="checkbox" id="quart" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="quint">
+                                      Quinta
+                                    </label>
+                                    <input name="quint" class="form-check-input" type="checkbox" id="quint" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="sext">
+                                      Sexta
+                                    </label>
+                                    <input name="sext" class="form-check-input" type="checkbox" id="sext" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="sab">
+                                      Sábado
+                                    </label>
+                                    <input name="sab" class="form-check-input" type="checkbox" id="sab" />
+                                  </div>
+                                  <div>
+                                    <label class="form-check-label" for="domin">
+                                      Domingo
+                                    </label>
+                                    <input name="domin" class="form-check-input" type="checkbox" id="domin" />
+                                  </div>
+                                </div>
+                                <b>Situação</b>
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1" />
-                                  <label class="form-check-label" for="gridCheck1">
+                                  <input name="sitEscala" class="form-check-input" type="checkbox" id="sitEscala" />
+                                  <label class="form-check-label" for="sitEscala">
                                     Ativar
                                   </label>
                                 </div>
                               </div>
                             </div>
-                          </form>
+                          </div>
+                        </div>
+                       <!-- Modal footer -->
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                          <button name="btCadastrar" type="submit" class="btn btn-success px-3">Cadastrar</button>
                         </div>
                       </div>
                     </div>
@@ -264,12 +361,7 @@
               </div>
             </div>
           </div>
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-success px-3">Cadastrar</button>
-          </div>
-        </div>
+        </form>
       </div>
 
 
@@ -306,14 +398,15 @@
                           <th scope="row">1</th>
                           <td>Jacinta da Silva</td>
                           <td class="d-flex justify-content-center">
-                            <div class="button">
-                              <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
+                            <div class="button d-flex gap-2">
+                              <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+                              {% comment %} <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-success bi-plus-circle-fill" viewBox="0 0 16 16">
                                   <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                 </svg>
-                              </button>
+                              </button> {% endcomment %}
                               <button title="Remover" type="button" class="btn-cadastro-modal delete btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -328,14 +421,15 @@
                           <th scope="row">2</th>
                           <td>Matheus de Alecar</td>
                           <td class="d-flex justify-content-center">
-                            <div class="button">
-                              <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
+                            <div class="button d-flex gap-2">
+                              <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+                              {% comment %} <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-success bi-plus-circle-fill" viewBox="0 0 16 16">
                                   <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                 </svg>
-                              </button>
+                              </button> {% endcomment %}
                               <button title="Remover" type="button" class="btn-cadastro-modal delete btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -350,14 +444,15 @@
                           <th scope="row">3</th>
                           <td>Juliano de Vasconcelos</td>
                           <td class="d-flex justify-content-center">
-                            <div class="button">
-                              <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
+                            <div class="button d-flex gap-2">
+                              <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+                              {% comment %} <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-success bi-plus-circle-fill" viewBox="0 0 16 16">
                                   <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                 </svg>
-                              </button>
+                              </button> {% endcomment %}
                               <button title="Remover" type="button" class="btn-cadastro-modal delete btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -372,14 +467,15 @@
                           <th scope="row">4</th>
                           <td>Juliano de Vasconcelos</td>
                           <td class="d-flex justify-content-center">
-                            <div class="button">
-                              <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
+                            <div class="button d-flex gap-2">
+                              <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+                              {% comment %} <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-success bi-plus-circle-fill" viewBox="0 0 16 16">
                                   <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                 </svg>
-                              </button>
+                              </button> {% endcomment %}
                               <button title="Remover" type="button" class="btn-cadastro-modal delete btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -394,14 +490,15 @@
                           <th scope="row">5</th>
                           <td>Juliano de Vasconcelos</td>
                           <td class="d-flex justify-content-center button-modal">
-                            <div class="button">
-                              <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
+                            <div class="button d-flex gap-2">
+                              <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
+                              {% comment %} <button title="Adicionar" type="button" class="btn-cadastro-modal add btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-success bi-plus-circle-fill" viewBox="0 0 16 16">
                                   <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                 </svg>
-                              </button>
+                              </button> {% endcomment %}
                               <button title="Remover" type="button" class="btn-cadastro-modal delete btn p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                   class="btn-icon text-secondary bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -416,14 +513,14 @@
                     </table>
                   </div>
                 </div>
+                <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success px-4">Salvar</button>
+              </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success px-4">Salvar</button>
         </div>
       </div>
     </div>

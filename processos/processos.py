@@ -78,6 +78,7 @@ def gravaJustificativa(request, user):
                 histRegistro.justificativas.add(just_criada)
             else:
                 print('hora extra ')
+                horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                 horaextra.justificativas.add(just_criada)
         else:
             horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())   
