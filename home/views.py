@@ -950,7 +950,7 @@ def cadastroEscala(request):
 
 @login_required
 def alteraEscala(request):
-    print('Cadastro de Escala')
+    print('Alteração de Escala')
     nmEscala = request.POST.get('nmEscala').strip()
     ent1 = request.POST.get('ent1')
     ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None

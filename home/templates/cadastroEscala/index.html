@@ -9,7 +9,7 @@
 
   {% block main %}
   <div class="wrapper ">
-    <div class="locates espacamento d-flex justify-content-end align-self-end toast align-items-center text-bg-danger fade position-fixed" id="mensage"
+    <div class="locates espacamento d-flex justify-content-end align-self-end toast align-items-center fade position-fixed" id="mensage"
     style="z-index: 2000;" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body" id="retornoMsg">
@@ -99,7 +99,7 @@
 
                     <!-- Modal do Button Editar-->
                     <div class="modal fade" id="alterar{{escala.id}}" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel" aria-hidden="true">
-                      <form class="modal-dialog modal-lg" action="{% url 'alteraEscala' %}" method="POST"> {% csrf_token %} 
+                      <form class="modal-dialog modal-lg" action="{% url 'alteraEscala' %}" id="alteraEscala" method="POST"> {% csrf_token %} 
                         <div class="modal-content">
                           <!-- Modal Header -->
                           <div class="modal-header pl-5">
@@ -124,7 +124,7 @@
                                             <div class="row mb-3">
                                               <label for="input" class="col-sm-2 col-form-label">Descrição</label>
                                               <div class="col-sm-10">
-                                                <input type="" class="form-control" id="input" value="{{escala.nmEscala}}">
+                                                <input type="" name="nmEscala" class="form-control" id="input" value="{{escala.nmEscala}}">
                                                 <div class=" d-flex justify-content-between gap-2 times ml-5">
                                                   <div>
                                                     <label for="ent1" class="col-form-label">1º Entrada</label>
