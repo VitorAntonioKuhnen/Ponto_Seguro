@@ -6,7 +6,7 @@ import calendar
 from datetime import datetime as hora, datetime as data, timedelta
 from django.utils.dateparse import parse_time
 from django.contrib import messages, auth
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from accounts import views
 from django.db.models import Q
 
@@ -737,7 +737,7 @@ def desaprovar(request, id):
 
 
 
-
+@login_required
 def enviaEmail(email, user, titulo):
     # html_content = render_to_string('email/token.html', {'token': token})
     text_content = strip_tags('''
@@ -809,12 +809,13 @@ def enviaEmail(email, user, titulo):
     return "enviado"
 
 
-
-def cadastroEscala(request):
+@login_required
+def escala(request):
     user = request.user
     context = {}
     context['escalas'] = Escala.objects.all() 
     if request.method == 'POST':
+        print('Entrou no POST')
         if "btjustificar" in request.POST:
             if(user.justificar):
                 processos.gravaJustificativa(request, user)
@@ -842,28 +843,34 @@ def cadastroEscala(request):
             sext = request.POST.get('sext', False) == 'on'
             sab = request.POST.get('sab', False) == 'on'
             domin = request.POST.get('domin', False) == 'on'
-            status = request.POST.get('sitEscala', False) == 'on'
+            # status = request.POST.get('sitEscala', False) == 'on'
+            if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
+                Escala.objects.create(nmEscala = nmEscala, 
+                                    horEnt1 = ent1, 
+                                    horSai2 = sai1,
+                                    horEnt3 = ent2, 
+                                    horSai4 = sai2, 
+                                    segunda = seg, 
+                                    terca= terc, 
+                                    quarta = quart, 
+                                    quinta = quint, 
+                                    sexta = sext, 
+                                    sabado = sab, 
+                                    domingo = domin, 
+                                    status = True) 
+                messages.success(request, 'Escala Gravada com Sucesso!')
+                return render(request, 'cadastroEscala/index.html', context)
 
-            Escala.objects.create(nmEscala = nmEscala, 
-                                  horEnt1 = ent1, 
-                                  horSai2 = sai1,
-                                  horEnt3 = ent2, 
-                                  horSai4 = sai2, 
-                                  segunda = seg, 
-                                  terca= terc, 
-                                  quarta = quart, 
-                                  quinta = quint, 
-                                  sexta = sext, 
-                                  sabado = sab, 
-                                  domingo = domin, 
-                                  status = status)   
-            
-            messages.success(request, 'Escala Gravada com Sucesso!')
-            render(request, 'cadastroEscala/index.html', context) 
+            else:
+                return JsonResponse({'mensage':'Seleciona um dia da Semana!', 'tipo':'text-bg-danger'}) 
+                #messages.error(request, 'Selecione um dia da semana')    
+            #return render(request, 'cadastroEscala/index.html', context) 
+
         elif "btAlteraCadastro" in request.POST:
             print('Altera Cadastro de Escala')      
                 
-    elif request.method == 'GET':         
+    elif request.method == 'GET':  
+            print('Entrou Get')       
             registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
             if registros:
                 registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
@@ -877,6 +884,7 @@ def cadastroEscala(request):
                             render(request, 'cadastroEscala/index.html', context) 
                     else:    
                         return redirect(RegistrarPonto) 
+                    
             else :
                 horExtras =  HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=data.today().date())
                 if horExtras:
@@ -888,3 +896,108 @@ def cadastroEscala(request):
                 # print('não tenho registros')
                 # return redirect(RegistrarPonto)        
     return render(request, 'cadastroEscala/index.html', context)
+
+
+@login_required
+def cadastroEscala(request):
+    print('Cadastro de Escala')
+    nmEscala = request.POST.get('nmEscala').strip()
+    ent1 = request.POST.get('ent1')
+    ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
+    sai1 = request.POST.get('sai1')
+    sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
+    ent2 = request.POST.get('ent2')
+    ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
+    sai2 = request.POST.get('sai2')
+    sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
+
+    if(nmEscala != ''):
+        if (ent1 != None) and (sai1 != None):
+            seg = request.POST.get('seg', False) == 'on'
+            terc = request.POST.get('terc', False) == 'on'
+            quart = request.POST.get('quart', False) == 'on'
+            quint = request.POST.get('quint', False) == 'on'
+            sext = request.POST.get('sext', False) == 'on'
+            sab = request.POST.get('sab', False) == 'on'
+            domin = request.POST.get('domin', False) == 'on'
+            # status = request.POST.get('sitEscala', False) == 'on'
+            if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
+                Escala.objects.create(nmEscala = nmEscala, 
+                                    horEnt1 = ent1, 
+                                    horSai2 = sai1,
+                                    horEnt3 = ent2, 
+                                    horSai4 = sai2, 
+                                    segunda = seg, 
+                                    terca= terc, 
+                                    quarta = quart, 
+                                    quinta = quint, 
+                                    sexta = sext, 
+                                    sabado = sab, 
+                                    domingo = domin, 
+                                    status = True) 
+                messages.success(request, 'Escala Gravada com Sucesso!')
+                return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
+                # return render(request, 'cadastroEscala/index.html', context)
+
+            else:
+                return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
+        else:
+            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'})  
+    else:
+        return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
+    #return render(request, 'cadastroEscala/index.html', context) 
+
+
+@login_required
+def alteraEscala(request):
+    print('Cadastro de Escala')
+    nmEscala = request.POST.get('nmEscala').strip()
+    ent1 = request.POST.get('ent1')
+    ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
+    sai1 = request.POST.get('sai1')
+    sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
+    ent2 = request.POST.get('ent2')
+    ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
+    sai2 = request.POST.get('sai2')
+    sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
+
+    if(nmEscala != ''):
+        if (ent1 != None) and (sai1 != None):
+            seg = request.POST.get('seg', False) == 'on'
+            terc = request.POST.get('terc', False) == 'on'
+            quart = request.POST.get('quart', False) == 'on'
+            quint = request.POST.get('quint', False) == 'on'
+            sext = request.POST.get('sext', False) == 'on'
+            sab = request.POST.get('sab', False) == 'on'
+            domin = request.POST.get('domin', False) == 'on'
+            # status = request.POST.get('sitEscala', False) == 'on'
+            if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
+                id = request.POST.get('id')
+                escala = Escala.objects.get(id=id)
+                escala.nmEscala = nmEscala
+                escala.horEnt1 = ent1
+                escala.horSai2 = sai1
+                escala.horEnt3 = ent1
+                escala.horSai4 = sai2
+                escala.segunda = seg
+                escala.terca = terc
+                escala.quarta = quart
+                escala.quinta = quint
+                escala.sexta = sext
+                escala.sabado = sab
+                escala.domingo = domin
+                #Validar etapa do status
+                # escala.status 
+                escala.save()
+
+                messages.success(request, 'Escala Alterado com Sucesso!')
+                return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
+                # return render(request, 'cadastroEscala/index.html', context)
+
+            else:
+                return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
+        else:
+            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'})  
+    else:
+        return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
+    #return render(request, 'cadastroEscala/index.html', context) 

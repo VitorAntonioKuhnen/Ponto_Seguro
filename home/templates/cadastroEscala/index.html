@@ -8,6 +8,18 @@
 
 
   {% block main %}
+  <div class="wrapper ">
+    <div class="locates espacamento d-flex justify-content-end align-self-end toast align-items-center text-bg-danger fade position-fixed" id="mensage"
+    style="z-index: 2000;" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="retornoMsg">
+            
+            deu problema
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
   <section class="sessao">
     <!-- Container -->
     <div id="container" class="container">
@@ -87,7 +99,7 @@
 
                     <!-- Modal do Button Editar-->
                     <div class="modal fade" id="alterar{{escala.id}}" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel" aria-hidden="true">
-                      <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST"> {% csrf_token %} 
+                      <form class="modal-dialog modal-lg" action="{% url 'alteraEscala' %}" method="POST"> {% csrf_token %} 
                         <div class="modal-content">
                           <!-- Modal Header -->
                           <div class="modal-header pl-5">
@@ -103,6 +115,7 @@
                                   <div id="container" class="container col-12 col-sm-12">
                                     <h4>Escala</h4>
                                     <br />
+                                    <input type="text" style="display: none;"  name="id" value="{{escala.id}}">
                                     <!-- Content -->
                                     <div class="content-modal rounded">
                                       <div class="modal-body">
@@ -142,43 +155,43 @@
                                                   <label class="form-check-label" for="seg">
                                                     Segunda
                                                   </label>
-                                                  <input name="seg" class="form-check-input" type="checkbox" id="seg" />
+                                                  <input name="seg" class="form-check-input" type="checkbox" id="seg" {% if escala.segunda %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="terc">
                                                     Terça
                                                   </label>
-                                                  <input name="terc" class="form-check-input" type="checkbox" id="terc" />
+                                                  <input name="terc" class="form-check-input" type="checkbox" id="terc" {% if escala.terca %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="quart">
                                                     Quarta
                                                   </label>
-                                                  <input name="quart" class="form-check-input" type="checkbox" id="quart" />
+                                                  <input name="quart" class="form-check-input" type="checkbox" id="quart" {% if escala.quarta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="quint">
                                                     Quinta
                                                   </label>
-                                                  <input name="quint" class="form-check-input" type="checkbox" id="quint" />
+                                                  <input name="quint" class="form-check-input" type="checkbox" id="quint" {% if escala.quinta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="sext">
                                                     Sexta
                                                   </label>
-                                                  <input name="sext" class="form-check-input" type="checkbox" id="sext" />
+                                                  <input name="sext" class="form-check-input" type="checkbox" id="sext" {% if escala.sexta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="sab">
                                                     Sábado
                                                   </label>
-                                                  <input name="sab" class="form-check-input" type="checkbox" id="sab" />
+                                                  <input name="sab" class="form-check-input" type="checkbox" id="sab"  {% if escala.sabado %} checked {% endif %}/>
                                                 </div>
                                                 <div>
                                                   <label class="form-check-label" for="domin">
                                                     Domingo
                                                   </label>
-                                                  <input name="domin" class="form-check-input" type="checkbox" id="domin" />
+                                                  <input name="domin" class="form-check-input" type="checkbox" id="domin" {% if escala.domingo %} checked {% endif %} />
                                                 </div>
                                               </div>
                                               <b>Situação</b>
@@ -245,7 +258,7 @@
       <!-- Modal do Button Incluir-->
       <div class="modal fade" id="cadastrar-escala-modal" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel"
       aria-hidden="true">
-        <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST"> {% csrf_token %}
+        <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST" id="cadastroEscala"> {% csrf_token %}
           <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header pl-5">
@@ -338,13 +351,13 @@
                                     <input name="domin" class="form-check-input" type="checkbox" id="domin" />
                                   </div>
                                 </div>
-                                <b>Situação</b>
+                                {% comment %} <b>Situação</b>
                                 <div class="form-check">
                                   <input name="sitEscala" class="form-check-input" type="checkbox" id="sitEscala" />
                                   <label class="form-check-label" for="sitEscala">
                                     Ativar
                                   </label>
-                                </div>
+                                </div> {% endcomment %}
                               </div>
                             </div>
                           </div>
@@ -525,4 +538,8 @@
       </div>
     </div>
 </section>
+  {% endblock  %}
+
+  {% block js %}
+    <script src="{% static 'js/script_mensagem_jquery.js' %}"></script>
   {% endblock  %}

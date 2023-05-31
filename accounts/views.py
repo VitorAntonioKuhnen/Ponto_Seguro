@@ -33,19 +33,15 @@ def login(request):
         matricula = request.POST.get('matricula')
         senha = request.POST.get('senha')
         if matricula.isdigit():
-            print('Matricula digitada')
             if Users.objects.filter(matricula=matricula) != None:
                     username = Users.objects.get(matricula=matricula)
                     auth.logout(request)
-                    print('usuario não é vazio')
                     if username.check_password(senha):
                         check = auth.authenticate(
                             request, username=username, password=senha)
 
                         if check is not None:
-                            print('verificado')
                             if datetime.date.today() < username.dt_troca_senha:
-                                print('entrou')
 
                                 auth.login(request, check)
                                 registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
@@ -59,7 +55,6 @@ def login(request):
                                     return redirect(views.RegistrarPonto)    
 
                             else:
-                                print('Precisa efetuar a troca de senha')
                                 url = reverse('trocaSenha', args=[username.id])
                                 return redirect(url)
                         else:
