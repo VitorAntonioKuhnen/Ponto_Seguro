@@ -33,13 +33,14 @@
   dos colaboradores de modo fácil e rápido.
 </p>
 
-## Funcionalidades do Usuário - Operacional
+## Funcionalidades
+- Usuário - Operacional
 
 :heavy_check_mark: `Funcionalidade 1:` Realizar o login no sistema.
 
 :heavy_check_mark: `Funcionalidade 2:` Registrar a marcação de ponto, entrada, saída para a pausa, entrada e saída.
 
-## Funcionalidades do Usuário - RH - Desenvolvedor/TI
+- Usuário - RH - Desenvolvedor/TI
 
 :heavy_check_mark: `Funcionalidade 1:` Realizar o login no sistema;
 
