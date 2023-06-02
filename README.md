@@ -108,7 +108,7 @@
 
 ## Acesso ao projeto
 
-Você pode [acessar o código fonte do projeto](https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git) ou [baixá-lo](Ponto_Seguro-Back.zip).
+Você pode [acessar o código fonte do projeto](https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git) ou [baixá-lo](https://github.com/VitorAntonioKuhnen/Ponto_Seguro/archive/refs/heads/Back.zip).
 
 ## Abrir e rodar o projeto
 
