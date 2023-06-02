@@ -9,7 +9,7 @@ urlpatterns = [
     path('aprovaPontoHE/', views.aprovaPontoHE, name='aprovaPontoHE'),
     path('aprovar/<int:id>/', views.aprovar, name='aprovar'),
     path('desaprovar/<int:id>/', views.desaprovar, name='desaprovar'),
-    path('escala', views.escala, name='escala'),
-    path('cadastroEscala', views.cadastroEscala, name='cadastroEscala'),
-    path('alteraEscala', views.alteraEscala, name='alteraEscala'),
+    path('escala/', views.escala, name='escala'),
+    path('cadastroEscala/', views.cadastroEscala, name='cadastroEscala'),
+    path('alteraEscala/<int:id>/', views.alteraEscala, name='alteraEscala'),
 ]

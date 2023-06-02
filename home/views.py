@@ -935,21 +935,21 @@ def cadastroEscala(request):
                                     sabado = sab, 
                                     domingo = domin, 
                                     status = True) 
-                messages.success(request, 'Escala Gravada com Sucesso!')
+                # messages.success(request, 'Escala Gravada com Sucesso!')
                 return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
                 # return render(request, 'cadastroEscala/index.html', context)
 
             else:
                 return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
         else:
-            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'})  
+            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'}) 
     else:
         return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
     #return render(request, 'cadastroEscala/index.html', context) 
 
 
 @login_required
-def alteraEscala(request):
+def alteraEscala(request, id):
     print('Alteração de Escala')
     nmEscala = request.POST.get('nmEscala').strip()
     ent1 = request.POST.get('ent1')
@@ -971,8 +971,10 @@ def alteraEscala(request):
             sab = request.POST.get('sab', False) == 'on'
             domin = request.POST.get('domin', False) == 'on'
             # status = request.POST.get('sitEscala', False) == 'on'
+            print(nmEscala)
             if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
-                id = request.POST.get('id')
+                # id = request.POST.get('id')
+                print(id)
                 escala = Escala.objects.get(id=id)
                 escala.nmEscala = nmEscala
                 escala.horEnt1 = ent1
@@ -990,7 +992,7 @@ def alteraEscala(request):
                 # escala.status 
                 escala.save()
 
-                messages.success(request, 'Escala Alterado com Sucesso!')
+                # messages.success(request, 'Escala Alterado com Sucesso!')
                 return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
                 # return render(request, 'cadastroEscala/index.html', context)
 
