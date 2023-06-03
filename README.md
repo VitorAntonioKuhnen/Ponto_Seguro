@@ -117,7 +117,7 @@ Após baixar o projeto, você pode abrir com a IDE de sua preferência (IDE usad
 * Para clonar o projeto na sua máquina:
 - Com o Git Bash instalado na sua máquina, clica com o direito do mouse na área de trabalho e selecione Git Bash Here (Irá abrir um terminal no PC) e digite o seguinte comando:
 ~~~
-git clone -b back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
+git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 ~~~ 
 * Para baixar o projeto na sua máquina
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
