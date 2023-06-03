@@ -167,17 +167,7 @@ python -m venv venv
 pip install -r requirements.txt
 ~~~
 
-* Após baixar as dependências, ainda no terminal da IDE e faça a migração do banco de dado 
-~~~
-python manage.py runserver
-~~~
-
-* na seguência para converter o cartão ponto, é necessário instalar o arquivo, digite esse comando:
-~~~
-pip install xhtml2pdf
-~~~
-
-* Após a migração do banco pode iniciar o servidor, para rodar o projeto digite esse comando:
+* Após a instalação dos requirements.txt digite o comando a seguir para iniciar o servidor:
 ~~~
 python manage.py runserver
 ~~~
