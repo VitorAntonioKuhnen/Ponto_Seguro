@@ -117,7 +117,7 @@ Após baixar o projeto, você pode abrir com a IDE de sua preferência (IDE usad
 * Para clonar o projeto na sua máquina:
 - Com o Git Bash instalado na sua máquina, clica com o direito do mouse na área de trabalho e selecione Git Bash Here (Irá abrir um terminal no PC) e digite o seguinte comando:
 ~~~
-git clone -b back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
+git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 ~~~ 
 * Para baixar o projeto na sua máquina
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
@@ -167,17 +167,7 @@ python -m venv venv
 pip install -r requirements.txt
 ~~~
 
-* Após baixar as dependências, ainda no terminal da IDE e faça a migração do banco de dado 
-~~~
-python manage.py runserver
-~~~
-
-* na seguência para converter o cartão ponto, é necessário instalar o arquivo, digite esse comando:
-~~~
-pip install xhtml2pdf
-~~~
-
-* Após a migração do banco pode iniciar o servidor, para rodar o projeto digite esse comando:
+* Após a instalação dos requirements.txt digite o comando a seguir para iniciar o servidor:
 ~~~
 python manage.py runserver
 ~~~
