@@ -335,6 +335,8 @@ def inicio(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         return render(request, 'home/index.html', context) 
+                    else:    
+                        return redirect(RegistrarPonto)
                 else:    
                     return redirect(RegistrarPonto) 
         else:
@@ -343,6 +345,8 @@ def inicio(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         return render(request, 'home/index.html', context) 
+                    else:    
+                        return redirect(RegistrarPonto)
                 else:    
                     return redirect(RegistrarPonto)        
         # else :
@@ -431,6 +435,8 @@ def historico(request):
                         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                         if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                             return render(request, 'historico/index.html', context)
+                        else:    
+                            return redirect(RegistrarPonto)                        
                     else:    
                         return redirect(RegistrarPonto) 
             else :
@@ -439,6 +445,8 @@ def historico(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         return render(request, 'historico/index.html', context)
+                    else:    
+                            return redirect(RegistrarPonto) 
                 else:    
                     return redirect(RegistrarPonto) 
                 # print('não tenho registros')
@@ -566,6 +574,8 @@ def aprovaPonto(request):
                         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                         if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                             return render(request, 'aprovaPonto/index.html',context) 
+                        else:    
+                            return redirect(RegistrarPonto) 
                     else:    
                         return redirect(RegistrarPonto) 
             else :
@@ -574,6 +584,8 @@ def aprovaPonto(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         return render(request, 'aprovaPonto/index.html',context) 
+                    else:    
+                            return redirect(RegistrarPonto) 
                 else:    
                     return redirect(RegistrarPonto) 
                 # print('não tenho registros')
@@ -697,6 +709,8 @@ def aprovaPontoHE(request):
                         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                         if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                             return render(request, 'aprovaPontoHE/index.html',context) 
+                        else:    
+                            return redirect(RegistrarPonto) 
                     else:    
                         return redirect(RegistrarPonto) 
             else :
@@ -705,6 +719,8 @@ def aprovaPontoHE(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         return render(request, 'aprovaPontoHE/index.html',context) 
+                    else:    
+                            return redirect(RegistrarPonto) 
                 else:    
                     return redirect(RegistrarPonto) 
                 # print('não tenho registros')
@@ -718,6 +734,7 @@ def aprovar(request, id):
     historico = HistRegistro.objects.get(id = id)
     historico.sitAPR = 'APR'
     historico.save()
+    processos.enviaEmail('vitorkuhnen14@gmail.com', 'Aprovado', 'Registro de Ponto Aprovado - Ponto Seguro ')
     messages.success(request, 'Registro Aprovado com Sucesso!')
     return render(request, 'parciais/tabela_aprovacao.html', context)
 
@@ -729,91 +746,22 @@ def desaprovar(request, id):
     historico.sitAPR = 'REJ'
     historico.save()
     context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) 
-
+    processos.enviaEmail('vitorkuhnen14@gmail.com', 'Reprovado', 'Registro de Ponto Rejeitado - Ponto Seguro ')
 # vitorkuhnen14@gmail.com
-    enviaEmail('vitor.kuhnen@alunos.sc.senac.br', 'Vítor', 'Registro de Ponto Rejeitado - Ponto Seguro ')
+    # enviaEmail('vitorkuhnen14@gmail.com', 'Registro de Ponto Rejeitado - Ponto Seguro ')
     messages.error(request, 'Registro Rejeitado com Sucesso!')
     return render(request, 'parciais/tabela_aprovacao.html', context)
-
-
-
-@login_required
-def enviaEmail(email, user, titulo):
-    # html_content = render_to_string('email/token.html', {'token': token})
-    text_content = strip_tags('''
-    <div class="card">
-      <h1>Confirmação de registro de ponto</h1>
-      <p>
-        <span class="label">Data do registro:</span>
-        <span>15/05/2023</span>
-      </p>
-      <p>
-        <span class="label">Situação:</span>
-        <span>Rejeitado</span>
-      </p>
-      <p>
-        <span class="label">Registros feitos:</span>
-        <span>Tudo certinho</span>
-      </p>
-    </div>''')
-    conteudo = 'Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!'
-    email = EmailMultiAlternatives(titulo, text_content, settings.EMAIL_HOST_USER, [email])
-    email.attach_alternative('''<html>
-  <head>
-    <style>
-      .card {
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,.1);
-        margin: 10px;
-        padding: 20px;
-        max-width: 400px;
-        font-family: Arial, sans-serif;
-      }
-
-      h1 {
-        font-size: 24px;
-        margin-top: 0;
-      }
-
-      p {
-        margin-bottom: 10px;
-      }
-
-      .label {
-        font-weight: bold;
-        display: inline-block;
-        width: 150px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>Confirmação de registro de ponto</h1>
-      <p>
-        <span class="label">Data do registro:</span>
-        <span>15/05/2023</span>
-      </p>
-      <p>
-        <span class="label">Situação:</span>
-        <span>Rejeitado</span>
-      </p>
-      <p>
-        <span class="label">Registros feitos:</span>
-        <span>Tudo certinho</span>
-      </p>
-    </div>
-  </body>
-</html>''', 'text/html')
-    email.send()
-    return "enviado"
 
 
 @login_required
 def escala(request):
     user = request.user
     context = {}
-    context['escalas'] = Escala.objects.all() 
+    escalas = Escala.objects.all() 
+    paginator = Paginator(escalas, 10)
+    page = request.GET.get('page')
+    context['escalas'] = paginator.get_page(page)
+
     if request.method == 'POST':
         print('Entrou no POST')
         if "btjustificar" in request.POST:
@@ -821,53 +769,7 @@ def escala(request):
                 processos.gravaJustificativa(request, user)
                 render(request, 'cadastroEscala/index.html', context)
             else:
-                render(request, 'cadastroEscala/index.html', context)
-        elif "btCadastrar" in request.POST:
-            print('Cadastro de Escala')
-
-            nmEscala = request.POST.get('nmEscala').strip()
-            ent1 = request.POST.get('ent1')
-            ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
-            sai1 = request.POST.get('sai1')
-            sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
-            ent2 = request.POST.get('ent2')
-            ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
-            sai2 = request.POST.get('sai2')
-            sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
-
-
-            seg = request.POST.get('seg', False) == 'on'
-            terc = request.POST.get('terc', False) == 'on'
-            quart = request.POST.get('quart', False) == 'on'
-            quint = request.POST.get('quint', False) == 'on'
-            sext = request.POST.get('sext', False) == 'on'
-            sab = request.POST.get('sab', False) == 'on'
-            domin = request.POST.get('domin', False) == 'on'
-            # status = request.POST.get('sitEscala', False) == 'on'
-            if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
-                Escala.objects.create(nmEscala = nmEscala, 
-                                    horEnt1 = ent1, 
-                                    horSai2 = sai1,
-                                    horEnt3 = ent2, 
-                                    horSai4 = sai2, 
-                                    segunda = seg, 
-                                    terca= terc, 
-                                    quarta = quart, 
-                                    quinta = quint, 
-                                    sexta = sext, 
-                                    sabado = sab, 
-                                    domingo = domin, 
-                                    status = True) 
-                messages.success(request, 'Escala Gravada com Sucesso!')
-                return render(request, 'cadastroEscala/index.html', context)
-
-            else:
-                return JsonResponse({'mensage':'Seleciona um dia da Semana!', 'tipo':'text-bg-danger'}) 
-                #messages.error(request, 'Selecione um dia da semana')    
-            #return render(request, 'cadastroEscala/index.html', context) 
-
-        elif "btAlteraCadastro" in request.POST:
-            print('Altera Cadastro de Escala')      
+                render(request, 'cadastroEscala/index.html', context)     
                 
     elif request.method == 'GET':  
             print('Entrou Get')       
@@ -881,7 +783,9 @@ def escala(request):
                     if horExtras:
                         horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                         if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
-                            render(request, 'cadastroEscala/index.html', context) 
+                            render(request, 'cadastroEscala/index.html', context)
+                        else:    
+                            return redirect(RegistrarPonto)      
                     else:    
                         return redirect(RegistrarPonto) 
                     
@@ -891,10 +795,10 @@ def escala(request):
                     horExtra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
                     if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
                         render(request, 'cadastroEscala/index.html', context) 
+                    else:    
+                            return redirect(RegistrarPonto)     
                 else:    
-                    return redirect(RegistrarPonto)                 
-                # print('não tenho registros')
-                # return redirect(RegistrarPonto)        
+                    return redirect(RegistrarPonto)                   
     return render(request, 'cadastroEscala/index.html', context)
 
 
@@ -902,6 +806,7 @@ def escala(request):
 def cadastroEscala(request):
     print('Cadastro de Escala')
     nmEscala = request.POST.get('nmEscala').strip()
+
     ent1 = request.POST.get('ent1')
     ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
     sai1 = request.POST.get('sai1')
@@ -920,7 +825,6 @@ def cadastroEscala(request):
             sext = request.POST.get('sext', False) == 'on'
             sab = request.POST.get('sab', False) == 'on'
             domin = request.POST.get('domin', False) == 'on'
-            # status = request.POST.get('sitEscala', False) == 'on'
             if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
                 Escala.objects.create(nmEscala = nmEscala, 
                                     horEnt1 = ent1, 
@@ -935,46 +839,38 @@ def cadastroEscala(request):
                                     sabado = sab, 
                                     domingo = domin, 
                                     status = True) 
-                # messages.success(request, 'Escala Gravada com Sucesso!')
-                return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
-                # return render(request, 'cadastroEscala/index.html', context)
-
+                return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success', 'sit':'OK'}) 
             else:
-                return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
+                return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger', 'sit':'ERRO'})  
         else:
-            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'}) 
+            return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger', 'sit':'ERRO'}) 
     else:
-        return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
-    #return render(request, 'cadastroEscala/index.html', context) 
+        return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger', 'sit':'ERRO'})  
 
 
 @login_required
 def alteraEscala(request, id):
     print('Alteração de Escala')
-    nmEscala = request.POST.get('nmEscala').strip()
-    ent1 = request.POST.get('ent1')
+    nmEscala = request.POST.get('nmEscala'+ str(id))
+    ent1 = request.POST.get('ent1'+ str(id))
     ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
-    sai1 = request.POST.get('sai1')
+    sai1 = request.POST.get('sai1'+ str(id))
     sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
-    ent2 = request.POST.get('ent2')
+    ent2 = request.POST.get('ent2'+ str(id))
     ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
-    sai2 = request.POST.get('sai2')
+    sai2 = request.POST.get('sai2'+ str(id))
     sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
-
     if(nmEscala != ''):
         if (ent1 != None) and (sai1 != None):
-            seg = request.POST.get('seg', False) == 'on'
-            terc = request.POST.get('terc', False) == 'on'
-            quart = request.POST.get('quart', False) == 'on'
-            quint = request.POST.get('quint', False) == 'on'
-            sext = request.POST.get('sext', False) == 'on'
-            sab = request.POST.get('sab', False) == 'on'
-            domin = request.POST.get('domin', False) == 'on'
-            # status = request.POST.get('sitEscala', False) == 'on'
-            print(nmEscala)
+            seg = request.POST.get('seg'+ str(id), False) == 'on'
+            terc = request.POST.get('terc'+ str(id), False) == 'on'
+            quart = request.POST.get('quart'+ str(id), False) == 'on'
+            quint = request.POST.get('quint'+ str(id), False) == 'on'
+            sext = request.POST.get('sext'+ str(id), False) == 'on'
+            sab = request.POST.get('sab'+ str(id), False) == 'on'
+            domin = request.POST.get('domin'+ str(id), False) == 'on'
+            status = request.POST.get('sitEscala'+ str(id), False) == 'on'
             if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
-                # id = request.POST.get('id')
-                print(id)
                 escala = Escala.objects.get(id=id)
                 escala.nmEscala = nmEscala
                 escala.horEnt1 = ent1
@@ -988,18 +884,13 @@ def alteraEscala(request, id):
                 escala.sexta = sext
                 escala.sabado = sab
                 escala.domingo = domin
-                #Validar etapa do status
-                # escala.status 
+                escala.status = status
                 escala.save()
 
-                # messages.success(request, 'Escala Alterado com Sucesso!')
                 return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
-                # return render(request, 'cadastroEscala/index.html', context)
-
             else:
                 return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
         else:
             return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'})  
     else:
         return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
-    #return render(request, 'cadastroEscala/index.html', context) 

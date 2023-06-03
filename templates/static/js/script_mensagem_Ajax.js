@@ -9,7 +9,7 @@ $(document).ready(function (e) {
 
         // Envie a solicitação AJAX para a View do Django
         $.ajax({
-            url: '/cadastroEscala', // Substitua pelo URL correto da sua View
+            url: '/cadastroEscala/', // Substitua pelo URL correto da sua View
             type: 'POST', // Ou 'GET', dependendo da configuração da sua View
             headers: { 'X-CSRFToken': crf_token },
             data: formulario,
@@ -21,6 +21,28 @@ $(document).ready(function (e) {
                 // if (response.tipo) {
                 $('#mensage').addClass(response.tipo); // Define o tipo na classe
                 $('#mensage').addClass('show'); // Define o tipo na classe
+                if (response.sit == 'OK'){
+
+                    //Fecha o Modal
+                    $('#btnCancelar').click();
+                    
+                    //Limpa os Inputs
+                    $('#inputCad').val('');
+                    $('#ent1Cad').val('');
+                    $('#sai1Cad').val('');
+                    $('#ent2Cad').val('');
+                    $('#sai2Cad').val('');
+                    
+                    // Desmarca Dia da Semana 
+                    $('#segCad').prop('checked', false);
+                    $('#tercCad').prop('checked', false);
+                    $('#quartCad').prop('checked', false);
+                    $('#quintCad').prop('checked', false);
+                    $('#sextCad').prop('checked', false);
+                    $('#sabCad').prop('checked', false);
+                    $('#dominCad').prop('checked', false);
+
+                }
                 // $('#mensage').show();
                 // }
             },
@@ -50,19 +72,14 @@ $(document).ready(function (e) {
 
 });
 
-function altEscala(e) {
+function altEscala(e, id) {
     e.preventDefault();
     let formulario = $('#alteraEscala').serializeArray();
     console.log(formulario);
-   
-   //Precisa pegar o ID que tem no form da URL para conseguir efetuar o processo de alteração do registro selecionado 
-   
-    let escalaId = $(this).data('id'); 
-    formulario.push({ name: 'id', value: escalaId });
-    let urlEscala = '/alteraEscala/' + escalaId + '/';
+
     // Envie a solicitação AJAX para a View do Django
     $.ajax({
-        url: urlEscala, // Substitua pelo URL correto da sua View
+        url:  '/alteraEscala/' + id + '/', // Substitua pelo URL correto da sua View
         type: 'POST', // Ou 'GET', dependendo da configuração da sua View
         headers: { 'X-CSRFToken': crf_token },
         data: formulario,

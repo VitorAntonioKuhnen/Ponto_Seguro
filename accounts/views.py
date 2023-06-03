@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import auth, messages
 from .models import Users, Token
-from home.models import HistRegistro
+from home.models import HistRegistro, HoraExtra
 from .forms import FormWithCaptcha
 from processos import processos
 from django.conf import settings
@@ -45,14 +45,43 @@ def login(request):
 
                                 auth.login(request, check)
                                 registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
+                                print(registros)
                                 if registros:
                                     registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
                                     if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
                                         return redirect(views.inicio)
-                                    else: 
-                                        return redirect(views.RegistrarPonto) 
-                                else :
-                                    return redirect(views.RegistrarPonto)    
+                                    else:
+                                        horExtras =  HoraExtra.objects.filter(userExtra_id = username.id, dataExtra=data.today().date())
+                                        if horExtras:
+                                            horExtra = HoraExtra.objects.get(userExtra_id = username.id, dataExtra=data.today().date())
+                                            if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                                                return redirect(views.inicio)
+                                            else:
+                                                return redirect(views.RegistrarPonto)   
+                                        else:  
+                                            return redirect(views.RegistrarPonto)     
+                                else:
+                                        horExtras =  HoraExtra.objects.filter(userExtra_id = username.id, dataExtra=data.today().date())
+                                        if horExtras:
+                                            horExtra = HoraExtra.objects.get(userExtra_id = username.id, dataExtra=data.today().date())
+                                            print((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None))
+                                            if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                                                return redirect(views.inicio)
+                                            else:
+                                                return redirect(views.RegistrarPonto)   
+                                        else:  
+                                            return redirect(views.RegistrarPonto)    
+
+
+                                # registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
+                                # if registros:
+                                #     registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
+                                #     if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                                #         return redirect(views.inicio)
+                                #     else: 
+                                #         return redirect(views.RegistrarPonto) 
+                                # else :
+                                #     return redirect(views.RegistrarPonto)    
 
                             else:
                                 url = reverse('trocaSenha', args=[username.id])

@@ -7,11 +7,15 @@ from datetime import datetime as data, datetime as hora
 
 
 from io import BytesIO
-from unittest import result
+# from unittest import result
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.template.loader import render_to_string
+# from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
+
+from django.conf import settings
 
 
 def geradorToken(usuario):
@@ -90,11 +94,78 @@ def gravaJustificativa(request, user):
         user.save()
         messages.success(request, 'Justificativa Registrada com Sucesso')
         return True
-    
-    # print('Chegou até o fim do processo de Justificativa')    
-    # if direcionaTela != 'inicio':
-    #     print('tela é diferente de INICIO')
-    #     return redirect(f"{direcionaTela}")
-    # else:
-    #     print('tela é a de INICIO')
-    #     return render(request, 'home/index.html', context)
+
+
+
+
+
+
+def enviaEmail(email, situacao, titulo):
+    # html_content = render_to_string('email/token.html', {'token': token})
+    text_content = strip_tags(f'''
+    <div class="card">
+      <h1>Confirmação de registro de ponto</h1>
+      <p>
+        <span class="label">Data do registro:</span>
+        <span>15/05/2023</span>
+      </p>
+      <p>
+        <span class="label">Situação:</span>
+        <span>{situacao}</span>
+      </p>
+      <p>
+        <span class="label">Registros feitos:</span>
+        <span>Tudo certinho</span>
+      </p>
+    </div>''')
+    conteudo = 'Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!'
+    email = EmailMultiAlternatives(titulo, text_content, settings.EMAIL_HOST_USER, [email])
+    email.attach_alternative('''<html>
+  <head>
+    <style>
+      .card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        margin: 10px;
+        padding: 20px;
+        max-width: 400px;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-top: 0;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .label {
+        font-weight: bold;
+        display: inline-block;
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Confirmação de registro de ponto</h1>
+      <p>
+        <span class="label">Data do registro:</span>
+        <span>15/05/2023</span>
+      </p>
+      <p>
+        <span class="label">Situação:</span>
+        <span>''' + situacao + '''</span>
+      </p>
+      <p>
+        <span class="label">Registros feitos:</span>
+        <span>Tudo certinho</span>
+      </p>
+    </div>
+  </body>
+</html>''', 'text/html')
+    email.send()
+    return "enviado"

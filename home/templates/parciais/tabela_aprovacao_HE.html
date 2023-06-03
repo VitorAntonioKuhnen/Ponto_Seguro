@@ -10,6 +10,7 @@
         <th id="title" scope="col">Primeira Saida</th>
         <th id="title" scope="col">Segunda Entrada</th>
         <th id="title" scope="col">Segunda Saida</th>
+        <th id="title" scope="col">Horas Trabalhadas</th>
         <th id="title" scope="col">Status</th>
         <th id="title" scope="col">Justificativa</th>
         <th id="title" scope="col">Rejeitar</th>
@@ -71,6 +72,23 @@
           ------  
         {% endif %}
       </td>
+
+      <td>
+        {% comment %} {% if registros.horSai2 != None %}
+          {% if registros.horEnt1 != None and registros.horSai2 != None and registros.horEnt3 == None and registros.horSai4 == None %}
+            {{registros.horEnt1 - registros.horSai2}} 
+          {% if (registros.horEnt1 != None) and (registros.horSai2 != None) and (registros.horEnt3 != None) and (registros.horSai4 != None) %}
+            {{registros.horEnt1 - registros.horSai4}} 
+
+          {% else %}
+            0  
+          {% endif %}
+        {% else %}
+          ------  
+        {% endif %} {% endcomment %}
+        0
+      </td>
+
       <td>
         {% if registros.sitAPR == "PEN" %}
           Pendente

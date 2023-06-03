@@ -58,7 +58,7 @@
         </div>{% endcomment %}
       </form> 
       <!-- Content -->
-      <div class="content overflow-auto p-4 rounded">
+      <form class="content overflow-auto p-4 rounded"   id="alteraEscala" method="POST"> {% csrf_token %}
         <table id="myTable" class="table table-hover table-striped table-bordered">
 
           <thead>
@@ -76,7 +76,13 @@
                 <tr>
                   <th scope="row">{{escala.id}}</th>
                   <td>{{escala.nmEscala}}</td>
-                  <td>{{escala.status}}</td>
+                  <td>
+                    {% if escala.status %}
+                      Ativo
+                    {% else %}
+                      Inativo  
+                    {% endif %}
+                  </td>
                   <td class="d-flex justify-content-center" >
 
                     {% comment %} <button type="button" class="btn-table" data-bs-toggle="modal" data-bs-target="#cadastrar-escala-modal">
@@ -106,39 +112,38 @@
                           </div>
                           <!-- Modal body -->
                           <div class="modal-body">
-                            <form class="container-fluid" action="{% url 'alteraEscala' escala.id %}" id="alteraEscala" method="POST"> {% csrf_token %}
+                            <div class="container-fluid">
                               <div class="row">
                                 <div class="col-12">
                                   <!-- Container -->
                                   <div id="container" class="container col-12 col-sm-12">
                                     <h4>Escala</h4>
                                     <br />
-                                    <input type="text" style="display: none;"  name="id" value="{{escala.id}}">
                                     <!-- Content -->
                                     <div class="content-modal rounded">
                                       <div class="modal-body">
                                         <div>
                                           <div class="mb-3">
                                             <div class="row mb-3">
-                                              <label for="input" class="col-sm-2 col-form-label">Descrição</label>
+                                              <label for="input{{escala.id}}" class="col-sm-2 col-form-label">Descrição</label>
                                               <div class="col-sm-10">
-                                                <input type="" name="nmEscala" class="form-control" id="input" value="{{escala.nmEscala}}">
+                                                <input type="" name="nmEscala{{escala.id}}" class="form-control" id="input{{escala.id}}" value="{{escala.nmEscala}}">
                                                 <div class=" d-flex justify-content-between gap-2 times ml-5">
                                                   <div>
-                                                    <label for="ent1" class="col-form-label">1º Entrada</label>
-                                                    <input type="time" class="form-control" id="ent1" name="ent1" value="{{escala.horEnt1}}">
+                                                    <label for="ent1{{escala.id}}" class="col-form-label">1º Entrada</label>
+                                                    <input type="time" class="form-control" id="ent1{{escala.id}}" name="ent1{{escala.id}}" value="{{escala.horEnt1}}">
                                                   </div>
                                                   <div>
-                                                    <label for="sai1" class="col-form-label">1º Saida</label>
-                                                    <input type="time" class="form-control" id="sai1" name="sai1" value="{{escala.horSai2}}">
+                                                    <label for="sai1{{escala.id}}" class="col-form-label">1º Saida</label>
+                                                    <input type="time" class="form-control" id="sai1{{escala.id}}" name="sai1{{escala.id}}" value="{{escala.horSai2}}">
                                                   </div>
                                                   <div>
-                                                    <label for="ent2" class="col-form-label">2º Entrada</label>
-                                                    <input type="time" class="form-control" id="ent2" name="ent2" value="{{escala.horEnt3}}">
+                                                    <label for="ent2{{escala.id}}" class="col-form-label">2º Entrada</label>
+                                                    <input type="time" class="form-control" id="ent2{{escala.id}}" name="ent2{{escala.id}}" value="{{escala.horEnt3}}">
                                                   </div>
                                                   <div>
-                                                    <label for="sai2" class="col-form-label">2º Saída</label>
-                                                    <input type="time" class="form-control" id="sai2" name="sai2" value="{{escala.horSai4}}">
+                                                    <label for="sai2{{escala.id}}" class="col-form-label">2º Saída</label>
+                                                    <input type="time" class="form-control" id="sai2{{escala.id}}" name="sai2{{escala.id}}" value="{{escala.horSai4}}">
                                                   </div>
                                                 </div>
                                               </div>
@@ -150,52 +155,52 @@
                                               <b>Dias da Semana</b>
                                               <div class=" d-flex justify-content-center gap-3 times pb-2">
                                                 <div>
-                                                  <label class="form-check-label" for="seg">
+                                                  <label class="form-check-label" for="seg{{escala.id}}">
                                                     Segunda
                                                   </label>
-                                                  <input name="seg" class="form-check-input" type="checkbox" id="seg" {% if escala.segunda %} checked {% endif %}/>
+                                                  <input name="seg{{escala.id}}" class="form-check-input" type="checkbox" id="seg{{escala.id}}" {% if escala.segunda %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="terc">
+                                                  <label class="form-check-label" for="terc{{escala.id}}">
                                                     Terça
                                                   </label>
-                                                  <input name="terc" class="form-check-input" type="checkbox" id="terc" {% if escala.terca %} checked {% endif %}/>
+                                                  <input name="terc{{escala.id}}" class="form-check-input" type="checkbox" id="terc{{escala.id}}" {% if escala.terca %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="quart">
+                                                  <label class="form-check-label" for="quart{{escala.id}}">
                                                     Quarta
                                                   </label>
-                                                  <input name="quart" class="form-check-input" type="checkbox" id="quart" {% if escala.quarta %} checked {% endif %}/>
+                                                  <input name="quart{{escala.id}}" class="form-check-input" type="checkbox" id="quart{{escala.id}}" {% if escala.quarta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="quint">
+                                                  <label class="form-check-label" for="quint{{escala.id}}">
                                                     Quinta
                                                   </label>
-                                                  <input name="quint" class="form-check-input" type="checkbox" id="quint" {% if escala.quinta %} checked {% endif %}/>
+                                                  <input name="quint{{escala.id}}" class="form-check-input" type="checkbox" id="quint{{escala.id}}" {% if escala.quinta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="sext">
+                                                  <label class="form-check-label" for="sext{{escala.id}}">
                                                     Sexta
                                                   </label>
-                                                  <input name="sext" class="form-check-input" type="checkbox" id="sext" {% if escala.sexta %} checked {% endif %}/>
+                                                  <input name="sext{{escala.id}}" class="form-check-input" type="checkbox" id="sext{{escala.id}}" {% if escala.sexta %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="sab">
+                                                  <label class="form-check-label" for="sab{{escala.id}}">
                                                     Sábado
                                                   </label>
-                                                  <input name="sab" class="form-check-input" type="checkbox" id="sab"  {% if escala.sabado %} checked {% endif %}/>
+                                                  <input name="sab{{escala.id}}" class="form-check-input" type="checkbox" id="sab{{escala.id}}"  {% if escala.sabado %} checked {% endif %}/>
                                                 </div>
                                                 <div>
-                                                  <label class="form-check-label" for="domin">
+                                                  <label class="form-check-label" for="domin{{escala.id}}">
                                                     Domingo
                                                   </label>
-                                                  <input name="domin" class="form-check-input" type="checkbox" id="domin" {% if escala.domingo %} checked {% endif %} />
+                                                  <input name="domin{{escala.id}}" class="form-check-input" type="checkbox" id="domin{{escala.id}}" {% if escala.domingo %} checked {% endif %} />
                                                 </div>
                                               </div>
                                               <b>Situação</b>
                                               <div class="form-check">
-                                                <input name="sitEscala" class="form-check-input" type="checkbox" id="sitEscala"  {% if escala.status %} checked {% endif %}/>
-                                                <label class="form-check-label" for="sitEscala">
+                                                <input name="sitEscala{{escala.id}}" class="form-check-input" type="checkbox" id="sitEscala{{escala.id}}"  {% if escala.status %} checked {% endif %}/>
+                                                <label class="form-check-label" for="sitEscala{{escala.id}}">
                                                   Ativar
                                                 </label>
                                               </div>
@@ -205,14 +210,14 @@
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                          <button name="btAlteraEscala" onclick="altEscala(event)" type="button" class="btn btn-success px-4">Alterar</button>
+                                          <button name="btAlteraEscala" onclick="altEscala(event, {{escala.id}})" type="button" class="btn btn-success px-4">Alterar</button>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </form>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -235,7 +240,7 @@
             {% endif %}
           </tbody>
         </table>
-      </div>
+      </form>
     </div>
 
     </div>
@@ -243,11 +248,13 @@
     <footer>
       <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+          {% if escalas.has_previous %}
+          <li class="page-item"><a class="page-link" href="?&page={{escalas.previous_page_number}}">Anterior</a></li>
+          {% endif %}
+          <li class="page-item page-link">{{escalas.number}} de {{escalas.paginator.num_pages}}</li>
+          {% if escalas.has_next %}
+          <li class="page-item"><a class="page-link" href="?&page={{escalas.next_page_number}}">Próximo</a></li>
+          {% endif %}
         </ul>
       </nav>
     </footer>
@@ -256,7 +263,7 @@
       <!-- Modal do Button Incluir-->
       <div class="modal fade" id="cadastrar-escala-modal" tabindex="-1" aria-labelledby="cadastrarEscalaModalLabel"
       aria-hidden="true">
-        <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST" > {% csrf_token %}
+        <form class="modal-dialog modal-lg" action="{% url 'cadastroEscala' %}" method="POST" id="cadastroEscala"> {% csrf_token %}
           <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header pl-5">
@@ -278,25 +285,25 @@
                           <div>
                             <div class="mb-3">
                               <div class="row mb-3">
-                                <label for="input" class="col-sm-2 col-form-label">Descrição</label>
+                                <label for="inputCad" class="col-sm-2 col-form-label">Descrição</label>
                                 <div class="col-sm-10">
-                                  <input name="nmEscala" type="" class="form-control" id="input">
+                                  <input name="nmEscala" type="" class="form-control" id="inputCad">
                                   <div class=" d-flex justify-content-between gap-2 times ml-5">
                                     <div>
-                                      <label for="ent1" class="col-form-label">1º Entrada</label>
-                                      <input type="time" class="form-control" id="ent1" name="ent1" value="">
+                                      <label for="ent1Cad" class="col-form-label">1º Entrada</label>
+                                      <input type="time" class="form-control" id="ent1Cad" name="ent1" value="">
                                     </div>
                                     <div>
-                                      <label for="sai1" class="col-form-label">1º Saida</label>
-                                      <input type="time" class="form-control" id="sai1" name="sai1" value="">
+                                      <label for="sai1Cad" class="col-form-label">1º Saida</label>
+                                      <input type="time" class="form-control" id="sai1Cad" name="sai1" value="">
                                     </div>
                                     <div>
-                                      <label for="ent2" class="col-form-label">2º Entrada</label>
-                                      <input type="time" class="form-control" id="ent2" name="ent2" value="">
+                                      <label for="ent2Cad" class="col-form-label">2º Entrada</label>
+                                      <input type="time" class="form-control" id="ent2Cad" name="ent2" value="">
                                     </div>
                                     <div>
-                                      <label for="sai2" class="col-form-label">2º Saída</label>
-                                      <input type="time" class="form-control" id="sai2" name="sai2" value="">
+                                      <label for="sai2Cad" class="col-form-label">2º Saída</label>
+                                      <input type="time" class="form-control" id="sai2Cad" name="sai2" value="">
                                     </div>
                                   </div>
                                 </div>
@@ -307,46 +314,46 @@
                                 <b>Dias da Semana</b>
                                 <div class=" d-flex justify-content-center gap-3 times pb-2">
                                   <div>
-                                    <label class="form-check-label" for="seg">
+                                    <label class="form-check-label" for="segCad">
                                       Segunda
                                     </label>
-                                    <input name="seg" class="form-check-input" type="checkbox" id="seg" />
+                                    <input name="seg" class="form-check-input" type="checkbox" id="segCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="terc">
+                                    <label class="form-check-label" for="tercCad">
                                       Terça
                                     </label>
-                                    <input name="terc" class="form-check-input" type="checkbox" id="terc" />
+                                    <input name="terc" class="form-check-input" type="checkbox" id="tercCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="quart">
+                                    <label class="form-check-label" for="quartCad">
                                       Quarta
                                     </label>
-                                    <input name="quart" class="form-check-input" type="checkbox" id="quart" />
+                                    <input name="quart" class="form-check-input" type="checkbox" id="quartCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="quint">
+                                    <label class="form-check-label" for="quintCad">
                                       Quinta
                                     </label>
-                                    <input name="quint" class="form-check-input" type="checkbox" id="quint" />
+                                    <input name="quint" class="form-check-input" type="checkbox" id="quintCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="sext">
+                                    <label class="form-check-label" for="sextCad">
                                       Sexta
                                     </label>
-                                    <input name="sext" class="form-check-input" type="checkbox" id="sext" />
+                                    <input name="sext" class="form-check-input" type="checkbox" id="sextCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="sab">
+                                    <label class="form-check-label" for="sabCad">
                                       Sábado
                                     </label>
-                                    <input name="sab" class="form-check-input" type="checkbox" id="sab" />
+                                    <input name="sab" class="form-check-input" type="checkbox" id="sabCad" />
                                   </div>
                                   <div>
-                                    <label class="form-check-label" for="domin">
+                                    <label class="form-check-label" for="dominCad">
                                       Domingo
                                     </label>
-                                    <input name="domin" class="form-check-input" type="checkbox" id="domin" />
+                                    <input name="domin" class="form-check-input" type="checkbox" id="dominCad" />
                                   </div>
                                 </div>
                                 {% comment %} <b>Situação</b>
@@ -362,7 +369,7 @@
                         </div>
                        <!-- Modal footer -->
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                          <button id="btnCancelar" type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
                           <button name="btCadastrar" type="submit" class="btn btn-success px-3">Cadastrar</button>
                         </div>
                       </div>
@@ -539,5 +546,5 @@
   {% endblock  %}
 
   {% block js %}
-    <script src="{% static 'js/script_mensagem_jquery.js' %}"></script>
+    <script src="{% static 'js/script_mensagem_Ajax.js' %}"></script>
   {% endblock  %}
