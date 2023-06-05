@@ -138,7 +138,10 @@ USER = 'Usuário com o acesso a todo o sistema - admin'
 PASSWORD = 'senha do banco dado'
 HOST ='host do banco dado'
 PORT = '3306'
-ssl = 
+ssl = '{'require_secure_transport': <False ou True}'
+                                                                                                                                                     
+TOKEK 'Token da APi de feriado site: https://api.invertexto.com/api-feriados'
+                                                                                                                                                                                                              
 ~~~
  
 *Após inserir as variáveis de segurança do sistema, abra o cmd (command prompt) e crie um venv (ambiente virtual do python) para criar a venv digite esse comando:
