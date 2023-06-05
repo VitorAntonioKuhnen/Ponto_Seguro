@@ -21,8 +21,6 @@
 
 - [Abrir e rodar o projeto](#abrir-e-rodar-o-projeto)
 
-- [Equiepe] (#equipe)
-
 ## Descrição do projeto 
 
 <p align="justify">
