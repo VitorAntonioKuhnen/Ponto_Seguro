@@ -2,7 +2,7 @@ from operator import mod
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
-from home.models import Escala
+from home.models import Escala, Endereco
 
 
 class Users(AbstractUser):
@@ -18,6 +18,7 @@ class Users(AbstractUser):
     dat_admissao = models.DateField(blank=True, null=True)
     dat_inicia_trab = models.DateField(blank=True, null=True)
     superior = models.ForeignKey('Users', on_delete=models.DO_NOTHING, blank=True, null=True)
+    endereco = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING)
 
 
     def __str__(self):

@@ -74,19 +74,18 @@
       </td>
 
       <td>
-        {% comment %} {% if registros.horSai2 != None %}
-          {% if registros.horEnt1 != None and registros.horSai2 != None and registros.horEnt3 == None and registros.horSai4 == None %}
+         {% comment %} {% if registros.horSai2 != None %}
+          {% if registros.horEnt1 != None and registros.horSai2 != None and registros.horEnt3 == None and registros.horSai4 == None %}  
             {{registros.horEnt1 - registros.horSai2}} 
-          {% if (registros.horEnt1 != None) and (registros.horSai2 != None) and (registros.horEnt3 != None) and (registros.horSai4 != None) %}
-            {{registros.horEnt1 - registros.horSai4}} 
-
+          {% if (registros.horEnt1 != None) and (registros.horSai2 != None) and (registros.horEnt3 != None) and (registros.horSai4 != None) %}  
+            {{registros.horEnt1 - registros.horSai4}}
           {% else %}
             0  
           {% endif %}
         {% else %}
           ------  
         {% endif %} {% endcomment %}
-        0
+        {{registros.diff_formatted}}
       </td>
 
       <td>

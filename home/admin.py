@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Escala, HistRegistro, Justificativa, TipoJustificativa, HoraExtra
+from .models import Escala, HistRegistro, Justificativa, TipoJustificativa, HoraExtra, Endereco, Feriado, Level_Feriado, Tipo_Feriado
 
 
 class EscalaAdmin(admin.ModelAdmin):
@@ -61,3 +61,32 @@ class HoraExtraAdmin(admin.ModelAdmin):
     readonly_fields = ('justificativas',)
 
 admin.site.register(HoraExtra, HoraExtraAdmin)
+
+
+class EnderecoAdmin(admin.ModelAdmin):
+    list_display = ['logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'cep']
+    list_display_links = ['logradouro']
+    search_fields = ['logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'cep']
+
+admin.site.register(Endereco, EnderecoAdmin)
+
+class Tipo_FeriadoAdmin(admin.ModelAdmin):
+    list_display = ['nmTipo']
+    list_display_links = ['nmTipo']
+    search_fields = ['nmTipo']
+
+admin.site.register(Tipo_Feriado, Tipo_FeriadoAdmin)
+
+class Level_FeriadoAdmin(admin.ModelAdmin):
+    list_display = ['nmLevel', 'endereco']
+    list_display_links = ['nmLevel', 'endereco']
+    search_fields = ['nmLevel', 'endereco']
+
+admin.site.register(Level_Feriado, Level_FeriadoAdmin)
+
+class FeriadoAdmin(admin.ModelAdmin):
+    list_display = ['data', 'nome', 'tipo', 'level']
+    list_display_links = ['data', 'nome', 'tipo', 'level']
+    search_fields = ['data', 'nome', 'tipo', 'level']
+
+admin.site.register(Feriado, FeriadoAdmin)

@@ -1,5 +1,5 @@
-from pyexpat import model
 from django.db import models
+from datetime import datetime, time
 # from accounts.models import Users
 
 
@@ -46,6 +46,32 @@ class HoraExtra(models.Model):
        db_table = 'horaextra'
        verbose_name = 'Hora Extra' 
        verbose_name_plural = 'Horas Extras'
+
+    @property
+    def diff_formatted(self):
+
+        if (self.horEnt1 is not None) and (self.horSai2 is not None) and (self.horEnt3 is None) and (self.horSai4 is None):
+            primeiroPeriod = datetime.combine(datetime.today(), self.horEnt1) - datetime.combine(datetime.today(), self.horSai2)
+            hours = abs(primeiroPeriod.total_seconds()) // 3600
+            minutes = (abs(primeiroPeriod.total_seconds()) % 3600) // 60
+            return f"{int(hours):02d}:{int(minutes):02d}"  
+        
+        elif (self.horEnt1 is not None) and (self.horSai2 is not None) and (self.horEnt3 is not None) and (self.horSai4 is None):
+            primeiroPeriod = datetime.combine(datetime.today(), self.horEnt1) - datetime.combine(datetime.today(), self.horSai2)
+            hours = abs(primeiroPeriod.total_seconds()) // 3600
+            minutes = (abs(primeiroPeriod.total_seconds()) % 3600) // 60
+            return f"{int(hours):02d}:{int(minutes):02d}"  
+        
+        elif (self.horEnt1 is not None) and (self.horSai2 is not None) and (self.horEnt3 is not None) and (self.horSai4 is not None):
+            primeiroPeriod = datetime.combine(datetime.today(), self.horEnt1) - datetime.combine(datetime.today(), self.horSai2)
+            segundoPeriod = datetime.combine(datetime.today(), self.horEnt3) - datetime.combine(datetime.today(), self.horSai4)
+            horExt = primeiroPeriod + segundoPeriod
+            hours = abs(horExt.total_seconds()) // 3600
+            minutes = (abs(horExt.total_seconds()) % 3600) // 60
+            return f"{int(hours):02d}:{int(minutes):02d}"  
+        else:
+            return "00:00"  
+    
 
 class HistRegistro(models.Model):
     userReg = models.ForeignKey('accounts.Users', on_delete=models.DO_NOTHING)
@@ -98,3 +124,59 @@ class Justificativa(models.Model):
        db_table = 'justificativa'
        verbose_name = 'Justificativa'
        verbose_name_plural = 'Justificativas'
+
+
+class Endereco(models.Model):
+    logradouro = models.CharField(max_length=255)
+    numero = models.CharField(max_length=255)
+    complemento = models.CharField(max_length=255, blank=True, null=True)
+    bairro = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+    estado = models.CharField(max_length=255)
+    cep = models.IntegerField()
+    def __str__(self):
+        return self.logradouro
+        # return 'Logradouro: ' + self.logradouro + ' Nº: ' + self.numero + ' Bairro: ' + self.bairro + ' Cidade: ' + self.cidade + ' Estado: ' + self.estado  + ' CEP: ' + self.cep 
+
+    class Meta:
+       db_table = 'endereco'
+       verbose_name = 'Endereco'
+       verbose_name_plural = 'Enderecos'
+
+class Tipo_Feriado(models.Model):
+    nmTipo = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.nmTipo
+    
+    class Meta:
+       db_table = 'tipo_feriado'
+       verbose_name = 'Tipo_Feriado'
+       verbose_name_plural = 'Tipos_de_Feriados'
+
+class Level_Feriado(models.Model):
+    nmLevel = models.CharField(max_length=255)
+    endereco = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING, blank=True, null=True)
+    
+    def __str__(self):
+        return self.nmLevel
+    
+    class Meta:
+       db_table = 'level_feriado'
+       verbose_name = 'Level_Feriado'
+       verbose_name_plural = 'Leveis_de_Feriados'
+
+class Feriado(models.Model):
+    data = models.DateField()
+    nome = models.CharField(max_length=255)
+    tipo = models.ForeignKey(Tipo_Feriado, on_delete=models.DO_NOTHING)
+    level = models.ForeignKey(Level_Feriado, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.nome
+    
+    class Meta:
+       db_table = 'feriado'
+       verbose_name = 'Feriado'
+       verbose_name_plural = 'Feriados'
+    

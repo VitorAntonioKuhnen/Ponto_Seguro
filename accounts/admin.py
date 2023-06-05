@@ -9,7 +9,7 @@ class UsuarioAdmin(UserAdmin):
     per_page = 16
     fieldsets = (
         (None, {
-            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'superior', 'cargo', 'is_active', 'is_staff', 'groups')
+            'fields': ('foto','username', 'matricula', 'password', 'first_name', 'last_name', 'email', 'superior', 'cargo', 'endereco',         'is_active', 'is_staff', 'groups')
         }),
         ('Registros', {
             'fields': ('escala', 'justificar', 'hora_extra')

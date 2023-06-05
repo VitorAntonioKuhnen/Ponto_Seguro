@@ -35,7 +35,6 @@ def login(request):
         if matricula.isdigit():
             if Users.objects.filter(matricula=matricula) != None:
                     username = Users.objects.get(matricula=matricula)
-                    auth.logout(request)
                     if username.check_password(senha):
                         check = auth.authenticate(
                             request, username=username, password=senha)
@@ -43,46 +42,55 @@ def login(request):
                         if check is not None:
                             if datetime.date.today() < username.dt_troca_senha:
 
-                                auth.login(request, check)
+                                
                                 registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
-                                print(registros)
                                 if registros:
                                     registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
                                     if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
+                                        auth.login(request, check)
                                         return redirect(views.inicio)
+                                    
+                                    # elif ((registro.horSai2 != None and username.escala.horSai4 == None)):
+                                    #     messages.warning(request, 'Você não pode mais registrar Pontos hoje!')
+                                    #     return redirect(login)
+
                                     else:
                                         horExtras =  HoraExtra.objects.filter(userExtra_id = username.id, dataExtra=data.today().date())
                                         if horExtras:
                                             horExtra = HoraExtra.objects.get(userExtra_id = username.id, dataExtra=data.today().date())
                                             if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                                                auth.login(request, check)
                                                 return redirect(views.inicio)
+                                            elif ((horExtra.horSai4 != None)):
+                                                messages.warning(request, 'Você não pode mais registrar Pontos hoje!')
+                                                return redirect(login)
                                             else:
+                                                auth.login(request, check)
                                                 return redirect(views.RegistrarPonto)   
                                         else:  
+                                            auth.login(request, check)
                                             return redirect(views.RegistrarPonto)     
                                 else:
                                         horExtras =  HoraExtra.objects.filter(userExtra_id = username.id, dataExtra=data.today().date())
                                         if horExtras:
                                             horExtra = HoraExtra.objects.get(userExtra_id = username.id, dataExtra=data.today().date())
-                                            print((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None))
                                             if ((horExtra.horEnt1 != None) and (horExtra.horSai2 == None)) or ((horExtra.horEnt1 != None) and (horExtra.horSai2 != None) and (horExtra.horEnt3 != None) and (horExtra.horSai4 == None)) :
+                                                auth.login(request, check)
                                                 return redirect(views.inicio)
+                                            
+                                            elif((horExtra.horSai4 != None)):
+                                                auth.logout(request)
+                                                print(horExtra.horSai2 != None)
+                                                print(username.escala.horSai4 == None)
+                                                print(horExtra.horSai4 != None)
+                                                messages.warning(request, 'Você não pode mais registrar Pontos hoje!')
+                                                return redirect(login)
                                             else:
+                                                auth.login(request, check)
                                                 return redirect(views.RegistrarPonto)   
                                         else:  
+                                            auth.login(request, check)
                                             return redirect(views.RegistrarPonto)    
-
-
-                                # registros = HistRegistro.objects.filter(userReg_id = username.id , dataReg = data.today())
-                                # if registros:
-                                #     registro = HistRegistro.objects.get(userReg_id = username.id , dataReg = data.today())
-                                #     if ((registro.horEnt1 != None) and (registro.horSai2 == None)) or ((registro.horEnt1 != None) and (registro.horSai2 != None) and (registro.horEnt3 != None) and (registro.horSai4 == None)) :
-                                #         return redirect(views.inicio)
-                                #     else: 
-                                #         return redirect(views.RegistrarPonto) 
-                                # else :
-                                #     return redirect(views.RegistrarPonto)    
-
                             else:
                                 url = reverse('trocaSenha', args=[username.id])
                                 return redirect(url)
