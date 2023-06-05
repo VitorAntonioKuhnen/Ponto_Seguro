@@ -1,6 +1,8 @@
 <p align="center">
    <img width="200" src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/86441a26-41fc-4eed-b51c-202fc168ed1a" />
 </p>
+
+### Ponto Seguro
 <hr>
 
 <p align="center">
@@ -13,15 +15,11 @@
 
 - [Funcionalidades](#funcionalidades)
 
-- [Aplicação](#aplicação)
-
 - [Ferramentas utilizadas](#ferramentas-utilizadas)
 
 - [Acesso ao projeto](#acesso-ao-projeto)
 
 - [Abrir e rodar o projeto](#abrir-e-rodar-o-projeto)
-
-- [Time de Desenvolvimento](#desenvolvedores)
 
 ## Descrição do projeto 
 
@@ -56,14 +54,6 @@
 
 :heavy_check_mark: `Funcionalidade 7:` Visualizar e alterar a marcação de ponto, com o propósito de fazer a correção em caso de atestado ou outra justificativa aceitável pela empresa.
 
-
-## Aplicação
-
-<div align="center">
-
-  </div>
-
-###
 
 ## Ferramentas utilizadas
 
@@ -103,9 +93,6 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt=Figma" width="40" height="40"/>
 </a>                                                                                                                         
           
-
-###
-
 ## Acesso ao projeto
 
 Você pode [acessar o código fonte do projeto](https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git) ou [baixá-lo](https://github.com/VitorAntonioKuhnen/Ponto_Seguro/archive/refs/heads/Back.zip).
@@ -149,7 +136,6 @@ ssl =
  
 *Após inserir as variáveis de segurança do sistema, abra o cmd (command prompt) e crie um venv (ambiente virtual do python) para criar a venv digite esse comando:
 
-*Comado no windows*
 ~~~
 python -m venv venv
 ~~~
@@ -160,21 +146,18 @@ python -m venv venv
 .\venv\Scripts\activate
 ~~~
 
-* Na raiz do projeto tem um arquivo chamado requirements.txt (onde tem todas as dependências do projeto)
-* Para baixar as dependências tem que executar esse comando, porém tem q estar na venv 
-* Feito isso, aguardar instalação.
-~~~
-pip install -r requirements.txt
-~~~
 
-* Após a instalação dos requirements.txt digite o comando a seguir para iniciar o servidor:
+* Após ativar o ambiente virtual, digite o comando a seguir para iniciar o servidor:
+
 ~~~
 python manage.py runserver
 ~~~
 
 *Vai ser exebido no terminal um link http, copie e cole no seu navegador  🏆 
+##  Equipe
 
-## Time de Desenvolvimento
-
-| [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/e6baf733-104b-4e92-985d-1e230ff5db61" width=50><br><sub>Marcello Henrique Abreu Nunes</sub>](https://github.com/MarcelloAbreu) | [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/b493e984-0d6d-439c-92d1-47abab27eb84" width=50><br><sub>Maria Artemisia Dutra Sousa</sub>](https://github.com/ArtemisiaDutra) | [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/002bf449-df9c-4b4a-ace4-e2566f8234bc" width=50><br><sub>Vinicius M. Schutz</sub>](https://github.com/vinicius-schutz) |  [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/7c5a459e-0aa4-4fc7-9cac-3110fa4632a8" width=50><br><sub>Vítor Antônio Kuhnen </sub>](https://github.com/VitorAntonioKuhnen) |
+| [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/e6baf733-104b-4e92-985d-1e230ff5db61" height=120 width=115><br><sub>Marcello Henrique A. Nunes</sub>](https://github.com/MarcelloAbreu) |  [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/b493e984-0d6d-439c-92d1-47abab27eb84" height=120 width=115><br><sub>Maria Artemisia D. Sousa</sub>](https://github.com/ArtemisiaDutra)  | 
 | :---: | :---: 
+| [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/002bf449-df9c-4b4a-ace4-e2566f8234bc" height=120 width=115><br><sub>Vinicius M. Schutz</sub>](https://github.com/vinicius-schutz) |  [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/7c5a459e-0aa4-4fc7-9cac-3110fa4632a8" height=120 width=115><br><sub>Vítor Antônio Kuhnen</sub>](https://github.com/VitorAntonioKuhnen)  | 
+
+
