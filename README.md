@@ -127,7 +127,7 @@ email_port = 'senha do email que manda os email'
 email_host = 'email que vai ser usado para mandar os email'
 
 
-ENGINE = ''
+ENGINE = 'motor do banco de dados'
 NAME = 'nome do banco de dado'
 USER = 'Usuário com o acesso a todo o sistema - admin'
 PASSWORD = 'senha do banco dado'
