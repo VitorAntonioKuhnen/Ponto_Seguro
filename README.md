@@ -1,10 +1,6 @@
 <p align="center">
    <img width="200" src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/86441a26-41fc-4eed-b51c-202fc168ed1a" />
 </p>
-<p align="center" fonte-size="300">
-Ponto Seguro 
-</p>
-
 
 ### Ponto Seguro
 <hr>
@@ -19,15 +15,13 @@ Ponto Seguro
 
 - [Funcionalidades](#funcionalidades)
 
-- [Aplicação](#aplicação)
-
 - [Ferramentas utilizadas](#ferramentas-utilizadas)
 
 - [Acesso ao projeto](#acesso-ao-projeto)
 
 - [Abrir e rodar o projeto](#abrir-e-rodar-o-projeto)
 
-- [Time de Desenvolvimento](#desenvolvedores)
+ - [Time](#time)
 
 ## Descrição do projeto 
 
