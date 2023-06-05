@@ -21,6 +21,8 @@
 
 - [Abrir e rodar o projeto](#abrir-e-rodar-o-projeto)
 
+- [Equipe](#equipe)
+
 ## Descrição do projeto 
 
 <p align="justify">
