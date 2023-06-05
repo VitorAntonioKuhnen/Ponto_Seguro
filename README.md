@@ -21,7 +21,7 @@
 
 - [Abrir e rodar o projeto](#abrir-e-rodar-o-projeto)
 
- - [Time](#time)
+- [Equiepe] (#equipe)
 
 ## Descrição do projeto 
 
@@ -156,7 +156,7 @@ python manage.py runserver
 ~~~
 
 *Vai ser exebido no terminal um link http, copie e cole no seu navegador  🏆 
-## Time
+##  Equipe
 
 | [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/e6baf733-104b-4e92-985d-1e230ff5db61" height=120 width=115><br><sub>Marcello Henrique A. Nunes</sub>](https://github.com/MarcelloAbreu) |  [<img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/b493e984-0d6d-439c-92d1-47abab27eb84" height=120 width=115><br><sub>Maria Artemisia D. Sousa</sub>](https://github.com/ArtemisiaDutra)  | 
 | :---: | :---: 
