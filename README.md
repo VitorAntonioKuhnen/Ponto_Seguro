@@ -91,14 +91,14 @@
  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt=Figma" width="40" height="40"/>
 </a>      
                                                                                                                          
-<a href="https://www.figma.com" target="_blank"> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt=Figma" width="40" height="40"/>
+<a href="https://code.visualstudio.com/" target="_blank"> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt=VsCode" width="40" height="40"/>
 </a>                
 
 <a href="https://www.w3schools.com/xml/ajax_intro.asp" target="_blank"> 
   <img src="https://github.com/VitorAntonioKuhnen/Ponto_Seguro/assets/57823410/de0a8bfe-8fbc-4825-9b9d-3e63283372c3" alt=Ajax" width="40" height="40"/>
 </a> 
-                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                       
           
 ## Acesso ao projeto
 
