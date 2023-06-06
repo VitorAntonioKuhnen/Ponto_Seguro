@@ -25,7 +25,7 @@
       <th scope="row">{{registros.userExtra.matricula}}</th>
       <td>{{registros.userExtra.get_full_name}}</td>
       <td>{{registros.dataExtra}}</td>
-      <td>{{registros.escala.nmEscala}}</td>
+      <td>{{user.escala.nmEscala}}</td>
       <td> 
         {% if registros.horEnt1 != None %}
           {% if registros.altEnt1 == True %}
@@ -182,8 +182,8 @@
               <div class="modal-body">
                 <div>
                   <div class="mb-3">
-                    <label for="" class="col-form-label">Usuario: {{registros.userReg}}</label>
-                    <label for="" class="d-flex"> Data: {{registros.dataReg}}</label>
+                    <label for="" class="col-form-label">Usuario: {{registros.userExtra.get_full_name}}</label>
+                    <label for="" class="d-flex"> Data: {{registros.dataExtra}}</label>
                     <input name="inpID" type="text" value="{{registros.id}}" style="display: none;">
       
                     <label for="" class="mt-3 col-form-label">Registros</label>

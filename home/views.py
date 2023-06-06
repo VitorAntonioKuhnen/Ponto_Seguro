@@ -63,8 +63,6 @@ def RegistrarPonto(request):
         ha = hora.now().time()
         if diaSemana == True:
             print('Está na escala semanal correta!!')  
-            print((not RegMeioPeriodo))
-            print(Feriado.objects.filter(data = data.now()) and (not RegMeioPeriodo))
             if (not Feriado.objects.filter(data = data.now()) and (not RegMeioPeriodo)):
                 if user.escala.horEnt1 is not None:
                     horaEnt1_soma = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=5)).time()
