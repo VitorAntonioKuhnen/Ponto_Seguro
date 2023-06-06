@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'home',
     'captcha',
-    'django_crontab',
+    # 'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -198,6 +198,6 @@ MESSAGE_TAGS = {
 #Agendador de tarefas
 # Estrutura de horario e datas do CronJobs: "Minuto   Hora   Dia do Mês   Mes   Dia da Semana" 
 
-CRONJOBS = [
-    ('28 14 * * *', 'home.agendador.criar_registros_zerados')
-]
+# CRONJOBS = [
+#     ('28 14 * * *', 'home.agendador.criar_registros_zerados')
+# ]

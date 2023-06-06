@@ -41,7 +41,6 @@ $(document).ready(function (e) {
                     $('#sextCad').prop('checked', false);
                     $('#sabCad').prop('checked', false);
                     $('#dominCad').prop('checked', false);
-
                 }
                 // $('#mensage').show();
                 // }
@@ -49,7 +48,6 @@ $(document).ready(function (e) {
             error: function (xhr, status, error) {
                 console.log(error); // Lidar com erros de solicitação, se necessário
             }
-
         });
 
         // Remove o a tag de Show após mostrar    

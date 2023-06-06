@@ -14,24 +14,24 @@
         # for pessoa in pessoas_sem_registro:
             # RegistroPonto.objects.create(usuario=pessoa, registro=0)
 
-import os
-import django
-import fcntl
+# import os
+# import django
+# import fcntl
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PONTO_SEGURO.settings')
-django.setup()
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PONTO_SEGURO.settings')
+# django.setup()
 
-from django.contrib.auth.models import User
-# from seuapp.models import RegistroPonto
-
-
-def criar_registros_zerados():
-    # Lógica para criar registros zerados
-    # pessoas_sem_registro = User.objects.filter(registroponto__isnull=True)
-
-    # for pessoa in pessoas_sem_registro:
-    #     RegistroPonto.objects.create(usuario=pessoa, registro=0)
-    print('Printou pois foi acionado pelo CronTab')
+# from django.contrib.auth.models import User
+# # from seuapp.models import RegistroPonto
 
 
-criar_registros_zerados()
+# def criar_registros_zerados():
+#     # Lógica para criar registros zerados
+#     # pessoas_sem_registro = User.objects.filter(registroponto__isnull=True)
+
+#     # for pessoa in pessoas_sem_registro:
+#     #     RegistroPonto.objects.create(usuario=pessoa, registro=0)
+#     print('Printou pois foi acionado pelo CronTab')
+
+
+# criar_registros_zerados()
