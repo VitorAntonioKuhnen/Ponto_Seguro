@@ -9,6 +9,9 @@ from django.http import HttpResponse, JsonResponse
 from accounts import views
 from django.db.models import Q, F, ExpressionWrapper, DateTimeField
 
+import json
+from django.core.serializers import serialize
+
 #Paginação Django
 from django.core.paginator import Paginator
 
@@ -443,11 +446,68 @@ def historico(request):
         #Gerar e Exportar PDF de Cartão ponto conforme a competência 
         if "exportar" in request.GET:
             comp = request.GET.get('periodoCP')
-            print(comp)
             mes, ano = comp.split('/')
             context = {}
-            context['histReg'] = HistRegistro.objects.filter(Q(userReg__id = user.id), dataReg__month=mes, dataReg__year=ano).order_by('dataReg')
 
+            # Obter a data atual
+            data_atual = data.strptime(('01/'+mes+'/'+ano), '%d/%m/%Y')
+
+            # Obter o primeiro dia do mês atual
+            primeiro_dia_mes = data_atual.replace(day=1)
+            # Obter o último dia do mês atual
+            _, ultimo_dia_mes = calendar.monthrange(data_atual.year, data_atual.month)
+            registros = {}
+            if Feriado.objects.filter(data = data.now()):
+                feriado = Feriado.objects.get(data = data.now())
+
+            # Percorrer do primeiro dia até o último dia do mês
+            for dia in range(primeiro_dia_mes.day, ultimo_dia_mes + 1):
+                datas = primeiro_dia_mes.replace(day=dia)
+                
+                hist = HistRegistro.objects.filter(Q(userReg__id = user.id), dataReg = datas)
+                if hist:
+                    dt = serialize('json', hist)
+                    dtJson = json.loads(dt)
+                    dtJson[0]['fields']['tpReg']= 'Comum'
+                    registros[datas] = dtJson
+                   
+                else:
+                    numDiaSemana = datas.weekday()
+                    if numDiaSemana == 0:
+                        diaSemana = user.escala.segunda
+                    elif numDiaSemana == 1:
+                        diaSemana = user.escala.terca
+                    elif numDiaSemana == 2:
+                        diaSemana = user.escala.quarta
+                    elif numDiaSemana == 3:
+                        diaSemana = user.escala.quinta
+                    elif numDiaSemana == 4:
+                        diaSemana = user.escala.sexta
+                    elif numDiaSemana == 5:
+                        diaSemana = user.escala.sabado
+                    elif numDiaSemana == 6:
+                        diaSemana = user.escala.domingo 
+                       
+                    if not diaSemana:
+                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Folga', 'altEnt1': False, 'horSai2': 'Folga', 'altSai2': False, 'horEnt3': 'Folga', 'altEnt3': False, 'horSai4': 'Folga', 'altSai4': False, 'sitAPR': '', 'justificativas': 0, 'tpReg': ''}}]   
+
+                    elif HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=datas):
+                        he = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=datas)
+                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': he.horEnt1, 'altEnt1': he.altEnt1, 'horSai2': he.horSai2, 'altSai2': he.altSai2, 'horEnt3': he.horEnt3, 'altEnt3': he.altEnt3, 'horSai4': he.altSai4, 'altSai4': he.altSai4, 'sitAPR': he.sitAPR, 'justificativas': he.justificativas, 'tpReg': 'Hora Extra'}}] 
+                    
+                    elif feriado.data == datas:
+                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': feriado.nome, 'altEnt1': False, 'horSai2': feriado.nome, 'altSai2': False, 'horEnt3': feriado.nome, 'altEnt3': False, 'horSai4': feriado.nome, 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}] 
+                    
+                    elif not datas < data.today():
+                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}]   
+
+                    else:
+                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}]   
+                
+
+            context['registros'] = registros.items()
+            
+            context['periodo'] = comp
             context['user']= user
             pdf = processos.geraHtmlToPdf("cartaoPonto/index.html", context)
             messages.success(request, 'Arquivo Exportado com sucesso!')

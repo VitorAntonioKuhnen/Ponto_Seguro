@@ -9,86 +9,24 @@
     <title>Folha Ponto</title>
 </head>
 <body>
-    <!-- <nav class="espacamento_bottom">
-        <div class="dimenciona">
-            <div class="infoColab">
-                <fieldset>
-                <legend>
-                    Nome Funcionario
-                </legend>
-                <h4>{{user.get_full_name}} </h4>
-                </fieldset>
-                <div class="">
-                <fieldset>
-                <legend>
-                    Cargo
-                </legend>
-                
-                <h4>Desenvolvedor</h4>
-                </fieldset>
-                <fieldset class="h-137">
-                    <legend>
-                        Escala  de Tabalho
-                    </legend>
-                    <h4>08:00-12:00 / 13:12-18:00 (2ª a 6ª) 220HM </h4>
-                    
-                    </fieldset>
-                </fieldset>
-                </div>
-            </div>
-            <div class="infoSuper">
-                <div class="">
-                    <fieldset>
-                    <legend>
-                        Matricula
-                    </legend>
-                    <h4> 1 </h4>
-                    </fieldset>
-                </div>
-                <div>
-                    <fieldset>
-                    <legend>
-                        Nome da Empresa
-                    </legend>
-                    <h4>Ponto Seguro </h4>
-                    </fieldset>
-                    <div class="">
-                    <fieldset>
-                    <legend>
-                        Observações
-                    </legend>
-                    <div class="dimenciona">
-                        <h4 class="espacamento-right">Admissão:  </h4>
-                        <span class="dimenciona alinha"> 27/05/2021 </span>
-                    </div>
-                    <div class="dimenciona">
-                        <h4 class="espacamento-right">Mês/Ano: </h4>
-                        <span class="dimenciona alinha"> 04/2023 </span>
-                    </div>    
-                    </fieldset>
-                </div>
-
-            </div>
-        </div>
-    </nav> -->
     <table border="1" style="width:500px; padding: 0px 1px;">
       <tbody >
       <tr style="height: 18px;">
-      <td style="width: 50%; height: 20px;"><b>Nome:</b> {{user.get_full_name}}</td>
-      <td style="width: 50%; height: 20px;"><b>Matricula:</b> {{user.matricula}}</td>
+      <td style="width: 50%; height: 20px;"><b>Nome:</b>  {{user.get_full_name}}</td>
+      <td style="width: 50%; height: 20px;"><b>Matricula:</b>  {{user.matricula}}</td>
       </tr>
       <tr style="height: 18px;">
-      <td style="width: 50%; height: 20px;"><b>Cargo:</b></td>
-      <td style="width: 50%; height: 20px;"><b>Empresa:</b></td>
+      <td style="width: 50%; height: 20px;"><b>Cargo:</b>  {{user.cargo.nmCargo}}</td>
+      <td style="width: 50%; height: 20px;"><b>Empresa:</b>  Ponto Seguro</td>
       </tr>
       <tr style="height: 50px;">
-      <td style="width: 50%; height: 50px;"><b>Escala:</b> <br><br>
-        08:00/18:00 Á 13:12/18:00
+      <td style="width: 50%; height: 50px;"><b>Escala:</b> <br>
+         {{user.escala.nmEscala}}
       </td>
       <td style="width: 50%; height: 50px;"><b>Observação:</b> <br>
-      <b>Admissão:</b> 27/05/2021 
+      <b>Admissão:</b>  {{user.dat_inicia_trab}} 
         <br>
-      <b>Mês/Ano:</b>  04/2023
+      <b>Mês/Ano:</b>  {{periodo}}
       </td>
       </tr>
       </tbody>
@@ -106,30 +44,86 @@
                   <th id="title" scope="col" class="borderTabela">Sai. Mat.</th>
                   <th id="title" scope="col" class="borderTabela">Ent. Vesp.</th>
                   <th id="title" scope="col" class="borderTabela">Sai. Vesp.</th>
+                  <th id="title" scope="col" class="borderTabela">Tipo</th>
                   <th id="title" scope="col" class="borderTabela">Status</th>
                   <th id="title" scope="col" class="borderTabela">Justificativa</th>
                 </tr>
               </thead >
               <tbody >
-                {% for reg in histReg %}
+                {% for key, value in registros %}
                 <tr>
                   <th scope="row">{{forloop.counter}}</th>
-                  <td>{{reg.dataReg}}</td>
-                  <td>{{reg.horEnt1}}</td>
-                  <td>{{reg.horSai2}}</td>
-                  <td>{{reg.horEnt3}}</td>
-                  <td>{{reg.horSai4}}</td>
+                  <td>{{value.0.fields.dataReg}}</td>
+                  <td> 
+                    {% if value.0.fields.horEnt1 != None %}
+                      {% if value.0.fields.altEnt1 == True %}
+                        <span style="color: red;">{{value.0.fields.horEnt1}} *</span>
+                      {% else %}
+                        {{value.0.fields.horEnt1}}
+                      {% endif %}
+                    {% else %}
+                      N/A
+                    {% endif %}
+                  </td>
                   <td>
-                    {% if reg.sitAPR == "PEN" %}
+                    {% if value.0.fields.horEnt1 != None %}
+                      {% if value.0.fields.horSai2 != None %}
+                        {% if value.0.fields.altSai2 == True %}
+                          <span style="color: red;">{{value.0.fields.horSai2}} *</span>
+                        {% else %}
+                          {{value.0.fields.horSai2}}
+                        {% endif %}
+                      {% else %}
+                        ------
+                      {% endif %}
+                    {% else %}
+                      N/A
+                    {% endif %}        
+            
+                  </td>
+                  <td>
+                    {% if value.0.fields.horEnt1 != None %}
+                      {% if value.0.fields.horEnt3 != None %}
+                        {% if value.0.fields.altEnt3 == True %}
+                          <span style="color: red;">{{value.0.fields.horEnt3}} *</span>
+                        {% else %}
+                          {{value.0.fields.horEnt3}}
+                        {% endif %}
+                      {% else %}
+                        ------              
+                      {% endif %}
+                    {% else %}
+                     N/A
+                    {% endif %}
+            
+                  </td>
+                  <td>
+                    {% if value.0.fields.horEnt1 != None %}
+                      {% if value.0.fields.horSai4 != None %}
+                        {% if value.0.fields.altSai4 == True %}
+                          <span style="color: red;">{{value.0.fields.horSai4}} *</span>
+                        {% else %}
+                          {{value.0.fields.horSai4}}
+                        {% endif %}
+                      {% else %}
+                        ------  
+                      {% endif %}
+                    {% else %}
+                      N/A
+                    {% endif %}
+                  </td>
+                  <td>{{value.0.fields.tpReg}}</td>
+                  <td>
+                    {% if value.0.fields.sitAPR == "PEN" %}
                       Pendente
-                    {% elif reg.sitAPR == "REJ"%}
+                    {% elif value.0.fields.sitAPR == "REJ"%}
                       Rejeitado
-                    {% elif reg.sitAPR == "APR"%}
+                    {% elif value.0.fields.sitAPR == "APR"%}
                       Aprovado
                     {% endif %}
                   </td>
                   <td>
-                    {% if reg.justificativas.all %}
+                    {% if value.0.fields.justificativas %}
                       Sim
                     {% else %}
                       Não
@@ -137,7 +131,6 @@
                   </td>
                 </tr>
                 {% endfor %}
-      
               </tbody>
             </table>
           </div>
@@ -146,7 +139,7 @@
     <br>
     <footer class="dimenciona alinha_end f-direction-column espacamento_top">
         <div>
-        <span>___________________</span>
+        <span>_____________________</span>
         <br>
         <label for="">Assinatura do Funcionario</label>
         </div>    

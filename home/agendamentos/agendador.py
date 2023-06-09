@@ -37,15 +37,17 @@ def get_api_feriados():
 
 def gera_escala_zerada():
    feriado = Feriado.objects.filter(data = data.now())
-   if not feriado:
+   if feriado: #Trocar para "Not Feriado:" 
       print('entrou')
       print(Users.objects.filter(dat_inicia_trab__lte=data.today().date(), is_active = True))
       for user in Users.objects.filter(dat_inicia_trab__lte=data.today().date(), is_active = True):
         print(user)
-        print(HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.today().date()))
-        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.today().date()):
+        print(HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y')))
+        print('os registros')
+        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y')): #data.today().date()
           print('Não Tem registro')
           numDiaSemana = data.today().weekday()
+          print(numDiaSemana)
           if numDiaSemana == 0:
               diaSemana = user.escala.segunda
           elif numDiaSemana == 1:
@@ -60,8 +62,12 @@ def gera_escala_zerada():
               diaSemana = user.escala.sabado
           elif numDiaSemana == 6:
               diaSemana = user.escala.domingo  
-          print(diaSemana)    
-    
+          print(diaSemana)
+          if diaSemana:
+            print('É dia de trabalhar') 
+            reg = HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y'))    
+            print('criou aqui')
+            print(reg)
 
       #Aqui fazer a logica para executar o processo de criação de escalas quando não se trata de um feriado
       print('Não tem feriado')  

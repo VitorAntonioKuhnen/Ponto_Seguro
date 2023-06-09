@@ -33,42 +33,54 @@
             {{registros.horEnt1}}
           {% endif %}
         {% else %}
-          ------
+          N/A
         {% endif %}
       </td>
       <td>
-        {% if registros.horSai2 != None %}
-          {% if registros.altSai2 == True %}
-            <span style="color: red;">{{registros.horSai2}} *</span>
+        {% if registros.horEnt1 != None %}
+          {% if registros.horSai2 != None %}
+            {% if registros.altSai2 == True %}
+              <span style="color: red;">{{registros.horSai2}} *</span>
+            {% else %}
+              {{registros.horSai2}}
+            {% endif %}
           {% else %}
-            {{registros.horSai2}}
+            ------
           {% endif %}
         {% else %}
-          ------
+          N/A
+        {% endif %}        
+
+      </td>
+      <td>
+        {% if registros.horEnt1 != None %}
+          {% if registros.horEnt3 != None %}
+            {% if registros.altEnt3 == True %}
+              <span style="color: red;">{{registros.horEnt3}} *</span>
+            {% else %}
+              {{registros.horEnt3}}
+            {% endif %}
+          {% else %}
+            ------              
+          {% endif %}
+        {% else %}
+         N/A
         {% endif %}
 
       </td>
       <td>
-        {% if registros.horEnt3 != None %}
-          {% if registros.altEnt3 == True %}
-            <span style="color: red;">{{registros.horEnt3}} *</span>
+        {% if registros.horEnt1 != None %}
+          {% if registros.horSai4 != None %}
+            {% if registros.altSai4 == True %}
+              <span style="color: red;">{{registros.horSai4}} *</span>
+            {% else %}
+              {{registros.horSai4}}
+            {% endif %}
           {% else %}
-            {{registros.horEnt3}}
+            ------  
           {% endif %}
         {% else %}
-          ------              
-        {% endif %}
-
-      </td>
-      <td>
-        {% if registros.horSai4 != None %}
-          {% if registros.altSai4 == True %}
-            <span style="color: red;">{{registros.horSai4}} *</span>
-          {% else %}
-            {{registros.horSai4}}
-          {% endif %}
-        {% else %}
-          ------  
+          N/A
         {% endif %}
       </td>
       <td>
