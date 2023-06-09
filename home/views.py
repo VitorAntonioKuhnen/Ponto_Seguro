@@ -457,7 +457,7 @@ def historico(request):
             # Obter o último dia do mês atual
             _, ultimo_dia_mes = calendar.monthrange(data_atual.year, data_atual.month)
             registros = {}
-            if Feriado.objects.filter(data = data.now()):
+            if Feriado.objects.filter(data = data.now()).exists():
                 feriado = Feriado.objects.get(data = data.now())
 
             # Percorrer do primeiro dia até o último dia do mês

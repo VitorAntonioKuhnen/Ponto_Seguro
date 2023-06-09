@@ -18,7 +18,7 @@ class Users(AbstractUser):
     dat_admissao = models.DateField(blank=True, null=True)
     dat_inicia_trab = models.DateField(blank=True, null=True)
     superior = models.ForeignKey('Users', on_delete=models.DO_NOTHING, blank=True, null=True)
-    endereco = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING)
+    endereco = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING, blank=True, null=True)
 
 
     def __str__(self):
