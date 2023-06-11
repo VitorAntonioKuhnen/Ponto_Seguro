@@ -44,6 +44,7 @@
                   <th id="title" scope="col" class="borderTabela">Sai. Mat.</th>
                   <th id="title" scope="col" class="borderTabela">Ent. Vesp.</th>
                   <th id="title" scope="col" class="borderTabela">Sai. Vesp.</th>
+                  <th id="title" scope="col" class="borderTabela">Qtd Hora Extra</th>
                   <th id="title" scope="col" class="borderTabela">Tipo</th>
                   <th id="title" scope="col" class="borderTabela">Status</th>
                   <th id="title" scope="col" class="borderTabela">Justificativa</th>
@@ -112,6 +113,7 @@
                       N/A
                     {% endif %}
                   </td>
+                  <td>{{value.0.fields.qtdHE}}</td>
                   <td>{{value.0.fields.tpReg}}</td>
                   <td>
                     {% if value.0.fields.sitAPR == "PEN" %}

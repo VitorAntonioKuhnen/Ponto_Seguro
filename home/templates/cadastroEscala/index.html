@@ -8,16 +8,6 @@
 
 
   {% block main %}
-  <div class="wrapper ">
-    <div class="locates espacamento d-flex justify-content-end align-self-end toast align-items-center fade position-fixed" id="mensage"
-    style="z-index: 2000;" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body" id="retornoMsg">
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-  </div>
   <section class="sessao">
     <!-- Container -->
     <div id="container" class="container">
@@ -224,7 +214,7 @@
                     </div>
 
                   {% comment %} Botão para incluir um colaborador a uma escala especifica {% endcomment %}
-                  <button title="Incluir Colaborador" class="btn-table" data-bs-toggle="modal"
+                  <button type="button" title="Incluir Colaborador" class="btn-table" data-bs-toggle="modal"
                   data-bs-target="#add-colaborador-modal">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                     class="text-primary  bi bi-person-fill-add" viewBox="0 0 16 16">
@@ -543,8 +533,4 @@
       </div>
     </div>
 </section>
-  {% endblock  %}
-
-  {% block js %}
-    <script src="{% static 'js/script_mensagem_Ajax.js' %}"></script>
   {% endblock  %}

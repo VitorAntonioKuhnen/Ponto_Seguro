@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from datetime import datetime as data, datetime as hora
 
+import base64
 
 from io import BytesIO
 # from unittest import result
@@ -39,7 +40,7 @@ def geraHtmlToPdf(TemplateHtml, context_dict={}):
     result = BytesIO()
     pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result)
     if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
+        return base64.b64encode(result.getvalue()).decode('utf-8')
     return None
 
 

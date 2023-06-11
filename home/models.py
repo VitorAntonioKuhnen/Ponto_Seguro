@@ -39,8 +39,10 @@ class HoraExtra(models.Model):
     altEnt3 = models.BooleanField(blank=True, null=True, default=False) 
     horSai4 = models.TimeField(blank=True, null=True)
     altSai4 = models.BooleanField(blank=True, null=True, default=False)
+    obsSup = models.TextField(blank=True, null=True)
     sitAPR = models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado
     justificativas = models.ManyToManyField('home.Justificativa',  symmetrical=False)
+    
 
     class Meta:
        db_table = 'horaextra'
@@ -85,6 +87,7 @@ class HistRegistro(models.Model):
     altEnt3 = models.BooleanField(blank=True, null=True, default=False)         
     horSai4 = models.TimeField(blank=True, null=True) 
     altSai4 = models.BooleanField(blank=True, null=True, default=False) 
+    obsSup = models.TextField(blank=True, null=True) 
     #Processo inativado temporariamente
     # bancoHoraMin = models.IntegerField(blank=True, null=True, default=0)
     sitAPR =  models.CharField(max_length= 3, default='PEN') #PEN = Pendente, APR = Aprovado, REJ = Rejeitado

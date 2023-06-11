@@ -144,14 +144,14 @@
 
       </td>
       <td>
-        <a href="" id="load" hx-delete="{% url 'desaprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Desaprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML" class="alinhamento">
+        <a href="" id="load" hx-delete="{% url 'desaprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Desaprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML" onclick="carregamento()" class="alinhamento">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-lg" style="color: red;" viewBox="0 0 16 16">
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
           </svg>
         </a>
       </td>
       <td>
-        <a href="" hx-delete="{% url 'aprovar' registros.id %}"  hx-confirm="Você Realmente Deseja Aprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML" class="alinhamento">
+        <a href="" hx-delete="{% url 'aprovar' registros.id %}" hx-confirm="Você Realmente Deseja Aprovar Este Registro?" hx-target="#tabelaApr" hx-swap="outerHTML" onclick="carregamento()" class="alinhamento">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check-lg" style="color: green;" viewBox="0 0 16 16">
             <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
           </svg>
@@ -200,6 +200,8 @@
                         <input type="time" class="form-control" id="sai2" name="sai2" value="{{registros.horSai4}}">
                       </div>
                     </div>
+                    <label for="" class="mt-3 col-form-label">Observação</label>
+                    <textarea class="form-control" id="message-text" name="obsSup" rows="5" value="{{registros.obsSup}}"></textarea>
                   </div>
                 </div>
               </div>

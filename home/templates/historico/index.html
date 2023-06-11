@@ -19,7 +19,7 @@
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#filtros">
         <div>
           <nav class="navbar">
-            <form action="{% url 'historico' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET">
+            <form action="{% url 'historico' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET" id="historicoExport">
               <div id="select" class="d-flex w-100 gap-5 md-width">
                 <div class="d-flex flex-column gap-3 w-50 tamanho_w_100">
                   <div id="status">
@@ -57,7 +57,7 @@
                 </div>
               </div>
               <div class="d-flex gap-3">
-                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light">Buscar</button>
+                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light" onclick="carregamento()" id="buscar">Buscar</button>
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exportaPonto" class="btn w-25 btn-outline-light">
                   <i class="fa-sharp fa-solid fa-file-export" style="color: #033159;"></i>
                   Exportar Cartão Ponto
@@ -74,7 +74,7 @@
                           <input type="text" id="competencia" class="form-control" name="periodoCP" placeholder="MM/YYYY">
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" name="exportar">Exportar</button>
+                        <button type="submit" class="btn btn-success" name="exportar" id="btnExportar">Exportar</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                       </div>
                     </div>
@@ -95,141 +95,291 @@
   <div id="container" class="container">
     <h4>Histórico</h4>
     <br>
-    {% comment %} <form action="" class="form-filtro d-flex flex-row mb-3 ">
-      <div class="filtro-registro">
-        <select name="role" class="filtro form-control form-select" aria-label="">
-          <option selected value="1">10</option>
-          <option value="2">15</option>
-        </select>
-      </div>
-      <input type="text" id="myInput" onkeyup="myFunction()" class="pesquisar form-control" placeholder="Pesquisar">
-    </form> {% endcomment %}
-    <!-- Content -->
-    <div class="content overflow-auto p-4 rounded">
-      <table id="myTable" class="table table-hover table-striped table-bordered">
-        <thead>
-          <tr>
-            <th id="title" scope="col">Escala</th>
-            <th id="title" scope="col">Data de Registro</th>
-            <th id="title" scope="col">Ent. Mat.</th>
-            <th id="title" scope="col">Sai. Mat.</th>
-            <th id="title" scope="col">Ent. Vesp.</th>
-            <th id="title" scope="col">Sai. Vesp.</th>
-            <th id="title" scope="col">Resp. Superior</th>
-            <th id="title" scope="col">Status</th>
-            <th id="title" scope="col">Justificativa</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for registro in histReg %}
-          <tr>
-            <td scope="row">{{registro.escala.nmEscala}}</td>
-            <td>{{registro.dataReg}}</td>
-            <td> 
-              {% if registro.horEnt1 != None %}
-                {% if registro.altEnt1 == True %}
-                  <span style="color: red;">{{registro.horEnt1}} *</span>
-                {% else %}
-                  {{registro.horEnt1}}
-                {% endif %}
-              {% else %}
-                ------
-              {% endif %}
-            </td>
-            <td>
-              {% if registro.horSai2 != None %}
-                {% if registro.altSai2 == True %}
-                  <span style="color: red;">{{registro.horSai2}} *</span>
-                {% else %}
-                  {{registro.horSai2}}
-                {% endif %}
-              {% else %}
-                ------
-              {% endif %}
-      
-            </td>
-            <td>
-              {% if registro.horEnt3 != None %}
-                {% if registro.altEnt3 == True %}
-                  <span style="color: red;">{{registro.horEnt3}} *</span>
-                {% else %}
-                  {{registro.horEnt3}}
-                {% endif %}
-              {% else %}
-                ------              
-              {% endif %}
-      
-            </td>
-            <td>
-              {% if registro.horSai4 != None %}
-                {% if registro.altSai4 == True %}
-                  <span style="color: red;">{{registro.horSai4}} *</span>
-                {% else %}
-                  {{registro.horSai4}}
-                {% endif %}
-              {% else %}
-                ------  
-              {% endif %}
-            </td>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#registros-diarios" id="RegDiario">Registros Diarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#horas-extras" id="HorExtra">Horas Extras</a>
+          </li>
+        </ul>
+          <!-- Tabela dos Registros Diarios -->
+          <div id="registros-diarios" class="tab-content active">
+            <div class="content overflow-auto p-4 rounded">
+            <table id="myTable" class="table table-hover table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th id="title" scope="col">Escala</th>
+                  <th id="title" scope="col">Data de Registro</th>
+                  <th id="title" scope="col">Ent. Mat.</th>
+                  <th id="title" scope="col">Sai. Mat.</th>
+                  <th id="title" scope="col">Ent. Vesp.</th>
+                  <th id="title" scope="col">Sai. Vesp.</th>
+                  <th id="title" scope="col">Resp. Superior</th>
+                  <th id="title" scope="col">Status</th>
+                  <th id="title" scope="col">Justificativa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for registro in histReg %}
+                <tr>
+                  <td scope="row">{{registro.escala.nmEscala}}</td>
+                  <td>{{registro.dataReg}}</td>
+                  <td> 
+                    {% if registro.horEnt1 != None %}
+                      {% if registro.altEnt1 == True %}
+                        <span style="color: red;">{{registro.horEnt1}} *</span>
+                      {% else %}
+                        {{registro.horEnt1}}
+                      {% endif %}
+                    {% else %}
+                      ------
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if registro.horSai2 != None %}
+                      {% if registro.altSai2 == True %}
+                        <span style="color: red;">{{registro.horSai2}} *</span>
+                      {% else %}
+                        {{registro.horSai2}}
+                      {% endif %}
+                    {% else %}
+                      ------
+                    {% endif %}
             
-            <td>
-              {{registro.userReg.superior.matricula}} {{registro.userReg.superior.get_full_name}}</td>
-            <td>
-              {% if registro.sitAPR == "PEN" %}
-                Pendente
-              {% elif registro.sitAPR == "REJ"%}
-                Rejeitado
-              {% elif registro.sitAPR == "APR"%}
-                Aprovado
-              {% endif %}
-            </td>
-            <td>
-              {% if registro.justificativas.all %}
-                <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#justificativas{{registro.id}}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                  </svg>
-                </a>
+                  </td>
+                  <td>
+                    {% if registro.horEnt3 != None %}
+                      {% if registro.altEnt3 == True %}
+                        <span style="color: red;">{{registro.horEnt3}} *</span>
+                      {% else %}
+                        {{registro.horEnt3}}
+                      {% endif %}
+                    {% else %}
+                      ------              
+                    {% endif %}
+            
+                  </td>
+                  <td>
+                    {% if registro.horSai4 != None %}
+                      {% if registro.altSai4 == True %}
+                        <span style="color: red;">{{registro.horSai4}} *</span>
+                      {% else %}
+                        {{registro.horSai4}}
+                      {% endif %}
+                    {% else %}
+                      ------  
+                    {% endif %}
+                  </td>
+                  
+                  <td>
+                    {{registro.userReg.superior.matricula}} {{registro.userReg.superior.get_full_name}}</td>
+                  <td>
+                    {% if registro.sitAPR == "PEN" %}
+                      Pendente
+                    {% elif registro.sitAPR == "REJ"%}
+                      Rejeitado
+                    {% elif registro.sitAPR == "APR"%}
+                      Aprovado
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if registro.justificativas.all %}
+                      <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#justificativas{{registro.id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg>
+                      </a>
+      
+                      {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
+                      <div class="modal fade" id="justificativas{{registro.id}}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" >Justificativa</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% for just in registro.justificativas.all %}
+                                  <div><b>Tipo de Justificativa:</b> {{just.tipoJust}}</div>
+                                  <div><b>Descrição:</b> {{just}}</div>
+                                  <br>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% else %}
+                      <div class="alinhamento colorBlue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                          <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                          <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
+            
+            <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
+              <ul class="pagination">
+                {% if histReg.has_previous %}
+                <li class="page-item"><a class="page-link" href="?status={{ request.GET.status }}&justificativa={{ request.GET.justificativa }}&data={{ request.GET.data }}&escala={{ request.GET.escala }}&page={{histReg.previous_page_number}}">Anterior</a></li>
+                {% endif %}
+                <li class="page-item page-link">{{histReg.number}} de {{histReg.paginator.num_pages}}</li>
+                {% if histReg.has_next %}
+                <li class="page-item"><a class="page-link" href="?status={{ request.GET.status }}&justificativa={{ request.GET.justificativa }}&data={{ request.GET.data }}&escala={{ request.GET.escala }}&page={{histReg.next_page_number}}">Próximo</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        
 
-                {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
-                <div class="modal fade" id="justificativas{{registro.id}}" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" >Justificativa</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        {% comment %} {% for reg in registros %} {% endcomment %}
-                          {% for just in registro.justificativas.all %}
-                            <div><b>Tipo de Justificativa:</b> {{just.tipoJust}}</div>
-                            <div><b>Descrição:</b> {{just}}</div>
-                            <br>
-                          {% endfor %}
-                        {% comment %} {% endfor %} {% endcomment %}
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {% else %}
-                <div class="alinhamento colorBlue">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
-                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
-                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
-                  </svg>
-                </div>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
+          <!-- Tabela dos Registros de Horas Extras -->
+          <div id="horas-extras" class="tab-content">
+            <div class="content overflow-auto p-4 rounded">
+              <table id="myTable" class="table table-hover table-striped table-bordered">
+                <thead>
+                  <tr>
+                    {% comment %} <th id="title" scope="col">Escala</th> {% endcomment %}
+                    <th id="title" scope="col">Data de Registro</th>
+                    <th id="title" scope="col">Ent. Mat.</th>
+                    <th id="title" scope="col">Sai. Mat.</th>
+                    <th id="title" scope="col">Ent. Vesp.</th>
+                    <th id="title" scope="col">Sai. Vesp.</th>
+                    <th id="title" scope="col">Resp. Superior</th>
+                    <th id="title" scope="col">Status</th>
+                    <th id="title" scope="col">Justificativa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for he in regHE %}
+                  <tr>
+                    {% comment %} <td scope="row">{{he.escala.nmEscala}}</td> {% endcomment %}
+                    <td>{{he.dataExtra}}</td>
+                    <td> 
+                      {% if he.horEnt1 != None %}
+                        {% if he.altEnt1 == True %}
+                          <span style="color: red;">{{he.horEnt1}} *</span>
+                        {% else %}
+                          {{he.horEnt1}}
+                        {% endif %}
+                      {% else %}
+                        ------
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if he.horSai2 != None %}
+                        {% if he.altSai2 == True %}
+                          <span style="color: red;">{{he.horSai2}} *</span>
+                        {% else %}
+                          {{he.horSai2}}
+                        {% endif %}
+                      {% else %}
+                        ------
+                      {% endif %}
+              
+                    </td>
+                    <td>
+                      {% if he.horEnt3 != None %}
+                        {% if he.altEnt3 == True %}
+                          <span style="color: red;">{{he.horEnt3}} *</span>
+                        {% else %}
+                          {{he.horEnt3}}
+                        {% endif %}
+                      {% else %}
+                        ------              
+                      {% endif %}
+              
+                    </td>
+                    <td>
+                      {% if he.horSai4 != None %}
+                        {% if he.altSai4 == True %}
+                          <span style="color: red;">{{he.horSai4}} *</span>
+                        {% else %}
+                          {{he.horSai4}}
+                        {% endif %}
+                      {% else %}
+                        ------  
+                      {% endif %}
+                    </td>
+                    
+                    <td>
+                      {{he.userExtra.superior.matricula}} {{he.userExtra.superior.get_full_name}}</td>
+                    <td>
+                      {% if he.sitAPR == "PEN" %}
+                        Pendente
+                      {% elif he.sitAPR == "REJ"%}
+                        Rejeitado
+                      {% elif he.sitAPR == "APR"%}
+                        Aprovado
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if he.justificativas.all %}
+                        <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#justificativas{{he.id}}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                          </svg>
+                        </a>
+        
+                        {% comment %} Para apresentar o Modal adicionar o id com chave do item {% endcomment %}
+                        <div class="modal fade" id="justificativas{{he.id}}" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" >Justificativa</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  {% for just in he.justificativas.all %}
+                                    <div><b>Tipo de Justificativa:</b> {{just.tipoJust}}</div>
+                                    <div><b>Descrição:</b> {{just}}</div>
+                                    <br>
+                                  {% endfor %}
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {% else %}
+                        <div class="alinhamento colorBlue">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+                            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+                          </svg>
+                        </div>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div> 
+            <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
+              <ul class="pagination">
+                {% if regHE.has_previous %}
+                <li class="page-item"><a class="page-link" href="?&page={{regHE.previous_page_number}}">Anterior</a></li>
+                {% endif %}
+                <li class="page-item page-link">{{regHE.number}} de {{regHE.paginator.num_pages}}</li>
+                {% if regHE.has_next %}
+                <li class="page-item"><a class="page-link" href="?&page={{regHE.next_page_number}}">Próximo</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+
+    {% comment %} <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
       <ul class="pagination">
         {% if histReg.has_previous %}
         <li class="page-item"><a class="page-link" href="?&page={{histReg.previous_page_number}}">Anterior</a></li>
@@ -239,11 +389,49 @@
         <li class="page-item"><a class="page-link" href="?&page={{histReg.next_page_number}}">Próximo</a></li>
         {% endif %}
       </ul>
-    </nav>
+    </nav> {% endcomment %}
   </div>
 {% endblock  %}
 {% block js %}
   <script src="{% static 'js/script_pesquisa_historico.js' %}"></script>
+
+
+  {% comment %} Script pra execução dos processos das Tabs {% endcomment %}
+  <script>
+    $(document).ready(function() {
+      // Esconder todos os conteúdos de tabs, exceto o conteúdo da tab ativa inicialmente
+      $('.tab-content').not('.active').each(function() {
+        $(this).hide();
+      });
+  
+      // Manipular a exibição dos conteúdos com base na seleção da tab
+      $('.nav-link').click(function() {
+        // Obter o identificador do conteúdo da tab associada
+        var tabContentId = $(this).attr('href');
+  
+        // Esconder todos os conteúdos de tabs
+        $('.tab-content').each(function() {
+          $(this).hide();
+        });
+  
+        // Mostrar o conteúdo da tab selecionada
+        $(tabContentId).show();
+
+        //Ativa a Tab Registros Diarios e remove ativação da HoraExtra
+        if (tabContentId == "#registros-diarios"){
+          $("#RegDiario").addClass('active'); 
+          $("#HorExtra").removeClass('active');
+        }
+        //Ativa a Tab Horas Extras e remove Ativação do Registros Diarios
+        else if (tabContentId == "#horas-extras"){
+          $("#HorExtra").addClass('active'); 
+          $("#RegDiario").removeClass('active');  
+        }
+      });
+    });
+  </script>
+  
+
 
   <script>
     $(document).ready(function() {

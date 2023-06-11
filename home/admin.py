@@ -18,7 +18,7 @@ class HistRegistroAdmin(admin.ModelAdmin):
     per_page = 8
     fieldsets = (
         (None, {
-            'fields': ('userReg', 'escala', 'dataReg', 'sitAPR', 'justificativas')
+            'fields': ('userReg', 'escala', 'dataReg', 'sitAPR', 'justificativas', 'obsSup')
         }),
         ('Registros', {
             'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
@@ -52,7 +52,7 @@ class HoraExtraAdmin(admin.ModelAdmin):
     per_page = 8
     fieldsets = (
         (None, {
-            'fields': ('userExtra', 'dataExtra', 'userLib', 'dataLib', 'sitAPR', 'justificativas')
+            'fields': ('userExtra', 'dataExtra', 'userLib', 'dataLib', 'sitAPR', 'justificativas', 'obsSup')
         }),
         ('Registros de Horas Extras', {
             'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')

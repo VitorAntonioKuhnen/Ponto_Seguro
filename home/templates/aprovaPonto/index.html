@@ -40,7 +40,7 @@
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#filtros">
         <div>
           <nav class="navbar">
-            <form action="{% url 'aprovaPonto' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET"> {% csrf_token %}
+            <form action="{% url 'aprovaPonto' %}" class="d-flex flex-column gap-3 p-2 w-100" method="GET">
               <div id="select" class="d-flex w-100 gap-5 md-width">
                 <div class="d-flex flex-column gap-3  w-50 tamanho_w_100">
                   <div>
@@ -87,7 +87,7 @@
                   </div>
                 </div>
               </div>
-                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light">Buscar</button>
+                <button name="filtrar" type="submit" class="btn w-25 btn-outline-light" onclick="carregamento()">Buscar</button>
             </form>
           </nav>
         </div>
@@ -125,11 +125,11 @@
   <nav id="navigation" aria-label="Page navigation" class="mt-2 d-flex justify-content-center">
     <ul class="pagination">
       {% if histReg.has_previous %}
-      <li class="page-item"><a class="page-link" href="?&page={{histReg.previous_page_number}}">Anterior</a></li>
+      <li class="page-item"><a class="page-link" href="?nome={{ request.GET.nome }}&matricula={{ request.GET.matricula }}&status={{ request.GET.status }}&justificativa={{ request.GET.justificativa }}&data={{ request.GET.data }}&escala={{ request.GET.escala }}&page={{histReg.previous_page_number}}">Anterior</a></li>
       {% endif %}
       <li class="page-item page-link">{{histReg.number}} de {{histReg.paginator.num_pages}}</li>
       {% if histReg.has_next %}
-      <li class="page-item"><a class="page-link" href="?&page={{histReg.next_page_number}}">Próximo</a></li>
+      <li class="page-item"><a class="page-link" href="?nome={{ request.GET.nome }}&matricula={{ request.GET.matricula }}&status={{ request.GET.status }}&justificativa={{ request.GET.justificativa }}&data={{ request.GET.data }}&escala={{ request.GET.escala }}&page={{histReg.next_page_number}}">Próximo</a></li>
       {% endif %}
     </ul>
   </nav>

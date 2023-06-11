@@ -12,6 +12,7 @@ from django.db.models import Q, F, ExpressionWrapper, DateTimeField
 import json
 from django.core.serializers import serialize
 
+
 #Paginação Django
 from django.core.paginator import Paginator
 
@@ -346,9 +347,6 @@ def RegistrarPonto(request):
 
 @login_required
 def inicio(request):
-
-    # processos.get_api_feriados()
-
     user = request.user
     context = {}
     if user.justificar:
@@ -392,11 +390,70 @@ def inicio(request):
 def historico(request):
     context = {}
     user = request.user
-    registros = HistRegistro.objects.filter(Q(userReg__id = user.id)).order_by('-dataReg')
     context['escalas'] = Escala.objects.filter(status=True)
+
+    termoStatus = request.GET.get('status')
+    termoJustificativa = request.GET.get('justificativa')
+    termoData = request.GET.get('data')
+    termoEscala = request.GET.get('escala')
+    
+    #Carrega registros Diarios
+    registros = HistRegistro.objects.filter(Q(userReg__id = user.id)).order_by('-dataReg')
+    if (termoStatus) or (termoJustificativa) or (termoData) or (termoEscala):
+        filtros = Q()
+
+        #Filtro por Status
+        if(termoStatus == 'APR') or (termoStatus == 'PEN') or (termoStatus == 'REJ'):
+            print(termoStatus)
+            filtros &=  Q(sitAPR = termoStatus)
+        
+        #Filtro por Justificativa
+        if(termoJustificativa != 'todas'):
+            if (termoJustificativa == 'sim'):
+                filtros &= ~Q(justificativas__isnull=True)           
+            elif (termoJustificativa == 'nao'):
+                filtros &= ~Q(justificativas__isnull=False)
+
+        #Filtro por Data
+        if(termoData):
+            filtros &= Q(dataReg = termoData)
+
+        #Filtro por Escala
+        if termoEscala != 'todas':
+            filtros &= Q(escala_id = termoEscala)
+
+        registros = registros.filter(filtros).order_by('-dataReg')
+
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
+
+    #Carrega Registros de Horas Extras
+    HE = HoraExtra.objects.filter(userExtra_id = user.id).order_by('-dataExtra')
+    if (termoStatus) or (termoJustificativa) or (termoData) or (termoEscala):
+        filtrosHE = Q()
+        #Filtro por Status
+        if(termoStatus == 'APR') or (termoStatus == 'PEN') or (termoStatus == 'REJ'):
+            filtrosHE &=  Q(sitAPR = termoStatus)
+        
+        #Filtro por Justificativa
+        if(termoJustificativa != 'todas'):
+            if (termoJustificativa == 'sim'):         
+                filtrosHE &= ~Q(justificativas__isnull=True)           
+            elif (termoJustificativa == 'nao'):
+                filtrosHE &= ~Q(justificativas__isnull=False)
+
+        #Filtro por Data
+        if(termoData):
+            filtrosHE &= Q(dataExtra = termoData)                                         
+        
+        #Carrega registros Diarios
+        HE = HE.filter(filtrosHE).order_by('-dataExtra')
+
+    paginator = Paginator(HE, 10)
+    page = request.GET.get('page')
+    context['regHE'] = paginator.get_page(page)
+
     if user.justificar:
         context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True)
     if request.method == 'POST':
@@ -410,7 +467,8 @@ def historico(request):
     if request.method == 'GET':
         if "filtrar" in request.GET:
             print('Filtrar')
-            filtros = Q(userReg__id = user.id)
+            filtrosReg = Q(userReg__id = user.id)
+            filtrosHE = Q(userExtra__id = user.id)
             status = request.GET.get('status')
             justificativa = request.GET.get('justificativa')
             date = request.GET.get('data')
@@ -418,102 +476,118 @@ def historico(request):
             
             #Filtro por Status
             if(status == 'APR') or (status == 'PEN') or (status == 'REJ'):
-                filtros &=  Q(sitAPR = status)
+                filtrosReg &=  Q(sitAPR = status)
+                filtrosHE &=  Q(sitAPR = status)
             
             #Filtro por Justificativa
             if(justificativa != 'todas'):
                 if (justificativa == 'sim'):
-                    filtros &= ~Q(justificativas__isnull=True)           
+                    filtrosReg &= ~Q(justificativas__isnull=True)           
+                    filtrosHE &= ~Q(justificativas__isnull=True)           
                 elif (justificativa == 'nao'):
-                    filtros &= ~Q(justificativas__isnull=False)
+                    filtrosReg &= ~Q(justificativas__isnull=False)
+                    filtrosHE &= ~Q(justificativas__isnull=False)
 
             #Filtro por Data
             if(date):
-                filtros &= Q(dataReg = date)
+                filtrosReg &= Q(dataReg = date)
+                filtrosHE &= Q(dataExtra = date)
 
             #Filtro por Escala
             if escala != 'todas':
-                filtros &= Q(escala_id = escala)                       
+                filtrosReg &= Q(escala_id = escala)                                            
             
-            registros = HistRegistro.objects.filter(filtros).order_by('-dataReg')  
-            if not registros:
-                messages.warning(request, 'Não possue registros para o filtro utilizado!')
-
+            #Carrega registros Diarios
+            registros = HistRegistro.objects.filter(filtrosReg).order_by('-dataReg')  
             paginator = Paginator(registros, 10)
             page = request.GET.get('page')
             context['histReg'] = paginator.get_page(page) 
 
+            #Carrega Registros de Horas Extras
+            HE = HoraExtra.objects.filter(filtrosHE).order_by('-dataExtra')
+            paginator = Paginator(HE, 10)
+            page = request.GET.get('page')
+            context['regHE'] = paginator.get_page(page)
+            if (not registros) and (not HE):
+                messages.warning(request, 'Não possue registros Diarios e nem Horas Extras para o filtro utilizado!')
+
         #Gerar e Exportar PDF de Cartão ponto conforme a competência 
+        print("exportar" in request.GET)
         if "exportar" in request.GET:
             comp = request.GET.get('periodoCP')
-            mes, ano = comp.split('/')
-            context = {}
+            if "/" in comp:
+                mes, ano = comp.split('/')
+                context = {}
 
-            # Obter a data atual
-            data_atual = data.strptime(('01/'+mes+'/'+ano), '%d/%m/%Y')
+                # Obter a data atual
+                data_atual = data.strptime(('01/'+mes+'/'+ano), '%d/%m/%Y')
 
-            # Obter o primeiro dia do mês atual
-            primeiro_dia_mes = data_atual.replace(day=1)
-            # Obter o último dia do mês atual
-            _, ultimo_dia_mes = calendar.monthrange(data_atual.year, data_atual.month)
-            registros = {}
-            if Feriado.objects.filter(data = data.now()).exists():
-                feriado = Feriado.objects.get(data = data.now())
+                # Obter o primeiro dia do mês atual
+                primeiro_dia_mes = data_atual.replace(day=1)
+                # Obter o último dia do mês atual
+                _, ultimo_dia_mes = calendar.monthrange(data_atual.year, data_atual.month)
+                registros = {}
 
-            # Percorrer do primeiro dia até o último dia do mês
-            for dia in range(primeiro_dia_mes.day, ultimo_dia_mes + 1):
-                datas = primeiro_dia_mes.replace(day=dia)
-                
-                hist = HistRegistro.objects.filter(Q(userReg__id = user.id), dataReg = datas)
-                if hist:
-                    dt = serialize('json', hist)
-                    dtJson = json.loads(dt)
-                    dtJson[0]['fields']['tpReg']= 'Comum'
-                    registros[datas] = dtJson
-                   
-                else:
-                    numDiaSemana = datas.weekday()
-                    if numDiaSemana == 0:
-                        diaSemana = user.escala.segunda
-                    elif numDiaSemana == 1:
-                        diaSemana = user.escala.terca
-                    elif numDiaSemana == 2:
-                        diaSemana = user.escala.quarta
-                    elif numDiaSemana == 3:
-                        diaSemana = user.escala.quinta
-                    elif numDiaSemana == 4:
-                        diaSemana = user.escala.sexta
-                    elif numDiaSemana == 5:
-                        diaSemana = user.escala.sabado
-                    elif numDiaSemana == 6:
-                        diaSemana = user.escala.domingo 
-                       
-                    if not diaSemana:
-                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Folga', 'altEnt1': False, 'horSai2': 'Folga', 'altSai2': False, 'horEnt3': 'Folga', 'altEnt3': False, 'horSai4': 'Folga', 'altSai4': False, 'sitAPR': '', 'justificativas': 0, 'tpReg': ''}}]   
-
-                    elif HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=datas):
-                        he = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=datas)
-                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': he.horEnt1, 'altEnt1': he.altEnt1, 'horSai2': he.horSai2, 'altSai2': he.altSai2, 'horEnt3': he.horEnt3, 'altEnt3': he.altEnt3, 'horSai4': he.altSai4, 'altSai4': he.altSai4, 'sitAPR': he.sitAPR, 'justificativas': he.justificativas, 'tpReg': 'Hora Extra'}}] 
+                # Percorrer do primeiro dia até o último dia do mês
+                for dia in range(primeiro_dia_mes.day, ultimo_dia_mes + 1):
+                    datas = primeiro_dia_mes.replace(day=dia)
                     
-                    elif feriado.data == datas:
-                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': feriado.nome, 'altEnt1': False, 'horSai2': feriado.nome, 'altSai2': False, 'horEnt3': feriado.nome, 'altEnt3': False, 'horSai4': feriado.nome, 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}] 
+                    if Feriado.objects.filter(data = datas).exists():
+                        feriado = Feriado.objects.get(data = datas)
+                    he = None    
+                    if HoraExtra.objects.filter(userExtra_id = user.id, dataExtra=datas):
+                            he = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=datas)    
+                    hist = HistRegistro.objects.filter(Q(userReg__id = user.id), dataReg = datas)
+                    if hist:
+                        dt = serialize('json', hist)
+                        dtJson = json.loads(dt)
+                        dtJson[0]['fields']['tpReg']= 'Comum'
+                        if he is not None:
+                            dtJson[0]['fields']['qtdHE'] = str(he.diff_formatted)
+                        else:
+                            dtJson[0]['fields']['qtdHE'] = '00:00'      
+                        registros[datas] = dtJson
                     
-                    elif not datas < data.today():
-                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}]   
-
                     else:
-                        registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A'}}]   
-                
+                        numDiaSemana = datas.weekday()
+                        if numDiaSemana == 0:
+                            diaSemana = user.escala.segunda
+                        elif numDiaSemana == 1:
+                            diaSemana = user.escala.terca
+                        elif numDiaSemana == 2:
+                            diaSemana = user.escala.quarta
+                        elif numDiaSemana == 3:
+                            diaSemana = user.escala.quinta
+                        elif numDiaSemana == 4:
+                            diaSemana = user.escala.sexta
+                        elif numDiaSemana == 5:
+                            diaSemana = user.escala.sabado
+                        elif numDiaSemana == 6:
+                            diaSemana = user.escala.domingo 
+                        
 
-            context['registros'] = registros.items()
-            
-            context['periodo'] = comp
-            context['user']= user
-            pdf = processos.geraHtmlToPdf("cartaoPonto/index.html", context)
-            messages.success(request, 'Arquivo Exportado com sucesso!')
-            resposta = HttpResponse(pdf, content_type="application/pdf")   
-            resposta['Content-Disposition'] = 'attachment; filename="CartaoPonto.pdf"'
-            return resposta
+                        if he is not None:
+                            registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': he.horEnt1, 'altEnt1': he.altEnt1, 'horSai2': he.horSai2, 'altSai2': he.altSai2, 'horEnt3': he.horEnt3, 'altEnt3': he.altEnt3, 'horSai4': he.horSai4, 'altSai4': he.altSai4, 'sitAPR': he.sitAPR, 'justificativas': he.justificativas, 'tpReg': 'Hora Extra', 'qtdHE': he.diff_formatted}}] 
+                        
+                        elif not diaSemana:
+                            registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Folga', 'altEnt1': False, 'horSai2': 'Folga', 'altSai2': False, 'horEnt3': 'Folga', 'altEnt3': False, 'horSai4': 'Folga', 'altSai4': False, 'sitAPR': '', 'justificativas': 0, 'tpReg': '', 'qtdHE': '00:00'}}]   
+                        
+                        elif feriado.data == datas:
+                            registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': '', 'dataReg': str(datas.date()), 'horEnt1': feriado.nome, 'altEnt1': False, 'horSai2': feriado.nome, 'altSai2': False, 'horEnt3': feriado.nome, 'altEnt3': False, 'horSai4': feriado.nome, 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A', 'qtdHE': '00:00'}}] 
+                        
+                        elif not datas < data.today():
+                            registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A', 'qtdHE': '00:00'}}]   
+
+                        else:
+                            registros[datas] = [{'model': 'home.histregistro', 'pk': 0, 'fields': {'userReg': user.id, 'escala': None, 'dataReg': str(datas.date()), 'horEnt1': 'Sem Registro', 'altEnt1': False, 'horSai2': 'Sem Registro', 'altSai2': False, 'horEnt3': 'Sem Registro', 'altEnt3': False, 'horSai4': 'Sem Registro', 'altSai4': False, 'sitAPR': 'N/A', 'justificativas': 0, 'tpReg': 'N/A', 'qtdHE': '00:00'}}]   
+                    
+
+                context['registros'] = registros.items()
+                context['periodo'] = comp
+                context['user']= user 
+                pdf = processos.geraHtmlToPdf("cartaoPonto/index.html", context)
+                return JsonResponse({'mensage': 'Arquivo exportado com sucesso!', 'tipo':'text-bg-success', 'sit':'OK', 'pdf_base64': pdf })
+            return JsonResponse({'mensage': 'Data informada Incorretamente!', 'tipo':'text-bg-danger', 'sit':'Erro' })
         else:
             registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
             if registros:
@@ -540,8 +614,6 @@ def historico(request):
                             return redirect(RegistrarPonto) 
                 else:    
                     return redirect(RegistrarPonto) 
-                # print('não tenho registros')
-                # return redirect(RegistrarPonto)
 
     return render(request, 'historico/index.html', context)
 
@@ -549,7 +621,47 @@ def historico(request):
 def aprovaPonto(request):
     context = {}
     user = request.user
+
+
+    termoNome = request.GET.get('nome')
+    termoMatricula = request.GET.get('matricula')
+    termoStatus = request.GET.get('status')
+    termoJustificativa = request.GET.get('justificativa')
+    termoData = request.GET.get('data')
+    termoEscala = request.GET.get('escala')
+
     registros = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')).order_by('-dataReg')
+    if (termoNome) or (termoMatricula) or (termoStatus) or (termoJustificativa) or (termoData) or (termoEscala):
+        filtros = Q()
+        if termoNome:    
+            filtros &= Q(userReg__first_name__icontains=termoNome) | Q(userReg__last_name__icontains=termoNome)
+        
+        #Filtro por Matricula
+        if(termoMatricula):
+            filtros &= Q(userReg__matricula = termoMatricula)
+        
+        #Filtro por Status
+        if(termoStatus == 'APR') or (termoStatus == 'PEN') or (termoStatus == 'REJ'):
+            print(termoStatus)
+            filtros &=  Q(sitAPR = termoStatus)
+        
+        #Filtro por Justificativa
+        if(termoJustificativa != 'todas'):
+            if (justificativa == 'sim'):
+                filtros &= ~Q(justificativas__isnull=True)           
+            elif (justificativa == 'nao'):
+                filtros &= ~Q(justificativas__isnull=False)
+
+        #Filtro por Data
+        if(termoData):
+            filtros &= Q(dataReg = termoData)
+
+        #Filtro por Escala
+        if termoEscala != 'todas':
+            filtros &= Q(escala_id = termoEscala)
+
+        registros = registros.filter(filtros).order_by('-dataReg')
+
     context['escalas'] = Escala.objects.filter(status=True)
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
@@ -688,11 +800,7 @@ def aprovaPonto(request):
 def aprovaPontoHE(request):
     context = {}
     user = request.user
-    # registros = HoraExtra.objects.filter(Q(userExtra__superior__id = user.id), Q(sitAPR='PEN')).annotate(qtdHorExt = ExpressionWrapper(F('horEnt1') - F('horSai2'), output_field=DateTimeField())).order_by('-dataExtra')
     registros = HoraExtra.objects.filter(Q(userExtra__superior__id = user.id), Q(sitAPR='PEN')).order_by('-dataExtra')
-    # for reg in registros:
-    #     print(reg.qtdHorExt)
-        # print(reg.horEnt1 - reg.horSai1)
     context['escalas'] = Escala.objects.filter(status=True)
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
