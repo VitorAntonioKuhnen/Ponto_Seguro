@@ -115,7 +115,7 @@ git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
 * Abra o codigo na IDE VsCode
 * Após abrir o projeto no VsCode, criar uma pasta na raiz no projeto com o nome **.env** para ter as variaveis de segurança do sistema.
-* Para criar a RECAPTCHA                                                                                                                                                      https://www.google.com/recaptcha/about/  
+* Para criar  o seu RECAPTCHA                                                                                                                 https://www.google.com/recaptcha/about/  
 * Dentro desse arquivo coloque essas variaveis:
 ~~~
 SECRET_KEY = 'django-insecure-b(w!7eilg8r$)9rwqk6xmy1!1tptn_%ze)_9ba7m)g7%r*w3$)'
