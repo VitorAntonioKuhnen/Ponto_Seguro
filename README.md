@@ -28,9 +28,7 @@
 <p align="justify">
  O Projeto em desenvolvimento é para disciplina de Desenvolvimento de Aplicação do curso de Tecnologia em Análise e Desenvolvimento de Sistemas. 
  O Ponto Seguro é um sistema para Gestão de Ponto que serve para controle da marcação do ponto, é um sistema responsável por registrar os horários de entrada, 
-  pausa e saída dos funcionários durante todo o mês. Ou seja, é a partir desse sistema que a organização também conseguirá extrair informações como quantidade 
-  de horas extras, saldo do banco de horas, quantidades de faltas e atrasos. Dessa forma, o departamento de recursos humanos consegue fechar a folha de pagamento
-  dos colaboradores de modo fácil e rápido.
+  pausa e saída dos funcionários durante todo o mês. Ou seja, é a partir desse sistema que a organização também conseguirá extrair informações como quantidade  de faltas e atrasos . Dessa form, o departamento de recursos humanos consegue fechar a folha de pagamento dos colaboradores de modo fácil e rápido.
 </p>
 
 ## Funcionalidades
@@ -113,11 +111,12 @@ Após baixar o projeto, você pode abrir com a IDE de sua preferência (IDE usad
 ~~~
 git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 ~~~ 
-* Para baixar o projeto na sua máquina
+
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
 * Abra o codigo na IDE VsCode
 * Após abrir o projeto no VsCode, criar uma pasta na raiz no projeto com o nome **.env** para ter as variaveis de segurança do sistema.
-* Dentro desse arquivo coloque essas variaveis:
+* Para criar  o seu RECAPTCHA                                                                                                                 https://www.google.com/recaptcha/about/  
+* Dentro desse arquivo **.venv** coloque essas variáveis:
 ~~~
 SECRET_KEY = 'django-insecure-b(w!7eilg8r$)9rwqk6xmy1!1tptn_%ze)_9ba7m)g7%r*w3$)'
 
@@ -125,23 +124,23 @@ RECAPTCHA_PUBLIC_KEY = 'chave publica do recaptcha'
 RECAPTCHA_PRIVATE_KEY = 'chave privada do recaptcha'
 
 
-Email = 'email do admin cadastrado'
-SenhaApp = 'senha do admin'
+Email = 'e-mail cadastrado'
+SenhaApp = 'senha  cadastrado'
 email_tls = 'Se for verdadeiro, usar true'
-email_port = 'senha do email que manda os email'
-email_host = 'email que vai ser usado para mandar os email'
+email_port = 'porta do SMTP para a comunica de envio de e-mails'
+email_host = 'endereço de e-mail onde irá fazer o envio de e-mail'
 
 
-ENGINE = 'motor do banco de dados'
+ENGINE = 'motor do banco de dados' no nosso caso é  o MySQL
 NAME = 'nome do banco de dado'
-USER = 'Usuário com o acesso a todo o sistema - admin'
-PASSWORD = 'senha do banco dado'
-HOST ='host do banco dado'
+USER = 'Usuário de acesso ao banco de dados'
+PASSWORD = 'senha de acesso ao banco de dados'
+HOST ='host do banco dado - endereço ip de onde está o banco de dados'
 PORT = '3306'
-ssl = '{'require_secure_transport': <False ou True}'
+ssl = '{'require_secure_transport': <False ou True}' Se a comunicação irá ser criptografada
                                                                                                                                                      
 TOKEK 'Token da APi de feriado site: https://api.invertexto.com/api-feriados'
-                                                                                                                                                                                                              
+ESTADOUF = 'Sigla  do estado'
 ~~~
  
 *Após inserir as variáveis de segurança do sistema, abra o cmd (command prompt) e crie um venv (ambiente virtual do python) para criar a venv digite esse comando:
@@ -149,14 +148,15 @@ TOKEK 'Token da APi de feriado site: https://api.invertexto.com/api-feriados'
 ~~~
 python -m venv venv
 ~~~
-
+* Após criar o ambiente virtual a IDE VsCode vai pedir para confirmar (We noticed a new environment has been created. Do you want to select it for the workspace folder?), é só confirmar que sim.
+                                                                                                                                                     
 * Comando para iniciar a venv (ativar o ambiente virtual):
 
 ~~~
 .\venv\Scripts\activate
 ~~~
 
-* Após ativar o ambiente virtual, na raiz do projeto, tem um arquivo chamado requirements.txt (onde tem todas as dependências do projetos)                                                                                   
+* Após ativar o ambiente virtual. Na raiz do projeto, tem um arquivo chamado requirements.txt (onde tem todas as dependências do projetos)                                                                                   
 * Para baixar as dependências tem que executar esse comando, porém tem q estar na venv (dentro do ambiente virtual), digite o comando para instalar o requeriments.txt.
                                                                                                                                                      
 ~~~
