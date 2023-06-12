@@ -142,7 +142,7 @@ ssl = '{'require_secure_transport': <False ou True}' Se a comunicação irá ser
 TOKEK 'Token da APi de feriado site: https://api.invertexto.com/api-feriados'
 ESTADOUF = 'Sigla  do estado'
 ~~~
- 
+                                                                                                                                                     
 *Após inserir as variáveis de segurança do sistema, abra o cmd (command prompt) e crie um venv (ambiente virtual do python) para criar a venv digite esse comando:
 
 ~~~
