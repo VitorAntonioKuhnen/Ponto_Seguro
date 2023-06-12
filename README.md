@@ -28,9 +28,7 @@
 <p align="justify">
  O Projeto em desenvolvimento é para disciplina de Desenvolvimento de Aplicação do curso de Tecnologia em Análise e Desenvolvimento de Sistemas. 
  O Ponto Seguro é um sistema para Gestão de Ponto que serve para controle da marcação do ponto, é um sistema responsável por registrar os horários de entrada, 
-  pausa e saída dos funcionários durante todo o mês. Ou seja, é a partir desse sistema que a organização também conseguirá extrair informações como quantidade 
-  de horas extras, saldo do banco de horas, quantidades de faltas e atrasos. Dessa forma, o departamento de recursos humanos consegue fechar a folha de pagamento
-  dos colaboradores de modo fácil e rápido.
+  pausa e saída dos funcionários durante todo o mês. Ou seja, é a partir desse sistema que a organização também conseguirá extrair informações como quantidade  de faltas e atrasos . Dessa form, o departamento de recursos humanos consegue fechar a folha de pagamento dos colaboradores de modo fácil e rápido.
 </p>
 
 ## Funcionalidades
