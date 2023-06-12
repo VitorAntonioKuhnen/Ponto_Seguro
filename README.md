@@ -117,6 +117,7 @@ git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
 * Abra o codigo na IDE VsCode
 * Após abrir o projeto no VsCode, criar uma pasta na raiz no projeto com o nome **.env** para ter as variaveis de segurança do sistema.
+* Para criar a RECAPTCHA                                                                                                                                                      https://www.google.com/recaptcha/about/  
 * Dentro desse arquivo coloque essas variaveis:
 ~~~
 SECRET_KEY = 'django-insecure-b(w!7eilg8r$)9rwqk6xmy1!1tptn_%ze)_9ba7m)g7%r*w3$)'
@@ -125,23 +126,23 @@ RECAPTCHA_PUBLIC_KEY = 'chave publica do recaptcha'
 RECAPTCHA_PRIVATE_KEY = 'chave privada do recaptcha'
 
 
-Email = 'email do admin cadastrado'
-SenhaApp = 'senha do admin'
+Email = 'e-mail cadastrado'
+SenhaApp = 'senha  cadastrado'
 email_tls = 'Se for verdadeiro, usar true'
-email_port = 'senha do email que manda os email'
-email_host = 'email que vai ser usado para mandar os email'
+email_port = 'porta do SMTP para a comunica de envio de e-mails'
+email_host = 'endereço de e-mail onde irá fazer o envio de e-mail'
 
 
-ENGINE = 'motor do banco de dados'
+ENGINE = 'motor do banco de dados' no nosso caso é  o MySQL
 NAME = 'nome do banco de dado'
-USER = 'Usuário com o acesso a todo o sistema - admin'
-PASSWORD = 'senha do banco dado'
-HOST ='host do banco dado'
+USER = 'Usuário de acesso ao banco de dados'
+PASSWORD = 'senha de acesso ao banco de dados'
+HOST ='host do banco dado - endereço ip de onde está o banco de dados'
 PORT = '3306'
-ssl = '{'require_secure_transport': <False ou True}'
+ssl = '{'require_secure_transport': <False ou True}' Se a comunicação irá ser criptografada
                                                                                                                                                      
 TOKEK 'Token da APi de feriado site: https://api.invertexto.com/api-feriados'
-ESTADOUF = 'SC'                                                                                                                                                                                                         
+ESTADOUF = 'Sigra  do estado'
 ~~~
  
 *Após inserir as variáveis de segurança do sistema, abra o cmd (command prompt) e crie um venv (ambiente virtual do python) para criar a venv digite esse comando:
