@@ -148,7 +148,8 @@ ESTADOUF = 'Sigra  do estado'
 ~~~
 python -m venv venv
 ~~~
-
+* Após criar o ambiente virtual a IDE VsCode vai pedir para confirmar (We noticed a new environment has been created. Do you want to select it for the workspace folder?), é só confirmar que sim.
+                                                                                                                                                     
 * Comando para iniciar a venv (ativar o ambiente virtual):
 
 ~~~
