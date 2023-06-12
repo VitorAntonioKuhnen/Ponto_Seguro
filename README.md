@@ -113,7 +113,7 @@ Após baixar o projeto, você pode abrir com a IDE de sua preferência (IDE usad
 ~~~
 git clone -b Back https://github.com/VitorAntonioKuhnen/Ponto_Seguro.git
 ~~~ 
-* Para baixar o projeto na sua máquina
+
 * Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo);
 * Abra o codigo na IDE VsCode
 * Após abrir o projeto no VsCode, criar uma pasta na raiz no projeto com o nome **.env** para ter as variaveis de segurança do sistema.
