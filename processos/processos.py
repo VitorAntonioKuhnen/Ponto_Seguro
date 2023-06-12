@@ -23,14 +23,14 @@ def geradorToken(usuario):
     user = Users.objects.get(id=usuario)
     if Token.objects.filter(usuario=user.id).exists():
         Token.objects.get(usuario=user.id).delete()
-    numbers = [0,1,2,3,4,5,6,7,8,9]
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     resultado = ''
     for i in range(6):
-        resultado +=  str(random.choice(numbers))
+        resultado += str(random.choice(numbers))
     print(resultado)
 
-    Token.objects.create(codToken= make_password(resultado), usuario_id=usuario) 
-    # Token.objects.create(codToken=resultado, usuario_id=usuario) 
+    Token.objects.create(codToken=make_password(resultado), usuario_id=usuario)
+    # Token.objects.create(codToken=resultado, usuario_id=usuario)
     return resultado
 
 
@@ -44,20 +44,19 @@ def geraHtmlToPdf(TemplateHtml, context_dict={}):
     return None
 
 
-
 def gravaJustificativa(request, user):
     print("Este method é De envio de justificativa")
     tipoJust = request.POST.get('tipoJust')
     txtJust = request.POST.get('txtJust').strip()
     print(tipoJust)
     print(txtJust)
-    if(tipoJust is None):
+    if (tipoJust is None):
         messages.error(request, 'Informe um tipo de Justificativa!')
         return False
-    elif(txtJust == ''):
-        messages.error(request, 'Digite o Motivo do Atraso!') 
-        return False 
-        
+    elif (txtJust == ''):
+        messages.error(request, 'Digite o Motivo do Atraso!')
+        return False
+
     else:
         numDiaSemana = data.today().weekday()
         if numDiaSemana == 0:
@@ -75,21 +74,26 @@ def gravaJustificativa(request, user):
         elif numDiaSemana == 6:
             diaSemana = user.escala.domingo
 
-        if HistRegistro.objects.filter(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date()):
-            histRegistro = HistRegistro.objects.get(userReg = user.id,  escala_id = user.escala.id, dataReg = data.today().date())
-            just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
+        if HistRegistro.objects.filter(userReg=user.id,  escala_id=user.escala.id, dataReg=data.today().date()):
+            histRegistro = HistRegistro.objects.get(
+                userReg=user.id,  escala_id=user.escala.id, dataReg=data.today().date())
+            just_criada = Justificativa.objects.create(
+                txtJust=txtJust, tipoJust_id=tipoJust, data=data.today(), hora=hora.now().time(), userReg_id=user.id)
             if (histRegistro.horSai4 == None) and (diaSemana == True):
                 print('dia comum')
                 histRegistro.justificativas.add(just_criada)
             else:
                 print('hora extra ')
-                horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())
+                horaextra = HoraExtra.objects.get(
+                    userExtra_id=user.id, dataExtra=data.today().date())
                 horaextra.justificativas.add(just_criada)
         else:
-            horaextra = HoraExtra.objects.get(userExtra_id = user.id, dataExtra=data.today().date())   
-            just_criada = Justificativa.objects.create(txtJust = txtJust, tipoJust_id = tipoJust, data = data.today(), hora = hora.now().time(), userReg_id = user.id)
+            horaextra = HoraExtra.objects.get(
+                userExtra_id=user.id, dataExtra=data.today().date())
+            just_criada = Justificativa.objects.create(
+                txtJust=txtJust, tipoJust_id=tipoJust, data=data.today(), hora=hora.now().time(), userReg_id=user.id)
             print('hora extra ')
-            horaextra.justificativas.add(just_criada)   
+            horaextra.justificativas.add(just_criada)
 
         user.justificar = False
         user.save()
@@ -97,73 +101,80 @@ def gravaJustificativa(request, user):
         return True
 
 
-
-
-
-
-def enviaEmail(email, situacao, titulo):
+def enviaEmail(email, situacao, titulo, data, obs, horE1, horS1, horE2, horS2):
     # html_content = render_to_string('email/token.html', {'token': token})
     text_content = strip_tags(f'''
     <div class="card">
-      <h1>Confirmação de registro de ponto</h1>
+      <h1>Atualização do Registro Ponto</h1>
       <p>
         <span class="label">Data do registro:</span>
-        <span>15/05/2023</span>
+        <span>{data}</span>
       </p>
       <p>
         <span class="label">Situação:</span>
         <span>{situacao}</span>
       </p>
       <p>
-        <span class="label">Registros feitos:</span>
-        <span>Tudo certinho</span>
+        <h5 class="label">Registros:</h5>
+        <table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+        <tbody>
+        <tr style="height: 18px;">
+        <td style="width: 25%; height: 18px;">Entrada</td>
+        <td style="width: 25%; height: 18px;">Saida</td>
+        <td style="width: 25%; height: 18px;">Entrada</td>
+        <td style="width: 25%; height: 18px;">Saida</td>
+        </tr>
+        <tr style="height: 18px;">
+        <td style="width: 25%; height: 18px;">{horE1}</td>
+        <td style="width: 25%; height: 18px;">{horS1}</td>
+        <td style="width: 25%; height: 18px;">{horE2}</td>
+        <td style="width: 25%; height: 18px;">{horS2}</td>
+        </tr>
+        </tbody>
+        </table>
+      </p>
+      <p>
+        <span>Observação: {obs}</span>
       </p>
     </div>''')
-    conteudo = 'Seu ponto foi Rejeitado!! <br> <b>Entre em contato com o seu Gestor</b>!'
-    email = EmailMultiAlternatives(titulo, text_content, settings.EMAIL_HOST_USER, [email])
-    email.attach_alternative('''<html>
+    email = EmailMultiAlternatives(
+        titulo, text_content, settings.EMAIL_HOST_USER, [email])
+    email.attach_alternative(f'''<html>
   <head>
-    <style>
-      .card {
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,.1);
-        margin: 10px;
-        padding: 20px;
-        max-width: 400px;
-        font-family: Arial, sans-serif;
-      }
 
-      h1 {
-        font-size: 24px;
-        margin-top: 0;
-      }
-
-      p {
-        margin-bottom: 10px;
-      }
-
-      .label {
-        font-weight: bold;
-        display: inline-block;
-        width: 150px;
-      }
-    </style>
   </head>
   <body>
     <div class="card">
       <h1>Confirmação de registro de ponto</h1>
       <p>
         <span class="label">Data do registro:</span>
-        <span>15/05/2023</span>
+        <span>{data}</span>
       </p>
       <p>
         <span class="label">Situação:</span>
-        <span>''' + situacao + '''</span>
+        <span>{situacao}</span>
       </p>
       <p>
-        <span class="label">Registros feitos:</span>
-        <span>Tudo certinho</span>
+        <h5 class="label">Registros:</h5>
+        <table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+        <tbody>
+        <tr style="height: 18px;">
+        <td style="width: 25%; height: 18px;">Entrada</td>
+        <td style="width: 25%; height: 18px;">Saida</td>
+        <td style="width: 25%; height: 18px;">Entrada</td>
+        <td style="width: 25%; height: 18px;">Saida</td>
+        </tr>
+        <tr style="height: 18px;">
+        <td style="width: 25%; height: 18px;">{horE1}</td>
+        <td style="width: 25%; height: 18px;">{horS1}</td>
+        <td style="width: 25%; height: 18px;">{horE2}</td>
+        <td style="width: 25%; height: 18px;">{horS2}</td>
+        </tr>
+        </tbody>
+        </table>
+      </p>
+      <p>
+        <span>Observação: {obs}</span>
       </p>
     </div>
   </body>

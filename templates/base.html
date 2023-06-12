@@ -50,15 +50,15 @@
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-house"></i>
-                            <a class="nav-link" aria-current="page" onclick="carregamento()" href="{% url 'inicio' %}">Inicio</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-business-time"></i>
-                            <a class="nav-link" aria-current="page" onclick="carregamento()" href="{% url 'escala' %}">Cadastro de Escalas</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'escala' %}">Cadastro de Escalas</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-clock-rotate-left"></i>
-                            <a class="nav-link" aria-current="page" onclick="carregamento()" href="{% url 'historico' %}">Histórico de Ponto</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'historico' %}">Histórico de Ponto</a>
                         </li>
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>
@@ -79,9 +79,9 @@
                                 Aprovação de Registros
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" onclick="carregamento()" href="{% url 'aprovaPonto' %}">Ponto Diario</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aprovaPonto' %}">Ponto Diario</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" onclick="carregamento()" href="{% url 'aprovaPontoHE' %}">Hora Extra</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aprovaPontoHE' %}">Hora Extra</a></li>
                             </ul>
                         </li> 
                     </ul>
@@ -128,33 +128,8 @@
 
     {% comment %} Atualização de mensagens sem precisar atualizar a tela {% endcomment %}
     <script src="{% static 'js/script_mensagem_Ajax.js' %}"></script>
+    <script src="{% static 'js/script_loading.js' %}"></script>
 
-
-    <script>
-        console.log('teste')
-        {% comment %} function carregamento(){
-         var loadingElement = document.getElementById('loading');
-         loadingElement.classList.remove('disabled');
-        }
-        function fechaCarregamento(){
-         var loadingElement = document.getElementById('loading');
-         loadingElement.classList.add('disabled');
-        } {% endcomment %}
-        function carregamento() {
-            var loadingElement = document.getElementById('loading');
-            loadingElement.classList.remove('disabled');
-          }
-        document.addEventListener('htmx:beforeSwap', function() {
-            var loadingElement = document.getElementById('loading');
-            loadingElement.classList.remove('disabled');
-        });
-         
-        document.addEventListener('htmx:afterSwap', function() {
-            var loadingElement = document.getElementById('loading');
-            loadingElement.classList.add('disabled');
-        });
-         
-    </script>
 
     {% block js %}{% endblock  %}
 </body>

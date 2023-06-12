@@ -19,16 +19,17 @@
     <link rel="stylesheet" href="{% static 'css/style_Troca_Senha.css' %}">
     <link rel="shortcut icon" href="{% static 'image/LogoRedonda.png' %}" type="image/x-icon">
     <script defer src="{% static 'js/script_delay_mensagem.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>Nova Senha</title>
 </head>
 
 <body>
     <div class="container col-sx-6 col-sm-6 col-md-8 w-100">
+        <label class="logo">
+            <img src="{% static 'image/logo_400x400 branco.png' %}" alt="">
+        </label>
         <div class="tamanho content col-xs-10">
-            <label class="logo">
-                <img src="{% static 'image/logo_400x400 branco.png' %}" alt="">
-            </label>
-            <p class=" text1">Informe sua Nova Senha</p>
+            {% comment %} <p class=" text1">Informe sua Nova Senha</p> {% endcomment %}
             <div class="column w-100 ">
 
                 <form class="form" method="POST"> {% csrf_token %}
@@ -38,7 +39,7 @@
                         <input name="senha2" type="password" class="form-control w-100 " placeholder="Confirme sua Senha">
                     </div>
                     <div id="passwordHelp" class="form-text pb-4">
-                        Sua senha deve conter no minimo 8 caracteres, letras maiusculas e minusculas, número e caracteres especiais.
+                        Sua senha deve conter no minimo 8 caracteres, letras maiusculas ou minusculas, número e caracteres especiais.
                     </div>
                     <button name="btaltSenha" id="btn-hover" class="btn" submit="submit">Salvar nova Senha</button>
                     <footer class="footer">
@@ -52,6 +53,7 @@
 
         </div>
     </div>
+    {% include 'parciais/_menssageErro.html' %}
 </body>
 
 </html>

@@ -12,13 +12,13 @@ admin.site.register(Escala, EscalaAdmin)
 
 
 class HistRegistroAdmin(admin.ModelAdmin):
-    list_display = ('userReg', 'escala', 'dataReg', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitAPR')
+    list_display = ('userReg', 'escala', 'dataReg', 'userAlt', 'dataAlt', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitAPR')
     search_fields = ('userReg', 'dataReg')
     list_filter = ('userReg', 'dataReg', 'sitAPR')
     per_page = 8
     fieldsets = (
         (None, {
-            'fields': ('userReg', 'escala', 'dataReg', 'sitAPR', 'justificativas', 'obsSup')
+            'fields': ('userReg', 'escala', 'dataReg', 'userAlt', 'dataAlt', 'sitAPR', 'justificativas', 'obsSup')
         }),
         ('Registros', {
             'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')
@@ -46,13 +46,13 @@ class JustificativaAdmin(admin.ModelAdmin):
 admin.site.register(Justificativa, JustificativaAdmin)
 
 class HoraExtraAdmin(admin.ModelAdmin):
-    list_display = ['userExtra', 'dataExtra', 'userLib', 'dataLib', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitAPR']
-    list_display_links = ['userExtra', 'userLib']
-    search_fields = ['userExtra', 'userLib', 'dataLib']
+    list_display = ['userExtra', 'dataExtra', 'userAltHe', 'dataAlt', 'horEnt1', 'horSai2', 'horEnt3', 'horSai4', 'sitAPR']
+    list_display_links = ['userExtra', 'userAltHe']
+    search_fields = ['userExtra', 'userAltHe', 'dataAlt']
     per_page = 8
     fieldsets = (
         (None, {
-            'fields': ('userExtra', 'dataExtra', 'userLib', 'dataLib', 'sitAPR', 'justificativas', 'obsSup')
+            'fields': ('userExtra', 'dataExtra', 'userAltHe', 'dataAlt', 'sitAPR', 'justificativas', 'obsSup')
         }),
         ('Registros de Horas Extras', {
             'fields': ('horEnt1', 'horSai2', 'horEnt3', 'horSai4')

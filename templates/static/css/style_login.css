@@ -27,7 +27,6 @@
     justify-content: space-between;
     align-items: center;
     min-height: 50%;
-    padding-right: 40px;
 
 
 }
@@ -36,7 +35,7 @@
     position: relative;
     min-width: 55%;
     height: 100%;
-    border-radius: 15px 0 0 15px;
+    border-radius: 15px 15px;
     background-color: #03315956;
     display: flex;
     justify-content: center;
@@ -100,7 +99,7 @@ h2 {
     position: relative;
     height: 100%;
     min-width: 50%;
-    border-radius: 0 15px 15px 0;
+    border-radius: 15px 15px;
     background-color: #ffffff;
     display: flex;
     justify-content: center;
