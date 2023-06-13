@@ -6,18 +6,11 @@ from decouple import config
 import requests
 
 
-def teste():
-    print('ola')
-
-def test2():
-    print('novo teste')
-
 def get_api_feriados():
   resposta = requests.get(f'https://api.invertexto.com/v1/holidays/2023?token={config("TOKEN")}&state=SC')
   if resposta.status_code == 200:
       json = resposta.json()
       if json:
-          print(json)
           for feriado in json:
               
               if feriado['type'] == 'facultativo':
@@ -32,22 +25,17 @@ def get_api_feriados():
               Feriado.objects.create(data= feriado['date'], nome=feriado['name'], tipo_id = tipo, level_id = level)
   
   else:
-      print('Deu B.O')        
+      print('Ocorreu um erro ao carregar os dados da nova')        
 
 
 def gera_escala_zerada():
    feriado = Feriado.objects.filter(data = data.now())
-   if feriado: #Trocar para "Not Feriado:" 
-      print('entrou')
-      print(Users.objects.filter(dat_inicia_trab__lte=data.today().date(), is_active = True))
+   if not feriado:
       for user in Users.objects.filter(dat_inicia_trab__lte=data.today().date(), is_active = True):
-        print(user)
-        print(HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y')))
-        print('os registros')
-        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y')): #data.today().date()
-          print('Não Tem registro')
+        
+        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.today().date()).exists():
+          print('Precisa criar registro')
           numDiaSemana = data.today().weekday()
-          print(numDiaSemana)
           if numDiaSemana == 0:
               diaSemana = user.escala.segunda
           elif numDiaSemana == 1:
@@ -62,15 +50,8 @@ def gera_escala_zerada():
               diaSemana = user.escala.sabado
           elif numDiaSemana == 6:
               diaSemana = user.escala.domingo  
-          print(diaSemana)
           if diaSemana:
-            print('É dia de trabalhar') 
-            reg = HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.strptime('07/06/2023', '%d/%m/%Y'))    
-            print('criou aqui')
-            print(reg)
-
-      #Aqui fazer a logica para executar o processo de criação de escalas quando não se trata de um feriado
-      print('Não tem feriado')  
+            HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())    
    else:
       print('Tem feriado')   
    

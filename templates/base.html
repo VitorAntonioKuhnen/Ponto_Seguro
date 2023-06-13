@@ -1,4 +1,5 @@
 {% load static %}
+{% load filtros %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -52,18 +53,24 @@
                             <i class="fa-solid fa-house"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
                         </li>
+                        {% if user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %}
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-business-time"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'escala' %}">Cadastro de Escalas</a>
                         </li>
+                        {% endif %}
+                        {% comment %} {% if user|no_grupo:'Comum' or user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %} {% endcomment %}
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'historico' %}">Histórico de Ponto</a>
                         </li>
+                        {% comment %} {% endif %} {% endcomment %}
+                        {% comment %} {% if user|no_grupo:'Comum' or user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %} {% endcomment %}
                         <li class="nav-item d-flex-row">
                             <i class="fa-sharp fa-solid fa-clock "></i>
                             <a class="nav-link" aria-current="page" href="{% url 'RegistrarPonto' %}">Registro de Ponto</a>
                         </li>
+                        {% comment %} {% endif %} {% endcomment %}
                         {% comment %} <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-person-circle-check"></i>
                             <a class="nav-link" aria-current="page" href="{% url 'aprovaPonto' %}">Aprova Ponto</a>
@@ -72,6 +79,7 @@
                             <a class="nav-link" href="#">Link</a>
                         </li>{% endcomment %}
                         
+                        {% if user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex d-flex-row" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -84,6 +92,7 @@
                                 <li><a class="dropdown-item" href="{% url 'aprovaPontoHE' %}">Hora Extra</a></li>
                             </ul>
                         </li> 
+                        {% endif %}
                     </ul>
                 </form>
             </div>
