@@ -29,11 +29,10 @@ def get_api_feriados():
 
 
 def gera_escala_zerada():
-   feriado = Feriado.objects.filter(data = data.now())
+   feriado = Feriado.objects.filter(data = (data.today().date() - timedelta(days=1)))
    if not feriado:
-      for user in Users.objects.filter(dat_inicia_trab__lte=data.today().date(), is_active = True):
-        
-        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = data.today().date()).exists():
+      for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
+        if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists():
           print('Precisa criar registro')
           numDiaSemana = data.today().weekday()
           if numDiaSemana == 0:
@@ -51,7 +50,19 @@ def gera_escala_zerada():
           elif numDiaSemana == 6:
               diaSemana = user.escala.domingo  
           if diaSemana:
-            HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = data.today().date())    
+            HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = (data.today().date() - timedelta(days=1)))    
    else:
       print('Tem feriado')   
    
+
+
+def confereRegistros():
+  # Ideia calcular apartir da escala a quantidade de horas trabalhadas se é maior ou igual, se for maior ou igual então aprova o registro direto se for menor então fica Pendente
+
+  # Sempre verificar a primeira e a ultima saida se existe o registro, e o registro deve existir se existir na escala
+  print('Registros')
+
+
+
+def teste():
+   print((data.today().date() - timedelta(days=1)))   
