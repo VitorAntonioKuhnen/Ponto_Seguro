@@ -58,7 +58,18 @@ def gera_escala_zerada():
 
 def confereRegistros():
   # Ideia calcular apartir da escala a quantidade de horas trabalhadas se é maior ou igual, se for maior ou igual então aprova o registro direto se for menor então fica Pendente
-
+  for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
+    reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)))
+    if user.escala.horSai4 is not None:
+      horasComb = hora.combine(hora.today(), user.escala.horEnt1)- hora.combine(hora.today(),  user.escala.horSai2)
+      print(horasComb)
+      horas = horasComb.seconds // 3600
+      print(horas)
+      minutos = (horasComb.seconds // 60) % 60
+      print(minutos)
+      print('escala com mais de 1 periodo')
+    else:
+       print('escala de 1 periodo')   
   # Sempre verificar a primeira e a ultima saida se existe o registro, e o registro deve existir se existir na escala
   print('Registros')
 
