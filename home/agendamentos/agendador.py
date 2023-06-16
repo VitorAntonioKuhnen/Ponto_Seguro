@@ -63,8 +63,8 @@ def confereRegistros():
     if user.escala.horSai4 is not None:
       horasComb = hora.combine(hora.today(), user.escala.horEnt1)- hora.combine(hora.today(),  user.escala.horSai2)
       print(horasComb)
-      horas = horasComb.seconds // 3600
-      print(horas)
+      # horas = horasComb.seconds // 3600
+      # print(horas)
       minutos = (horasComb.seconds // 60) % 60
       print(minutos)
       print('escala com mais de 1 periodo')
