@@ -14,4 +14,5 @@ urlpatterns = [
     path('escala/', views.escala, name='escala'),
     path('cadastroEscala/', views.cadastroEscala, name='cadastroEscala'),
     path('alteraEscala/<int:id>/', views.alteraEscala, name='alteraEscala'),
+    path('usuarios/', views.usuarios, name='usuarios'),
 ]

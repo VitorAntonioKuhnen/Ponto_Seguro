@@ -59,6 +59,12 @@
                             <a class="nav-link" aria-current="page" href="{% url 'escala' %}">Cadastro de Escalas</a>
                         </li>
                         {% endif %}
+                        {% if user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %}
+                        <li class="nav-item d-flex-row">
+                            <i class="fa-solid fa-users"></i>
+                            <a class="nav-link" aria-current="page" href="{% url 'usuarios' %}">Usuarios</a>
+                        </li>
+                        {% endif %}
                         {% comment %} {% if user|no_grupo:'Comum' or user|no_grupo:'Desenvolvedor' or user|no_grupo:'Coordenador' %} {% endcomment %}
                         <li class="nav-item d-flex-row">
                             <i class="fa-solid fa-clock-rotate-left"></i>
