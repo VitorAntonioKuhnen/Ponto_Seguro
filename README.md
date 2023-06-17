@@ -160,7 +160,7 @@ python -m venv venv
 * Para baixar as dependências tem que executar esse comando, porém tem q estar na venv (dentro do ambiente virtual), digite o comando para instalar o requeriments.txt.
                                                                                                                                                      
 ~~~
-pip install -r requirements.txt
+pip install --use-pep517 -r requirements.txt
 ~~~
 
 * Após instalar os arquivos requirents.txt, digite o comando a seguir para iniciar o servidor:
