@@ -64,20 +64,49 @@ def gera_escala_zerada():
 
 def confereRegistros():
   # Ideia calcular apartir da escala a quantidade de horas trabalhadas se é maior ou igual, se for maior ou igual então aprova o registro direto se for menor então fica Pendente
+  numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
   for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
-    reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)))
-    if user.escala.horSai4 is not None:
-      horasComb = hora.combine(hora.today(), user.escala.horEnt1)- hora.combine(hora.today(),  user.escala.horSai2)
-      print(horasComb)
-      # horas = horasComb.seconds // 3600
-      # print(horas)
-      minutos = (horasComb.seconds // 60) % 60
-      print(minutos)
-      print('escala com mais de 1 periodo')
+    print(user)
+    if numDiaSemana == 0:
+        diaSemana = user.escala.segunda
+    elif numDiaSemana == 1:
+        diaSemana = user.escala.terca
+    elif numDiaSemana == 2:
+        diaSemana = user.escala.quarta
+    elif numDiaSemana == 3:
+        diaSemana = user.escala.quinta
+    elif numDiaSemana == 4:
+        diaSemana = user.escala.sexta
+    elif numDiaSemana == 5:
+        diaSemana = user.escala.sabado
+    elif numDiaSemana == 6:
+        diaSemana = user.escala.domingo  
+    print(diaSemana)    
+    if diaSemana:
+      reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)))
+      print(reg)
+      print(user.escala.horSai4)
+      #Verifica se tem o ultimo periodo cadastrado na escala do usuario
+      if user.escala.horSai4 is not None:
+        horas1Peri = hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
+        horas2Peri = hora.combine(hora.today(),  user.escala.horSai4) - hora.combine(hora.today(), user.escala.horEnt3)
+        horasComb = horas1Peri + horas2Peri
+        print(horasComb)
+        diferenca_minutos = horasComb.seconds // 60
+        print(diferenca_minutos)
+        print('escala com mais de 1 periodo')
+      else:
+        print('escala para usuario de apenas 1 periodo')  
+        horasComb =  hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
+        print(horasComb)
+        diferenca_minutos = horasComb.seconds // 60
+        print(diferenca_minutos) 
     else:
-       print('escala de 1 periodo')   
+       print('Fora da Escala')   
+    print('\n')    
   # Sempre verificar a primeira e a ultima saida se existe o registro, e o registro deve existir se existir na escala
   print('Registros')
+  
 
 
 
