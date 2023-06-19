@@ -32,9 +32,13 @@ def gera_escala_zerada():
    feriado = Feriado.objects.filter(data = (data.today().date() - timedelta(days=1)))
    if not feriado:
       for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
+        print(user)
+        print(HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists())
         if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists():
-          print('Precisa criar registro')
-          numDiaSemana = data.today().weekday()
+          print('Não tem Registro')
+          numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
+          # numDiaSemana = data.today().weekday()
+
           if numDiaSemana == 0:
               diaSemana = user.escala.segunda
           elif numDiaSemana == 1:
@@ -49,8 +53,10 @@ def gera_escala_zerada():
               diaSemana = user.escala.sabado
           elif numDiaSemana == 6:
               diaSemana = user.escala.domingo  
+          print(diaSemana)    
           if diaSemana:
             HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = (data.today().date() - timedelta(days=1)))    
+          print('\n')  
    else:
       print('Tem feriado')   
    

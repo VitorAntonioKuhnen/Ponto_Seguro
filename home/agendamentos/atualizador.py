@@ -6,6 +6,6 @@ def start():
     scheduler = BackgroundScheduler()
     scheduler.add_job(get_api_feriados, 'cron', month='1', day='1', hour='0', minute='0')
     scheduler.add_job(gera_escala_zerada, 'cron', hour=0)
-    # scheduler.add_job(confereRegistros, 'interval', seconds= 5)
+    # scheduler.add_job(gera_escala_zerada, 'interval', seconds= 5)
     scheduler.start()
     

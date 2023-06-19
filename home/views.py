@@ -468,6 +468,69 @@ def historico(request):
                 return render(request, 'historico/index.html', context)
             else:
                 return render(request, 'historico/index.html', context)
+            
+        elif "btAltReg" in request.POST:
+                    inpId = request.POST.get('inpID')
+                    historico = HistRegistro.objects.get(id = inpId)
+                    ent1 = request.POST.get('ent1')
+                    sai1 = request.POST.get('sai1')
+                    ent2 = request.POST.get('ent2')
+                    sai2 = request.POST.get('sai2')
+                    if historico.horEnt1 != parse_time(ent1):
+                        print('Primeiro')
+                        historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
+                        historico.altEnt1 = True
+
+                    if historico.horSai2 != parse_time(sai1):
+                        print('Segundo')
+                        historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
+                        historico.altSai2 = True
+
+                    if historico.horEnt3 != parse_time(ent2):
+                        print('Terceiro')   
+                        historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
+                        historico.altEnt3 = True
+
+                    if historico.horSai4 != parse_time(sai2):
+                        print('Quarto')
+                        historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
+                        historico.altSai4 = True
+                    historico.userAlt = user
+                    historico.dataAlt = data.today().date()    
+                    historico.save()
+                    messages.success(request, 'Registro Alterado com Sucesso!!')    
+        elif "btAltRegHe" in request.POST:
+                    inpId = request.POST.get('inpIDHe')
+                    historico = HoraExtra.objects.get(id = inpId)
+                    ent1 = request.POST.get('ent1He')
+                    sai1 = request.POST.get('sai1He')
+                    ent2 = request.POST.get('ent2He')
+                    sai2 = request.POST.get('sai2He')
+
+                    if historico.horEnt1 != parse_time(ent1):
+                        print('Primeiro')
+                        historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
+                        historico.altEnt1 = True
+
+                    if historico.horSai2 != parse_time(sai1):
+                        print('Segundo')
+                        historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
+                        historico.altSai2 = True
+
+                    if historico.horEnt3 != parse_time(ent2):
+                        print('Terceiro')   
+                        historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
+                        historico.altEnt3 = True
+
+                    if historico.horSai4 != parse_time(sai2):
+                        print('Quarto')
+                        historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
+                        historico.altSai4 = True
+                    historico.userAltHe = user
+                    historico.dataAlt = data.today().date()    
+                    historico.save()
+                    messages.success(request, 'Registro Alterado com Sucesso!!')
+
 
     if request.method == 'GET':
         if "filtrar" in request.GET:
@@ -735,13 +798,6 @@ def aprovaPonto(request):
             print(justificativa)
             if "filtrar" in request.GET:
                 print('Filtrar')
-                # filtros = Q(userReg__superior__id = user.id)
-                # nome = request.GET.get('nome').strip()
-                # matricula = request.GET.get('matricula').strip()
-                # status = request.GET.get('status')
-                # justificativa = request.GET.get('justificativa')
-                # date = request.GET.get('data')
-                # escala = request.GET.get('escala')
                 
                 #Filtro por Nome
                 if(nome):
@@ -1000,7 +1056,6 @@ def aprovarHE(request, id):
         historico.dataAlt = data.today().date()
         historico.save()
         processos.enviaEmail(historico.userExtra.email, 'Aprovado', 'Registro de Ponto Extra Aprovado - Ponto Seguro', historico.dataExtra, historico.obsSup, historico.horEnt1, historico.horSai2, historico.horEnt3, historico.horSai4)
-        # messages.success(request, 'Registro Aprovado com Sucesso!')
 
         context['histReg'] = HoraExtra.objects.filter(Q(userExtra__superior__id = user.id), Q(sitAPR='PEN'))
         return render(request, 'parciais/tabela_aprovacao_HE.html', context)
@@ -1020,7 +1075,6 @@ def desaprovarHE(request, id):
         historico.dataAlt = data.today().date()
         historico.save()
         processos.enviaEmail(historico.userExtra.email, 'Reprovado', 'Registro de Ponto Extra Rejeitado - Ponto Seguro', historico.dataExtra, historico.obsSup, historico.horEnt1, historico.horSai2, historico.horEnt3, historico.horSai4)
-        # messages.error(request, 'Registro Rejeitado com Sucesso!')
 
         context['histReg'] = HoraExtra.objects.filter(Q(userExtra__superior__id = user.id), Q(sitAPR='PEN')) 
         return render(request, 'parciais/tabela_aprovacao_HE.html', context)
@@ -1115,7 +1169,7 @@ def cadastroEscala(request):
                 sab = request.POST.get('sab', False) == 'on'
                 domin = request.POST.get('domin', False) == 'on'
                 if (seg == True) or (terc == True) or (quart == True) or (quint == True) or (sext == True) or (sab == True) or (domin == True):
-                    Escala.objects.create(nmEscala = nmEscala, 
+                    newEscala = Escala.objects.create(nmEscala = nmEscala, 
                                         horEnt1 = ent1, 
                                         horSai2 = sai1,
                                         horEnt3 = ent2, 
@@ -1128,14 +1182,27 @@ def cadastroEscala(request):
                                         sabado = sab, 
                                         domingo = domin, 
                                         status = True) 
-                    return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success', 'sit':'OK'}) 
+                    
+                    return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success', 'sit':'OK', 'escala':
+                                         {'id': str(newEscala.id), 'nmEscala': newEscala.nmEscala, 
+                                          
+                                         'horEnt1': newEscala.horEnt1.strftime('%H:%M')  if newEscala.horEnt1 else '', 
+                                         'horSai2': newEscala.horSai2.strftime('%H:%M')  if newEscala.horSai2 else '', 
+                                         'horEnt3': newEscala.horEnt3.strftime('%H:%M')  if newEscala.horEnt3 else '', 
+                                         'horSai4': newEscala.horSai4.strftime('%H:%M') if newEscala.horSai4 else '', 
+
+                                         'segunda': 'checked' if newEscala.segunda else '', 
+                                         'terca': 'checked' if  newEscala.terca else '', 'quarta':'checked' if  newEscala.quarta else '', 
+                                         'quinta': 'checked' if newEscala.quinta else '', 'sexta': 'checked' if newEscala.sexta else '', 
+                                         'sabado': 'checked' if newEscala.sabado else '', 'domingo': 'checked' if newEscala.domingo else '',
+                                         'status': 'checked' if newEscala.status else '', 'statusTab': 'Ativo' if newEscala.status else 'Inativo'}}) 
                 else:
                     return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger', 'sit':'ERRO'})  
             else:
                 return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger', 'sit':'ERRO'}) 
         else:
             return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger', 'sit':'ERRO'})  
-    return redirect(inicio)
+    return JsonResponse({'mensage':'Você não Possui Acesso a Esta Funcinalidade!!', 'tipo':'text-bg-danger', 'sit':'ERRO'})
 
 
 
@@ -1181,21 +1248,64 @@ def alteraEscala(request, id):
                     escala.status = status
                     escala.save()
 
-                    return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success'}) 
+                    if escala.status == True:
+                        situacao = 'Ativo'
+                    else:
+                        situacao = 'Inativo'
+
+                    return JsonResponse({'mensage':'Escala Gravada com Sucesso!', 'tipo':'text-bg-success', 'sit': 'OK', 'escala': str(escala.nmEscala), 'status': situacao}) 
                 else:
-                    return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger'})  
+                    return JsonResponse({'mensage':'Selecione um dia da Semana!', 'tipo':'text-bg-danger', 'sit': 'ERRO'})  
             else:
-                return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger'})  
+                return JsonResponse({'mensage':'Informe ao menos a primeira Entrada e a Primeira Saída!!', 'tipo':'text-bg-danger', 'sit': 'ERRO'})  
         else:
-            return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger'})  
+            return JsonResponse({'mensage':'Informe a Descrição da Escala!', 'tipo':'text-bg-danger', 'sit': 'ERRO'})  
     else:
-        return redirect(inicio)    
+        return JsonResponse({'mensage':'Você não Possui Acesso a Esta Funcinalidade!!', 'tipo':'text-bg-danger', 'sit':'ERRO'})  
     
 
 
 def usuarios(request):
-    context = {}
-    context['usuarios'] = Users.objects.all()
-    context['escalas'] = Escala.objects.all()
-    context['cargos'] = Cargo.objects.all()
-    return render(request, 'usuario/index.html', context)    
+    print('Informações dos Usuarios')
+    user = request.user
+    if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
+        context = {}
+        context['usuarios'] = Users.objects.filter(superior_id = user.id)
+        context['escalas'] = Escala.objects.all()
+        context['cargos'] = Cargo.objects.all()
+        return render(request, 'usuario/index.html', context)    
+    else:
+        return redirect(inicio)    
+
+
+
+def altUsuario(request, id):
+    print('Altera Informações dos Usuarios')
+    user = request.user
+    if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
+        primeiroNome = request.POST.get('primeiroNome'+ str(id))
+        sobrenome = request.POST.get('sobrenome'+ str(id))
+        escalas = request.POST.get('escalas'+ str(id))
+        email = request.POST.get('email'+ str(id))
+        cargos = request.POST.get('cargos'+ str(id))
+        if (primeiroNome != '') and (sobrenome != '') and (escalas != '') and (email != '') and (cargos != ''):
+            if '@' in email and '.' in email:
+                userAlt = Users.objects.get(id = id)
+                escala = Escala.objects.get(id = escalas)
+                cargo = Cargo.objects.get(id = cargos)
+
+                userAlt.first_name = primeiroNome
+                userAlt.last_name = sobrenome
+                userAlt.escala = escala
+                userAlt.email = email
+                userAlt.cargo = cargo
+                userAlt.save()
+                
+                return JsonResponse({'mensage':'Usuario Alterado Com Sucesso!!', 'tipo':'text-bg-success', 'nomeComp': str(userAlt.first_name + ' ' + userAlt.last_name), 'escala': str(userAlt.escala.nmEscala), 'email': str(userAlt.email), 'cargo': str(userAlt.cargo.nmCargo), 'sit':'OK'}) 
+            else:
+                return JsonResponse({'mensage':'E-mail Digitado Incorreto!!', 'tipo':'text-bg-danger', 'sit':'ERRO'})
+        else:
+            return JsonResponse({'mensage':'Todos os Campos Devem Estar Preenchidos!!', 'tipo':'text-bg-danger', 'sit':'ERRO'})
+    
+    else:
+        return JsonResponse({'mensage':'Você não Possui Acesso a Esta Funcinalidade!!', 'tipo':'text-bg-danger', 'sit':'ERRO'})

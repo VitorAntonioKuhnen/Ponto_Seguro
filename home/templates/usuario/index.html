@@ -17,120 +17,132 @@
 
   <!-- Content -->
   <div class="content overflow-auto p-4 rounded">
-    <table id="myTable" class="table table-hover table-striped table-bordered">
-      <thead>
-        <tr>
-          <th id="title" scope="col">Matrícula</th>
-          <th id="title" scope="col">Usuário</th>
-          <th id="title" scope="col">Nome</th>
-          <th id="title" scope="col">Escala</th>
-          <th id="title" scope="col">Data da Admissão</th>
-          <th id="title" scope="col">Data de Inicio do Trabalho</th>
-          <th id="title" scope="col">Email</th>
-          <th id="title" scope="col">Superior</th>
-          <th id="title" scope="col">Cargo</th>
-          <th id="title" scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for usuario in usuarios %}
+    <form class="modal-content"  method="POST" id="altUsuario"> {% csrf_token %}
+      <table id="myTable" class="table table-hover table-striped table-bordered">
+        <thead>
           <tr>
-            <th scope="row">{{usuario.id}}</th>
-            <td>{{usuario.username}}</td>
-            <td>{{usuario.get_full_name}}</td>
-            <td>{{usuario.escala.nmEscala}}</td>
-            <td>{{usuario.dat_admissao}}</td>
-            <td>15/04/2023</td>
-            <td>{{usuario.email}}</td>
-            <td>{{usuario.superior.matricula}} - {{usuario.superior.get_full_name}}</td>
-            <td>
-              {% if usuario.cargo != None %}
-                {{usuario.cargo}}
-              {% else %}
-                Sem Cargo  
-              {% endif %}
+            <th id="title" scope="col">Matrícula</th>
+            <th id="title" scope="col">Usuário</th>
+            <th id="title" scope="col">Nome</th>
+            <th id="title" scope="col">Escala</th>
+            <th id="title" scope="col">Data da Admissão</th>
+            <th id="title" scope="col">Data de Inicio do Trabalho</th>
+            <th id="title" scope="col">Email</th>
+            <th id="title" scope="col">Superior</th>
+            <th id="title" scope="col">Cargo</th>
+            <th id="title" scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+            <tr>
+              <th scope="row">{{usuario.id}}</th>
+              <td>{{usuario.username}}</td>
+              <td id="nomeCompleto{{usuario.id}}">{{usuario.get_full_name}}</td>
+              <td id="escala{{usuario.id}}">{{usuario.escala.nmEscala}}</td>
+              <td>{{usuario.dat_admissao}}</td>
+              <td>{{usuario.dat_inicia_trab}}</td>
+              <td id="email{{usuario.id}}">{{usuario.email}}</td>
+              <td>{{usuario.superior.matricula}} - {{usuario.superior.get_full_name}}</td>
+              <td id="cargo{{usuario.id}}">
+                {% if usuario.cargo != None %}
+                  {{usuario.cargo}}
+                {% else %}
+                  Sem Cargo  
+                {% endif %}
 
-            </td>
-            <td>
-              <span>
-                <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#ajustes{{usuario.id}}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                    class="bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path
-                      d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                    <path fill-rule="evenodd"
-                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                  </svg>
-                </a>
-              </span>
-              <div class="modal fade" id="ajustes{{usuario.id}}" aria-hidden="true">
-                <div class=" mt-4 modal-dialog">
-                  <form class="modal-content" action="{% url 'aprovaPonto' %}" method="POST"> {% csrf_token %}
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5">Editar Usuario</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div>
-                        <div class="d-flex flex-column mb-3  gap-1">
-                          <div class="d-flex justify-content-center gap-1">
+              </td>
+              <td>
+                <span>
+                  <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#ajustes{{usuario.id}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                      class="bi bi-pencil-square" viewBox="0 0 16 16">
+                      <path
+                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                      <path fill-rule="evenodd"
+                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                    </svg>
+                  </a>
+                </span>
+                <div class="modal fade" id="ajustes{{usuario.id}}" aria-hidden="true">
+                  <div class=" mt-4 modal-dialog">
+                    {% comment %} <form class="modal-content" action="{% url 'usuarios' %}" method="POST" id="altUser"> {% csrf_token %} {% endcomment %}
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5">Editar Usuario</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div>
+                          <div class="d-flex flex-column mb-3  gap-1">
+                            <div class="d-flex justify-content-center gap-1">
 
-                            <label for="" class="col-form-label w-25">Usuario: </label>
-                            <input type="text" class="form-control" value="{{usuario.username}}" disabled>
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Nome:</label>
-                            <input type="text" class="form-control" value="{{usuario.get_full_name}}">
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Escala: </label>
-                            <Select class="form-select" aria-label=".form-select-sm">
-                              <option selected value="todas">{{usuario.escala.nmEscala}}</option>
-                              {% for escala in escalas %}
-                              <option value="{{escala.id}}">{{escala.nmEscala}}</option>
-                              {% endfor %}
-                            </Select>
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Data Admissão: </label>
-                            <input type="date" class="form-control" value="{{usuario.dat_admissao}}" disabled>
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Data Inicio:</label>
-                            <input type="date" class="form-control" value="{{usuario.dat_inicia_trab}}" disabled>
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Email: </label>
-                            <input type="email" class="form-control" value="{{usuario.email}}">
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Superior: </label>
-                            <input type="text" class="form-control" value="{{usuario.superior.get_full_name}}" disabled>
-                          </div>
-                          <div class="d-flex justify-content-center gap-1">
-                            <label for="" class="col-form-label  w-25">Cargo: </label>
-                            <Select class="form-select" aria-label=".form-select-sm">
-                              <option selected value="todas">{{usuario.cargo.nmCargo}}</option>
-                              {% for cargo in cargos %}
-                              <option value="{{cargo.id}}">{{cargo.nmCargo}}</option>
-                              {% endfor %}
-                            </Select>
+                              <label for="" class="col-form-label w-25">Usuario: </label>
+                              <input type="text" class="form-control" value="{{usuario.username}}" disabled>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Primeiro Nome:</label>
+                              <input name="primeiroNome{{usuario.id}}" type="text" class="form-control" value="{{usuario.first_name}}">
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Sobrenome:</label>
+                              <input name="sobrenome{{usuario.id}}" type="text" class="form-control" value="{{usuario.last_name}}">
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Escala: </label>
+                              <Select name="escalas{{usuario.id}}" class="form-select" aria-label=".form-select-sm">
+                                {% for escala in escalas %}
+                                {% if escala.id == usuario.escala.id %}
+                                  <option selected value="{{escala.id}}">{{escala.nmEscala}}</option>
+                                {% else %}  
+                                  <option value="{{escala.id}}">{{escala.nmEscala}}</option>
+                                {% endif %}
+                                {% endfor %}
+                              </Select>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Data Admissão: </label>
+                              <input type="date" class="form-control" value="{{usuario.dat_admissao|date:'Y-m-d'}}" disabled>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Data Inicio:</label>
+                              <input type="date" class="form-control" value="{{usuario.dat_inicia_trab|date:'Y-m-d'}}" disabled>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Email: </label>
+                              <input name="email{{usuario.id}}" type="email" class="form-control" value="{{usuario.email}}">
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Superior: </label>
+                              <input type="text" class="form-control" value="{{usuario.superior.get_full_name}}" disabled>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <label for="" class="col-form-label  w-25">Cargo: </label>
+                              <Select name="cargos{{usuario.id}}" class="form-select" aria-label=".form-select-sm">
+                                {% for cargo in cargos %}
+                                {% if cargo.id == usuario.cargo.id %}
+                                  <option selected value="{{cargo.id}}">{{cargo.nmCargo}}</option>
+                                {% else %}
+                                  <option value="{{cargo.id}}">{{cargo.nmCargo}}</option>
+                                {% endif %}
+                                {% endfor %}
+                              </Select>
+                            </div>
                           </div>
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button name="AltUsu" type="button" class="btn btn-primary" onclick="altUsuario(event, {{usuario.id}})" id="btAltUsu">Salvar</button>
+                        </div>
                       </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button name="btAltReg" type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                          onclick="carregamento()">Salvar</button>
-                      </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
   </div>
 </div>
 {% endblock %}

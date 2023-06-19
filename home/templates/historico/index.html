@@ -235,7 +235,7 @@
                       <div class="modal fade" id="ajustes{{registro.id}}" aria-hidden="true">
                         <div class=" mt-4 modal-dialog">
                           {% comment %} <form class="modal-content" action="{% url 'altRegistro' registros.id %}" method="POST"> {% csrf_token %} {% endcomment %}
-                          <form class="modal-content" action="{% url 'aprovaPonto' %}" method="POST"> {% csrf_token %}
+                          <form class="modal-content" action="{% url 'historico' %}" method="POST"> {% csrf_token %}
                             <div class="modal-header">
                               <h1 class="modal-title fs-5" >Editar Registro</h1>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -267,7 +267,7 @@
                                     </div>
                                   </div>
                                   <label for="" class="mt-3 col-form-label">Observação</label>
-                                  <textarea class="form-control" id="message-text" name="obsSup" rows="5">{{registro.obsSup}}</textarea>
+                                  <textarea class="form-control" id="message-text" rows="5" disabled>{{registro.obsSup}}</textarea>
                                 </div>
                               </div>
                             </div>
@@ -421,17 +421,17 @@
                     </td>
                     <td>
                       <span>
-                      <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#ajustes{{he.id}}">
+                      <a href="#" class="alinhamento" data-bs-toggle="modal" data-bs-target="#ajustesHe{{he.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                           <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                           <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                         </svg>
                       </a>
                       </span>
-                      <div class="modal fade" id="ajustes{{he.id}}" aria-hidden="true">
+                      <div class="modal fade" id="ajustesHe{{he.id}}" aria-hidden="true">
                         <div class=" mt-4 modal-dialog">
                           {% comment %} <form class="modal-content" action="{% url 'altRegistro' he.id %}" method="POST"> {% csrf_token %} {% endcomment %}
-                          <form class="modal-content" action="{% url 'aprovaPontoHE' %}" method="POST"> {% csrf_token %}
+                          <form class="modal-content" action="{% url 'historico' %}" method="POST"> {% csrf_token %}
                             <div class="modal-header">
                               <h1 class="modal-title fs-5" >Editar Registro</h1>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -441,36 +441,36 @@
                                 <div class="mb-3">
                                   <label for="" class="col-form-label">Usuario: {{he.userExtra.get_full_name}}</label>
                                   <label for="" class="d-flex"> Data: {{he.dataExtra}}</label>
-                                  <input name="inpID" type="text" value="{{he.id}}" style="display: none;">
+                                  <input name="inpIDHe" type="text" value="{{he.id}}" style="display: none;">
                     
                                   <label for="" class="mt-3 col-form-label">Registros</label>
                                   <div class=" d-flex justify-content-center gap-3 times">
                                     <div>
-                                      <label for="ent1" class="col-form-label">1º Entrada</label>
-                                      <input type="time" class="form-control" id="ent1" name="ent1" value="{{he.horEnt1}}">
+                                      <label for="ent1He" class="col-form-label">1º Entrada</label>
+                                      <input type="time" class="form-control" id="ent1He" name="ent1He" value="{{he.horEnt1}}">
                                     </div>
                                     <div>
-                                      <label for="sai1" class="col-form-label">1º Saida</label>
-                                      <input type="time" class="form-control" id="sai1" name="sai1" value="{{he.horSai2}}">
+                                      <label for="sai1He" class="col-form-label">1º Saida</label>
+                                      <input type="time" class="form-control" id="sai1He" name="sai1He" value="{{he.horSai2}}">
                                     </div>
                                     <div>
-                                      <label for="ent2" class="col-form-label">2º Entrada</label>
-                                      <input type="time" class="form-control" id="ent2" name="ent2" value="{{he.horEnt3}}">
+                                      <label for="ent2He" class="col-form-label">2º Entrada</label>
+                                      <input type="time" class="form-control" id="ent2He" name="ent2He" value="{{he.horEnt3}}">
                                     </div>
                                     <div>
-                                      <label for="sai2" class="col-form-label">2º Saída</label>
-                                      <input type="time" class="form-control" id="sai2" name="sai2" value="{{he.horSai4}}">
+                                      <label for="sai2He" class="col-form-label">2º Saída</label>
+                                      <input type="time" class="form-control" id="sai2He" name="sai2He" value="{{he.horSai4}}">
                                     </div>
                                   </div>
                                   <label for="" class="mt-3 col-form-label">Observação</label>
-                                  <textarea class="form-control" id="message-text" name="obsSup" rows="5">{{he.obsSup}}</textarea>
+                                  <textarea class="form-control" id="message-text" rows="5" disabled>{{he.obsSup}}</textarea>
               
                                 </div>
                               </div>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                              <button name="btAltReg" type="submit" class="btn btn-primary" data-bs-toggle="modal" onclick="carregamento()">Salvar</button>
+                              <button name="btAltRegHe" type="submit" class="btn btn-primary" data-bs-toggle="modal" onclick="carregamento()">Salvar</button>
                             </div>
                           </form>
                         </div>
