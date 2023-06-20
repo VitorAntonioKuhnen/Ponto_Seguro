@@ -5,6 +5,7 @@ from django.db.models import Q
 from decouple import config
 import requests
 
+from processos.processos import enviaEmailDivReg 
 
 def get_api_feriados():
   resposta = requests.get(f'https://api.invertexto.com/v1/holidays/2023?token={config("TOKEN")}&state=SC')
@@ -63,7 +64,6 @@ def gera_escala_zerada():
 
 
 def confereRegistros():
-  # Ideia calcular apartir da escala a quantidade de horas trabalhadas se é maior ou igual, se for maior ou igual então aprova o registro direto se for menor então fica Pendente
   numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
   for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
     print(user)
@@ -80,35 +80,53 @@ def confereRegistros():
     elif numDiaSemana == 5:
         diaSemana = user.escala.sabado
     elif numDiaSemana == 6:
-        diaSemana = user.escala.domingo  
-    print(diaSemana)    
+        diaSemana = user.escala.domingo    
     if diaSemana:
-      reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)))
-      print(reg)
-      print(user.escala.horSai4)
+      reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)), sitAPR = 'PEN')
       #Verifica se tem o ultimo periodo cadastrado na escala do usuario
       if user.escala.horSai4 is not None:
-        horas1Peri = hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
-        horas2Peri = hora.combine(hora.today(),  user.escala.horSai4) - hora.combine(hora.today(), user.escala.horEnt3)
-        horasComb = horas1Peri + horas2Peri
-        print(horasComb)
-        diferenca_minutos = horasComb.seconds // 60
-        print(diferenca_minutos)
-        print('escala com mais de 1 periodo')
+
+        if (reg.horEnt1 is not None) and (reg.horSai2 is not None) and (reg.horEnt3 is not None) and (reg.horSai4 is not None):
+          escalaHor1Peri = hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
+          escalaHor2Peri = hora.combine(hora.today(),  user.escala.horSai4) - hora.combine(hora.today(), user.escala.horEnt3)
+          horEscala = (escalaHor1Peri + escalaHor2Peri)
+          #Remove 10 minutos para seguir Regra da CLT dos minutos diarios 
+          horEscala = horEscala  + timedelta(minutes=-10)
+
+          RegHor1Peri = hora.combine(hora.today(), reg.horSai2) - hora.combine(hora.today(), reg.horEnt1)
+          RegHor2Peri = hora.combine(hora.today(),  reg.horSai4) - hora.combine(hora.today(), reg.horEnt3)
+          horRegistro = RegHor1Peri + RegHor2Peri
+          if horEscala <= horRegistro:
+            reg.sitAPR = 'APR'
+            reg.save()
+            print('Pronto aprovado automaticamente')
+          else:
+             enviaEmailDivReg(user.email, {'registro': reg})
+             print('Envia e-mail informando que ficou faltando uma quantidade X de horas')
+
+          print('escala com mais de 1 periodo')
+        else:
+           enviaEmailDivReg(user.email, {'registro': reg})
+           print('Envia e-mail informando a falta de um registro')  
       else:
         print('escala para usuario de apenas 1 periodo')  
-        horasComb =  hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
-        print(horasComb)
-        diferenca_minutos = horasComb.seconds // 60
-        print(diferenca_minutos) 
+        if (reg.horEnt1 is not None) and (reg.horSai2 is not None):
+          horEscala = hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
+          #Remove 10 minutos para seguir Regra da CLT dos minutos diarios 
+          horEscala = horEscala + timedelta(minutes=-10)
+          horRegistro = hora.combine(hora.today(), reg.horSai2) - hora.combine(hora.today(), reg.horEnt1)
+          if horEscala <= horRegistro:
+              reg.sitAPR = 'APR'
+              reg.save()
+              print('Pronto aprovado automaticamente')
+          else:
+              enviaEmailDivReg(user.email, {'registro': reg})
+              print('Envia e-mail informando que ficou faltando uma quantidade X de horas')
+        else:
+            enviaEmailDivReg(user.email, {'registro': reg})
+            print('Envia e-mail informando que ficou sem registrar a saida')
+
     else:
        print('Fora da Escala')   
-    print('\n')    
-  # Sempre verificar a primeira e a ultima saida se existe o registro, e o registro deve existir se existir na escala
-  print('Registros')
-  
-
-
-
-def teste():
-   print((data.today().date() - timedelta(days=1)))   
+    print('\n')
+   

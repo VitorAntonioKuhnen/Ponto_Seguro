@@ -1,0 +1,135 @@
+{% load static %}
+<table style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0; background: #ffffff;"
+  role="presentation">
+  <tbody>
+    <tr>
+      <td style="padding: 0;" align="center">
+        <table
+          style="width: 598px; border-collapse: collapse; border: 1px solid #cccccc; border-spacing: 0px; text-align: left; height: 470px;"
+          role="presentation">
+          <tbody>
+            <tr style="height: 230px;">
+              <td style="padding: 40px 0px 30px; background: #70bbd9; height: 230px; width: 596px;" align="center">
+                <p><img style="height: auto; display: block;"
+                    src="https://user-images.githubusercontent.com/57823410/242438402-86441a26-41fc-4eed-b51c-202fc168ed1a.png"
+                    alt="" width="300" /></p>
+                <h1>Ponto Seguro</h1>
+              </td>
+            </tr>
+            <tr style="height: 198px;">
+              <td style="padding: 36px 30px 42px; height: 198px; width: 536px;">
+                <table style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0;"
+                  role="presentation">
+                  <tbody>
+                    <tr>
+                      <td style="padding: 0 0 36px 0; color: #153643;">
+                        <h1 style="font-size: 24px; margin: 0 0 20px 0; font-family: Arial,sans-serif;">Divergencia no
+                          Registro De Ponto Diario</h1>
+                        <p
+                          style="margin: 0 0 12px 0; font-size: 16px; line-height: 24px; font-family: Arial,sans-serif;">
+                          Prezado {{registro.userReg.get_full_name}} identificamos que não foi registrado uma na
+                          data {{registro.dataReg}}, para efetuar a correção vá em Histórico e clique para alterar no campo correspondente, 
+                          posteriormente poderá efetuar o ajuste da hora
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0px 0px 36px; color: #153643;">
+                        <table style="border-collapse: collapse; width: 100%;" border="1">
+                          <tbody>
+                            <tr>
+                              <td style="width: 20%;">
+                                <p><strong>1º Periodo</strong></p>
+                                <p><strong>Entrada</strong></p>
+                              </td>
+                              <td style="width: 20%;">
+                                <p><strong>1º Periodo</strong></p>
+                                <p><strong>Saida</strong></p>
+                              </td>
+                              <td style="width: 20%;">
+                                <p><strong>2º Periodo</strong></p>
+                                <p><strong>Entrada</strong></p>
+                              </td>
+                              <td style="width: 20%;">
+                                <p><strong>2º Periodo</strong></p>
+                                <p><strong>Saida</strong></p>
+                              </td>
+                              <td style="width: 20%;"><strong>Situa&ccedil;&atilde;o</strong></td>
+                            </tr>
+                            <tr>
+                              <td style="width: 20%;">
+                                {% if registro.horEnt1 %}
+                                  {{registro.horEnt1}}
+                                {% else %}
+                                  Sem Registro
+                                {% endif %}
+                              </td>
+                              <td style="width: 20%;">
+                                {% if registro.horSai2 %}
+                                  {{registro.horSai2}}
+                                {% else %}
+                                  Sem Registro
+                                {% endif %}
+                              </td>
+                              <td style="width: 20%;">
+                                {% if registro.horEnt3 %}
+                                  {{registro.horEnt3}}
+                                {% else %}
+                                  Sem Registro
+                                {% endif %}
+                              </td>
+                              <td style="width: 20%;">
+                                {% if registro.horSai4 %}
+                                  {{registro.horSai4}}
+                                {% else %}
+                                  Sem Registro
+                                {% endif %}
+                              </td>
+                              <td style="width: 20%;">
+                                {% if registro.sitAPR == 'PEN' %}
+                                  Pendente
+                                {% elif registro.sitAPR == 'APR' %}  
+                                  Aprovado
+                                {% elif registro.sitAPR == 'REJ' %}  
+                                  Rejeitado
+                                {% else %}
+                                  {{registro.sitAPR}} 
+                                {% endif %}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <h1 style="font-size: 24px; margin: 0 0 20px 0; font-family: Arial,sans-serif;">&nbsp;</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0;">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr style="height: 42px;">
+              <td style="padding: 30px; background: #3379B5; height: 42px; width: 536px;">
+                <table
+                  style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0; font-size: 9px; font-family: Arial,sans-serif;"
+                  role="presentation">
+                  <tbody>
+                    <tr>
+                      <td style="padding: 0; width: 50%;" align="left">
+                        <p
+                          style="margin: 0; font-size: 14px; line-height: 16px; font-family: Arial,sans-serif; color: #ffffff;">
+                          &copy; 2023 | Desenvolvido por Ponto Seguro</p>
+                      </td>
+                      <td style="padding: 0; width: 50%;" align="right">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>

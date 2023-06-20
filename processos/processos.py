@@ -18,6 +18,10 @@ from django.core.mail import EmailMultiAlternatives
 
 from django.conf import settings
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 def geradorToken(usuario):
     user = Users.objects.get(id=usuario)
@@ -179,5 +183,16 @@ def enviaEmail(email, situacao, titulo, data, obs, horE1, horS1, horE2, horS2):
     </div>
   </body>
 </html>''', 'text/html')
+    email.send()
+    return "enviado"
+
+
+
+
+def enviaEmailDivReg(email, contexto):
+    html_content = render_to_string('email/divergencia_registro.html', contexto)
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives('Divergencia no Registro do Ponto', text_content, settings.EMAIL_HOST_USER, [email])
+    email.attach_alternative(html_content, 'text/html')
     email.send()
     return "enviado"
