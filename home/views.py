@@ -1213,13 +1213,13 @@ def alteraEscala(request, id):
     user = request.user
     if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
         nmEscala = request.POST.get('nmEscala'+ str(id))
-        ent1 = request.POST.get('ent1'+ str(id))
+        ent1 = request.POST.get('ent1-'+ str(id))
         ent1 = hora.strptime(ent1, '%H:%M').time() if ent1 else None
-        sai1 = request.POST.get('sai1'+ str(id))
+        sai1 = request.POST.get('sai2-'+ str(id))
         sai1 = hora.strptime(sai1, '%H:%M').time() if sai1 else None
-        ent2 = request.POST.get('ent2'+ str(id))
+        ent2 = request.POST.get('ent3-'+ str(id))
         ent2 = hora.strptime(ent2, '%H:%M').time() if ent2 else None
-        sai2 = request.POST.get('sai2'+ str(id))
+        sai2 = request.POST.get('sai4-'+ str(id))
         sai2 = hora.strptime(sai2, '%H:%M').time() if sai2 else None
         if(nmEscala != ''):
             if (ent1 != None) and (sai1 != None):
@@ -1236,7 +1236,7 @@ def alteraEscala(request, id):
                     escala.nmEscala = nmEscala
                     escala.horEnt1 = ent1
                     escala.horSai2 = sai1
-                    escala.horEnt3 = ent1
+                    escala.horEnt3 = ent2
                     escala.horSai4 = sai2
                     escala.segunda = seg
                     escala.terca = terc

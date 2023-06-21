@@ -4,9 +4,11 @@ from datetime import datetime as hora, datetime as data, timedelta
 from django.db.models import Q
 from decouple import config
 import requests
+import os
 
 from processos.processos import enviaEmailDivReg 
 
+global cont
 def get_api_feriados():
   resposta = requests.get(f'https://api.invertexto.com/v1/holidays/2023?token={config("TOKEN")}&state=SC')
   if resposta.status_code == 200:
@@ -38,7 +40,6 @@ def gera_escala_zerada():
         if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists():
           print('Não tem Registro')
           numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
-          # numDiaSemana = data.today().weekday()
 
           if numDiaSemana == 0:
               diaSemana = user.escala.segunda
@@ -64,6 +65,7 @@ def gera_escala_zerada():
 
 
 def confereRegistros():
+  print('Entrei a primeira vez aqui ó')
   numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
   for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
     print(user)
@@ -83,7 +85,7 @@ def confereRegistros():
         diaSemana = user.escala.domingo    
     if diaSemana:
       reg = HistRegistro.objects.get(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1)), sitAPR = 'PEN')
-      #Verifica se tem o ultimo periodo cadastrado na escala do usuario
+      #Verifica se tem o ultimo periodo cadastrado na escala do usuarioa 
       if user.escala.horSai4 is not None:
 
         if (reg.horEnt1 is not None) and (reg.horSai2 is not None) and (reg.horEnt3 is not None) and (reg.horSai4 is not None):
@@ -130,3 +132,8 @@ def confereRegistros():
        print('Fora da Escala')   
     print('\n')
    
+
+def remov_Process_started():
+   # Remove o arquivo process_started.txt, se existir
+  if os.path.isfile('process_started.txt'):
+    os.remove('process_started.txt')
