@@ -162,7 +162,7 @@ python -m venv venv
 python -m pip install --upgrade pip
 ~~~
 
-*Após atualizar o pip. Na raiz do projeto, tem um arquivo chamado requirements.txt (onde tem todas as dependências do projetos)
+* Após atualizar o pip. Na raiz do projeto, tem um arquivo chamado requirements.txt (onde tem todas as dependências do projetos)
 * Para baixar as dependências tem que executar esse comando, porém tem q estar na venv (dentro do ambiente virtual), digite o comando para instalar o requeriments.txt.
                                                                                                                                                      
 ~~~
