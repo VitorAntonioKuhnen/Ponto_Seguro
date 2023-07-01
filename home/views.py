@@ -67,7 +67,7 @@ def RegistrarPonto(request):
     if request.method == 'POST':
         ha = hora.now().time()
         if diaSemana == True:
-            print('Está na escala semanal correta!!')  
+            # print('Está na escala semanal correta!!')  
             if (not Feriado.objects.filter(data = data.now()) and (not RegMeioPeriodo)):
                 if user.escala.horEnt1 is not None:
                     horaEnt1_soma = (hora.combine(hora.today(), user.escala.horEnt1) + timedelta(minutes=5)).time()
@@ -157,7 +157,7 @@ def RegistrarPonto(request):
                     #Terceiro registro da Escala
                     elif altHist.horEnt3 is None: 
                         if ((hora.combine(hora.today(), ha) - hora.combine(hora.today(), altHist.horSai2)) >= timedelta(minutes=30)):
-                                print('Faz mais de 30 minutos que registrou o ultimo ponto no sistema')
+                                # print('Faz mais de 30 minutos que registrou o ultimo ponto no sistema')
                                 altHist.horEnt3 = ha.strftime('%H:%M')
 
                                 if (hora.combine(hora.today(), ha) < hora.combine(hora.today(), horaEnt3_subtrai)):
@@ -264,7 +264,7 @@ def RegistrarPonto(request):
                                 else:
                                     horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2))
                                     messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
-                                    print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
+                                    # print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
                                     return render(request, 'registraPonto/index.html', context)    
                             elif horExtra.horSai4 is None:
                                 horExtra.horSai4 = ha.strftime('%H:%M')
@@ -297,7 +297,7 @@ def RegistrarPonto(request):
                                 else:
                                     horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2))
                                     messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
-                                    print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
+                                    # print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
                                     return render(request, 'registraPonto/index.html', context)   
                         
                     elif horExtra.horSai4 is None:
@@ -331,7 +331,7 @@ def RegistrarPonto(request):
                             else:
                                 horPercorridas = str(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2))
                                 messages.error(request, f"Você precisa aguardar ao minimo 30 minutos para registrar o ponto novamente! Se passaram {horPercorridas[:-6]} desde o ulimo registro" )
-                                print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
+                                # print(type(hora.combine(hora.today(), ha) - hora.combine(hora.today(), horExtra.horSai2)))
                                 return render(request, 'registraPonto/index.html', context)   
                     
                 elif horExtra.horSai4 is None:
@@ -352,7 +352,7 @@ def inicio(request):
     context = {}
 
     # context['usuGrupo'] = request.user.groups.all() # Precisa ser reavaliado
-    print(request.user.groups.all())
+    # print(request.user.groups.all())
 
     if user.justificar:
         context['tpJust'] = TipoJustificativa.objects.filter(sitJust=True) 
@@ -409,7 +409,7 @@ def historico(request):
 
         #Filtro por Status
         if(termoStatus == 'APR') or (termoStatus == 'PEN') or (termoStatus == 'REJ'):
-            print(termoStatus)
+            # print(termoStatus)
             filtros &=  Q(sitAPR = termoStatus)
         
         #Filtro por Justificativa
@@ -477,22 +477,22 @@ def historico(request):
                     ent2 = request.POST.get('ent2')
                     sai2 = request.POST.get('sai2')
                     if historico.horEnt1 != parse_time(ent1):
-                        print('Primeiro')
+                        # print('Primeiro')
                         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
                         historico.altEnt1 = True
 
                     if historico.horSai2 != parse_time(sai1):
-                        print('Segundo')
+                        # print('Segundo')
                         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
                         historico.altSai2 = True
 
                     if historico.horEnt3 != parse_time(ent2):
-                        print('Terceiro')   
+                        # print('Terceiro')   
                         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
                         historico.altEnt3 = True
 
                     if historico.horSai4 != parse_time(sai2):
-                        print('Quarto')
+                        # print('Quarto')
                         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
                         historico.altSai4 = True
                     historico.userAlt = user
@@ -508,22 +508,22 @@ def historico(request):
                     sai2 = request.POST.get('sai2He')
 
                     if historico.horEnt1 != parse_time(ent1):
-                        print('Primeiro')
+                        # print('Primeiro')
                         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
                         historico.altEnt1 = True
 
                     if historico.horSai2 != parse_time(sai1):
-                        print('Segundo')
+                        # print('Segundo')
                         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
                         historico.altSai2 = True
 
                     if historico.horEnt3 != parse_time(ent2):
-                        print('Terceiro')   
+                        # print('Terceiro')   
                         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
                         historico.altEnt3 = True
 
                     if historico.horSai4 != parse_time(sai2):
-                        print('Quarto')
+                        # print('Quarto')
                         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
                         historico.altSai4 = True
                     historico.userAltHe = user
@@ -534,7 +534,7 @@ def historico(request):
 
     if request.method == 'GET':
         if "filtrar" in request.GET:
-            print('Filtrar')
+            # print('Filtrar')
             filtrosReg = Q(userReg__id = user.id)
             filtrosHE = Q(userExtra__id = user.id)
             status = request.GET.get('status')
@@ -580,7 +580,7 @@ def historico(request):
                 messages.warning(request, 'Não possue registros Diarios e nem Horas Extras para o filtro utilizado!')
 
         #Gerar e Exportar PDF de Cartão ponto conforme a competência 
-        print("exportar" in request.GET)
+        # print("exportar" in request.GET)
         if "exportar" in request.GET:
             comp = request.GET.get('periodoCP')
             if "/" in comp:
@@ -713,7 +713,7 @@ def aprovaPonto(request):
             
             #Filtro por Status
             if(termoStatus == 'APR') or (termoStatus == 'PEN') or (termoStatus == 'REJ'):
-                print(termoStatus)
+                # print(termoStatus)
                 filtros &=  Q(sitAPR = termoStatus)
             
             #Filtro por Justificativa
@@ -766,22 +766,22 @@ def aprovaPonto(request):
                     obsSup = request.POST.get('obsSup')
 
                     if historico.horEnt1 != parse_time(ent1):
-                        print('Primeiro')
+                        # print('Primeiro')
                         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
                         historico.altEnt1 = True
 
                     if historico.horSai2 != parse_time(sai1):
-                        print('Segundo')
+                        # print('Segundo')
                         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
                         historico.altSai2 = True
 
                     if historico.horEnt3 != parse_time(ent2):
-                        print('Terceiro')   
+                        # print('Terceiro')   
                         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
                         historico.altEnt3 = True
 
                     if historico.horSai4 != parse_time(sai2):
-                        print('Quarto')
+                        # print('Quarto')
                         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
                         historico.altSai4 = True
                     historico.userAlt = user
@@ -794,10 +794,10 @@ def aprovaPonto(request):
         
             return render(request, 'aprovaPonto/index.html',context)
         elif request.method == 'GET':
-            print("GET")
-            print(justificativa)
+            # print("GET")
+            # print(justificativa)
             if "filtrar" in request.GET:
-                print('Filtrar')
+                # print('Filtrar')
                 
                 #Filtro por Nome
                 if(nome):
@@ -897,7 +897,7 @@ def desaprovar(request, id):
         historico.dataAlt = data.today().date()
         historico.save()
         context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) 
-        print(HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) )
+        # print(HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) )
         processos.enviaEmail(historico.userReg.email, 'Reprovado', 'Registro de Ponto Rejeitado - Ponto Seguro', historico.dataReg, historico.obsSup, historico.horEnt1, historico.horSai2, historico.horEnt3, historico.horSai4)
         # messages.error(request, 'Registro Rejeitado com Sucesso!')
         return render(request, 'parciais/tabela_aprovacao.html', context)
@@ -927,8 +927,8 @@ def aprovaPontoHE(request):
         date = request.GET.get('data')
         escala = request.GET.get('escala') 
         if request.method == 'POST':
-            print("POST")
-            print(justificativa)
+            # print("POST")
+            # print(justificativa)
             if "btjustificar" in request.POST:
                 if(user.justificar):
                     processos.gravaJustificativa(request, user)
@@ -946,22 +946,22 @@ def aprovaPontoHE(request):
                     obsSup = request.POST.get('obsSup')
 
                     if historico.horEnt1 != parse_time(ent1):
-                        print('Primeiro')
+                        # print('Primeiro')
                         historico.horEnt1 = hora.strptime(ent1, '%H:%M').time()
                         historico.altEnt1 = True
 
                     if historico.horSai2 != parse_time(sai1):
-                        print('Segundo')
+                        # print('Segundo')
                         historico.horSai2 = hora.strptime(sai1, '%H:%M').time()
                         historico.altSai2 = True
 
                     if historico.horEnt3 != parse_time(ent2):
-                        print('Terceiro')   
+                        # print('Terceiro')   
                         historico.horEnt3 = hora.strptime(ent2, '%H:%M').time()
                         historico.altEnt3 = True
 
                     if historico.horSai4 != parse_time(sai2):
-                        print('Quarto')
+                        # print('Quarto')
                         historico.horSai4 = hora.strptime(sai2, '%H:%M').time()
                         historico.altSai4 = True
                     historico.userAltHe = user
@@ -974,9 +974,9 @@ def aprovaPontoHE(request):
         
             return render(request, 'aprovaPontoHE/index.html',context)
         elif request.method == 'GET':
-            print("GET")
+            # print("GET")
             if "filtrar" in request.GET:
-                print('Filtrar')
+                # print('Filtrar')
 
                 filtros = Q(userExtra__superior__id = user.id)
 
@@ -1098,7 +1098,7 @@ def escala(request):
         context['usuarios'] = Users.objects.all()
 
         if request.method == 'POST':
-            print('Entrou no POST')
+            # print('Entrou no POST')
             if "btjustificar" in request.POST:
                 if(user.justificar):
                     processos.gravaJustificativa(request, user)
@@ -1107,7 +1107,7 @@ def escala(request):
                     render(request, 'cadastroEscala/index.html', context)     
                     
         elif request.method == 'GET':  
-                print('Entrou Get')       
+                # print('Entrou Get')       
                 registros = HistRegistro.objects.filter(userReg_id = user.id , dataReg = data.today())
                 if registros:
                     registro = HistRegistro.objects.get(userReg_id = user.id , dataReg = data.today())
@@ -1144,7 +1144,7 @@ def escala(request):
 
 @login_required
 def cadastroEscala(request):
-    print('Cadastro de Escala')
+    # print('Cadastro de Escala')
 
     user = request.user
     if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
@@ -1210,7 +1210,7 @@ def cadastroEscala(request):
 
 @login_required
 def alteraEscala(request, id):
-    print('Alteração de Escala')
+    # print('Alteração de Escala')
     user = request.user
     if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
         nmEscala = request.POST.get('nmEscala'+ str(id))
@@ -1267,7 +1267,7 @@ def alteraEscala(request, id):
 
 
 def usuarios(request):
-    print('Informações dos Usuarios')
+    # print('Informações dos Usuarios')
     user = request.user
     if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
         context = {}
@@ -1281,7 +1281,7 @@ def usuarios(request):
 
 
 def altUsuario(request, id):
-    print('Altera Informações dos Usuarios')
+    # print('Altera Informações dos Usuarios')
     user = request.user
     if (user.groups.filter(name='Desenvolvedor').exists()) or (user.groups.filter(name='Coordenador').exists()):
         primeiroNome = request.POST.get('primeiroNome'+ str(id))

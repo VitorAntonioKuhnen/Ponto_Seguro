@@ -35,10 +35,7 @@ def gera_escala_zerada():
    feriado = Feriado.objects.filter(data = (data.today().date() - timedelta(days=1)))
    if not feriado:
       for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
-        print(user)
-        print(HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists())
         if not HistRegistro.objects.filter(userReg_id = user.id, dataReg = (data.today().date() - timedelta(days=1))).exists():
-          print('Não tem Registro')
           numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
 
           if numDiaSemana == 0:
@@ -55,20 +52,16 @@ def gera_escala_zerada():
               diaSemana = user.escala.sabado
           elif numDiaSemana == 6:
               diaSemana = user.escala.domingo  
-          print(diaSemana)    
           if diaSemana:
             HistRegistro.objects.create(userReg_id = user.id, escala_id = user.escala.id, dataReg = (data.today().date() - timedelta(days=1)))    
-          print('\n')  
    else:
       print('Tem feriado')   
    
 
 
 def confereRegistros():
-  print('Entrei a primeira vez aqui ó')
   numDiaSemana = (data.today().date() - timedelta(days=1)).weekday()
   for user in Users.objects.filter(dat_inicia_trab__lte=(data.today().date() - timedelta(days=1)), is_active = True):
-    print(user)
     if numDiaSemana == 0:
         diaSemana = user.escala.segunda
     elif numDiaSemana == 1:
@@ -99,19 +92,19 @@ def confereRegistros():
           RegHor2Peri = hora.combine(hora.today(),  reg.horSai4) - hora.combine(hora.today(), reg.horEnt3)
           horRegistro = RegHor1Peri + RegHor2Peri
           if horEscala <= horRegistro:
+            #Aprova Ponto automaticamente
             reg.sitAPR = 'APR'
             reg.save()
-            print('Pronto aprovado automaticamente')
           else:
+            # Envia e-mail informando que ficou faltando uma quantidade X de horas
              enviaEmailDivReg(user.email, {'registro': reg})
-             print('Envia e-mail informando que ficou faltando uma quantidade X de horas')
 
-          print('escala com mais de 1 periodo')
+        # Escala com mais de 1 periodo
         else:
+           # Envia e-mail informando a falta de um registro
            enviaEmailDivReg(user.email, {'registro': reg})
-           print('Envia e-mail informando a falta de um registro')  
       else:
-        print('escala para usuario de apenas 1 periodo')  
+        # Escala para usuario de apenas 1 periodo
         if (reg.horEnt1 is not None) and (reg.horSai2 is not None):
           horEscala = hora.combine(hora.today(),  user.escala.horSai2) - hora.combine(hora.today(), user.escala.horEnt1)
           #Remove 10 minutos para seguir Regra da CLT dos minutos diarios 
@@ -120,17 +113,16 @@ def confereRegistros():
           if horEscala <= horRegistro:
               reg.sitAPR = 'APR'
               reg.save()
-              print('Pronto aprovado automaticamente')
+              #Aprova Ponto automaticamente
           else:
               enviaEmailDivReg(user.email, {'registro': reg})
-              print('Envia e-mail informando que ficou faltando uma quantidade X de horas')
+              # Envia e-mail informando que ficou faltando uma quantidade X de horas
         else:
             enviaEmailDivReg(user.email, {'registro': reg})
-            print('Envia e-mail informando que ficou sem registrar a saida')
+            # Envia e-mail informando que ficou sem registrar a saida
 
     else:
        print('Fora da Escala')   
-    print('\n')
    
 
 def remov_Process_started():

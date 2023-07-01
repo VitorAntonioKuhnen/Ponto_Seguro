@@ -80,9 +80,9 @@ def login(request):
                                             
                                             elif((horExtra.horSai4 != None)):
                                                 auth.logout(request)
-                                                print(horExtra.horSai2 != None)
-                                                print(username.escala.horSai4 == None)
-                                                print(horExtra.horSai4 != None)
+                                                # print(horExtra.horSai2 != None)
+                                                # print(username.escala.horSai4 == None)
+                                                # print(horExtra.horSai4 != None)
                                                 messages.warning(request, 'Você não pode mais registrar Pontos hoje!')
                                                 return redirect(login)
                                             else:
@@ -122,7 +122,7 @@ def validacao(request):
             if form.is_valid():
                 if Users.objects.filter(email=email):
                     validEmail = Users.objects.get(email=email)
-                    print('entrou aqui')
+                    # print('entrou aqui')
                     enviaEmail(validEmail.email, processos.geradorToken(validEmail.id))
                     url = reverse('token', args=[validEmail.id])
                     return redirect(url)
@@ -134,7 +134,7 @@ def validacao(request):
             messages.error(request, 'Informe um Email!')  
         return render(request, 'validacao/valida_Email.html',  {'form': form})           
     else:
-        print('entrou no primeiro else')          
+        # print('entrou no primeiro else')          
         return render(request, 'validacao/valida_Email.html',  {'form': form})
 
 
@@ -146,18 +146,18 @@ def token(request, id):
         if codtoken != '':
             if Token.objects.filter(usuario=id).exists:
                 if check_password(codtoken, Token.objects.get(usuario=id).codToken):
-                    print('Token Correto!')
+                    # print('Token Correto!')
                     url = reverse('trocaSenha', args=[id])
                     return redirect(url)
                 else:
                         messages.error(request, 'Informe um TOKEN Válido!') 
-                        print('Token Invalido!')        
+                        # print('Token Invalido!')        
             else:
                     messages.error(request, 'Informe um TOKEN Válido!') 
-                    print('Informe um TOKEN Válido!')        
+                    # print('Informe um TOKEN Válido!')        
         else:
                 messages.error(request, 'Informe um TOKEN para continuar') 
-                print('Informe um TOKEN para continuar')        
+                # print('Informe um TOKEN para continuar')        
                     
         return render(request, 'token/token.html', {'userId': id})
     if Token.objects.filter(usuario=id).exists():
@@ -171,7 +171,7 @@ def token(request, id):
 # Precisa ser revisado pois dá para acessar diretamente pelo link
 def gerarToken(request, id):
     if Token.objects.filter(usuario=id).exists():
-        print('Entrou Gerando novo Token')
+        # print('Entrou Gerando novo Token')
         if Token.objects.filter(usuario=id).exists():
             Token.objects.get(usuario=id).delete()   
         usuario = Users.objects.get(id=id)
@@ -196,11 +196,11 @@ def cancelaTk(request, id):
 
 def trocaSenha(request, id):
     if request.method == 'POST':
-        print('entrou')
+        # print('entrou')
         senha1 = request.POST.get('senha1')
         senha2 = request.POST.get('senha2')
         if senha1 == senha2 and senha1 != '' and senha2 != '':
-            print('entrou na validação da senha ')
+            # print('entrou na validação da senha ')
             
             # Verifica se possui no minimo 8 caracteres
             if len(senha1) < 8:
@@ -222,7 +222,7 @@ def trocaSenha(request, id):
                 messages.error(request, 'A senha precisa ter Caracteres Especiais!')  
                 return render(request, 'trocaSenha/trocaSenha.html')
             else:
-                print('Trocando a senha')
+                # print('Trocando a senha')
                 usuario = Users.objects.get(id=id)
                 usuario.password = make_password(senha1)
                 dt_atual = datetime.date.today()
@@ -236,16 +236,16 @@ def trocaSenha(request, id):
     
     elif Users.objects.filter(id=id):
         if Users.objects.get(id=id).dt_troca_senha <= datetime.date.today() or Token.objects.filter(usuario=id).exists():
-            print('Entrou na tela de Troca de Senha')
+            # print('Entrou na tela de Troca de Senha')
             if Token.objects.filter(usuario=id).exists():
                 Token.objects.get(usuario=id).delete()
             return render(request, 'trocaSenha/trocaSenha.html')
         else:
-            print('Não entrou na tela de Troca de Senha')
+            # print('Não entrou na tela de Troca de Senha')
             messages.error(request, 'Não pode fazer este processo!')
             return redirect(login)
     else:
-        print('Não entrou na tela de Troca de Senha')
+        # print('Não entrou na tela de Troca de Senha')
         messages.error(request, 'Não pode fazer este processo!')
         return redirect(login)
 

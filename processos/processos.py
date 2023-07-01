@@ -31,10 +31,8 @@ def geradorToken(usuario):
     resultado = ''
     for i in range(6):
         resultado += str(random.choice(numbers))
-    print(resultado)
 
     Token.objects.create(codToken=make_password(resultado), usuario_id=usuario)
-    # Token.objects.create(codToken=resultado, usuario_id=usuario)
     return resultado
 
 
@@ -49,11 +47,8 @@ def geraHtmlToPdf(TemplateHtml, context_dict={}):
 
 
 def gravaJustificativa(request, user):
-    print("Este method é De envio de justificativa")
     tipoJust = request.POST.get('tipoJust')
     txtJust = request.POST.get('txtJust').strip()
-    print(tipoJust)
-    print(txtJust)
     if (tipoJust is None):
         messages.error(request, 'Informe um tipo de Justificativa!')
         return False
@@ -84,10 +79,8 @@ def gravaJustificativa(request, user):
             just_criada = Justificativa.objects.create(
                 txtJust=txtJust, tipoJust_id=tipoJust, data=data.today(), hora=hora.now().time(), userReg_id=user.id)
             if (histRegistro.horSai4 == None) and (diaSemana == True):
-                print('dia comum')
                 histRegistro.justificativas.add(just_criada)
             else:
-                print('hora extra ')
                 horaextra = HoraExtra.objects.get(
                     userExtra_id=user.id, dataExtra=data.today().date())
                 horaextra.justificativas.add(just_criada)
@@ -96,7 +89,6 @@ def gravaJustificativa(request, user):
                 userExtra_id=user.id, dataExtra=data.today().date())
             just_criada = Justificativa.objects.create(
                 txtJust=txtJust, tipoJust_id=tipoJust, data=data.today(), hora=hora.now().time(), userReg_id=user.id)
-            print('hora extra ')
             horaextra.justificativas.add(just_criada)
 
         user.justificar = False
