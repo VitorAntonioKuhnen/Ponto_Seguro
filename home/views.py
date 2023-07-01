@@ -429,7 +429,7 @@ def historico(request):
 
         registros = registros.filter(filtros).order_by('-dataReg')
 
-    paginator = Paginator(registros, 10)
+    paginator = Paginator(registros, 15)
     page = request.GET.get('page')
     context['histReg'] = paginator.get_page(page)
 
@@ -455,7 +455,7 @@ def historico(request):
         #Carrega registros Diarios
         HE = HE.filter(filtrosHE).order_by('-dataExtra')
 
-    paginator = Paginator(HE, 10)
+    paginator = Paginator(HE, 15)
     page = request.GET.get('page')
     context['regHE'] = paginator.get_page(page)
 
@@ -567,13 +567,13 @@ def historico(request):
             
             #Carrega registros Diarios
             registros = HistRegistro.objects.filter(filtrosReg).order_by('-dataReg')  
-            paginator = Paginator(registros, 10)
+            paginator = Paginator(registros, 15)
             page = request.GET.get('page')
             context['histReg'] = paginator.get_page(page) 
 
             #Carrega Registros de Horas Extras
             HE = HoraExtra.objects.filter(filtrosHE).order_by('-dataExtra')
-            paginator = Paginator(HE, 10)
+            paginator = Paginator(HE, 15)
             page = request.GET.get('page')
             context['regHE'] = paginator.get_page(page)
             if (not registros) and (not HE):
@@ -734,7 +734,7 @@ def aprovaPonto(request):
             registros = registros.filter(filtros).order_by('-dataReg')
 
         context['escalas'] = Escala.objects.filter(status=True)
-        paginator = Paginator(registros, 10)
+        paginator = Paginator(registros, 15)
         page = request.GET.get('page')
         context['histReg'] = paginator.get_page(page)
         if user.justificar:
@@ -830,7 +830,7 @@ def aprovaPonto(request):
                 if not registros:
                     messages.warning(request, 'Não possue registros para o filtro utilizado!')
 
-                paginator = Paginator(registros, 10)
+                paginator = Paginator(registros, 15)
                 page = request.GET.get('page')
                 context['histReg'] = paginator.get_page(page) 
             else:
@@ -897,6 +897,7 @@ def desaprovar(request, id):
         historico.dataAlt = data.today().date()
         historico.save()
         context['histReg'] = HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) 
+        print(HistRegistro.objects.filter(Q(userReg__superior__id = user.id), Q(sitAPR='PEN')) )
         processos.enviaEmail(historico.userReg.email, 'Reprovado', 'Registro de Ponto Rejeitado - Ponto Seguro', historico.dataReg, historico.obsSup, historico.horEnt1, historico.horSai2, historico.horEnt3, historico.horSai4)
         # messages.error(request, 'Registro Rejeitado com Sucesso!')
         return render(request, 'parciais/tabela_aprovacao.html', context)
@@ -913,7 +914,7 @@ def aprovaPontoHE(request):
 
         registros = HoraExtra.objects.filter(Q(userExtra__superior__id = user.id), Q(sitAPR='PEN')).order_by('-dataExtra')
         context['escalas'] = Escala.objects.filter(status=True)
-        paginator = Paginator(registros, 10)
+        paginator = Paginator(registros, 15)
         page = request.GET.get('page')
         context['histReg'] = paginator.get_page(page)
         if user.justificar:
@@ -1009,7 +1010,7 @@ def aprovaPontoHE(request):
                 if not registros:
                     messages.warning(request, 'Não possue registros para o filtro utilizado!')
 
-                paginator = Paginator(registros, 10)
+                paginator = Paginator(registros, 15)
                 page = request.GET.get('page')
                 context['histReg'] = paginator.get_page(page) 
                 return render(request, 'aprovaPontoHE/index.html',context) 
@@ -1091,7 +1092,7 @@ def escala(request):
 
         context = {}
         escalas = Escala.objects.all() 
-        paginator = Paginator(escalas, 10)
+        paginator = Paginator(escalas, 15)
         page = request.GET.get('page')
         context['escalas'] = paginator.get_page(page)
         context['usuarios'] = Users.objects.all()

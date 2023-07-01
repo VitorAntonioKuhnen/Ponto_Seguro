@@ -36,7 +36,7 @@
                     <h4 class="font-weight-bold">Escala</h4>
                     <div class="escala">
                         {% if user.escala.horEnt1 %}
-                            <span>{{user.escala.horEnt1}}</span>
+                            <span>{{user.escala.horEnt1|time:"H:i"}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
@@ -44,7 +44,7 @@
                         <div class="divisao"></div>
 
                         {% if user.escala.horSai2 %}
-                            <span>{{user.escala.horSai2}}</span>
+                            <span>{{user.escala.horSai2|time:"H:i"}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}   
@@ -52,7 +52,7 @@
                         <div class="divisao"></div>
 
                         {% if user.escala.horEnt3 %}
-                            <span>{{user.escala.horEnt3}}</span>
+                            <span>{{user.escala.horEnt3|time:"H:i"}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
@@ -60,7 +60,7 @@
                         <div class="divisao"></div>
 
                         {% if user.escala.horSai4 %}
-                            <span>{{user.escala.horSai4}}</span>
+                            <span>{{user.escala.horSai4|time:"H:i"}}</span>
                         {% else %}
                             <span>------</span>
                         {% endif %}
@@ -81,7 +81,7 @@
                     <div class="alinhamento">
                         <span class="nmsit">Entrada</span>
                         {% if histRegistro.horEnt1 %}
-                            <span class="corResgitros">{{histRegistro.horEnt1}}</span>
+                            <span class="corResgitros">{{histRegistro.horEnt1|time:"H:i"}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}
@@ -90,7 +90,7 @@
                     <div class="alinhamento">
                         <span class="nmsit">Saida</span>
                         {% if histRegistro.horSai2 %}
-                            <span class="corResgitros">{{histRegistro.horSai2}}</span>
+                            <span class="corResgitros">{{histRegistro.horSai2|time:"H:i"}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}
@@ -98,7 +98,7 @@
                     <div class="alinhamento">
                         <span class="nmsit">Entrada</span>
                         {% if histRegistro.horEnt3 %}
-                            <span class="corResgitros">{{histRegistro.horEnt3}}</span>
+                            <span class="corResgitros">{{histRegistro.horEnt3|time:"H:i"}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}    
@@ -106,7 +106,7 @@
                     <div class="alinhamento">
                         <span class="nmsit">Saida</span>
                         {% if histRegistro.horSai4 %}
-                            <span class="corResgitros">{{histRegistro.horSai4}}</span>
+                            <span class="corResgitros">{{histRegistro.horSai4|time:"H:i"}}</span>
                         {% else %}
                             <span class="corResgitros">------</span>
                         {% endif %}    
@@ -126,7 +126,7 @@
                         <div class="alinhamento">
                             <span class="nmsit">Entrada</span>
                             {% if horaExtra.horEnt1 %}
-                                <span class="corResgitros">{{horaExtra.horEnt1}}</span>
+                                <span class="corResgitros">{{horaExtra.horEnt1|time:"H:i"}}</span>
                             {% else %}
                                 <span class="corResgitros">------</span>
                             {% endif %}
@@ -135,7 +135,7 @@
                         <div class="alinhamento">
                             <span class="nmsit">Saida</span>
                             {% if horaExtra.horSai2 %}
-                                <span class="corResgitros">{{horaExtra.horSai2}}</span>
+                                <span class="corResgitros">{{horaExtra.horSai2|time:"H:i"}}</span>
                             {% else %}
                                 <span class="corResgitros">------</span>
                             {% endif %}
@@ -143,7 +143,7 @@
                         <div class="alinhamento">
                             <span class="nmsit">Entrada</span>
                             {% if horaExtra.horEnt3 %}
-                                <span class="corResgitros">{{horaExtra.horEnt3}}</span>
+                                <span class="corResgitros">{{horaExtra.horEnt3|time:"H:i"}}</span>
                             {% else %}
                                 <span class="corResgitros">------</span>
                             {% endif %}    
@@ -151,7 +151,7 @@
                         <div class="alinhamento">
                             <span class="nmsit">Saida</span>
                             {% if horaExtra.horSai4 %}
-                                <span class="corResgitros">{{horaExtra.horSai4}}</span>
+                                <span class="corResgitros">{{horaExtra.horSai4|time:"H:i"}}</span>
                             {% else %}
                                 <span class="corResgitros">------</span>
                             {% endif %}    

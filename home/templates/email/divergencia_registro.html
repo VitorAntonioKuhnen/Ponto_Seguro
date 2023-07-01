@@ -28,7 +28,7 @@
                         <p
                           style="margin: 0 0 12px 0; font-size: 16px; line-height: 24px; font-family: Arial,sans-serif;">
                           Prezado {{registro.userReg.get_full_name}} identificamos que não foi registrado uma na
-                          data {{registro.dataReg}}, para efetuar a correção vá em Histórico e clique para alterar no campo correspondente, 
+                          data {{registro.dataReg|date:"d/m/Y"}}, para efetuar a correção vá em Histórico e clique para alterar no campo correspondente, 
                           posteriormente poderá efetuar o ajuste da hora
                         </p>
                       </td>
@@ -59,28 +59,28 @@
                             <tr>
                               <td style="width: 20%;">
                                 {% if registro.horEnt1 %}
-                                  {{registro.horEnt1}}
+                                  {{registro.horEnt1|time:"H:i"}}
                                 {% else %}
                                   Sem Registro
                                 {% endif %}
                               </td>
                               <td style="width: 20%;">
                                 {% if registro.horSai2 %}
-                                  {{registro.horSai2}}
+                                  {{registro.horSai2|time:"H:i"}}
                                 {% else %}
                                   Sem Registro
                                 {% endif %}
                               </td>
                               <td style="width: 20%;">
                                 {% if registro.horEnt3 %}
-                                  {{registro.horEnt3}}
+                                  {{registro.horEnt3|time:"H:i"}}
                                 {% else %}
                                   Sem Registro
                                 {% endif %}
                               </td>
                               <td style="width: 20%;">
                                 {% if registro.horSai4 %}
-                                  {{registro.horSai4}}
+                                  {{registro.horSai4|time:"H:i"}}
                                 {% else %}
                                   Sem Registro
                                 {% endif %}

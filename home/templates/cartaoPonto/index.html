@@ -24,7 +24,7 @@
          {{user.escala.nmEscala}}
       </td>
       <td style="width: 50%; height: 50px;"><b>Observação:</b> <br>
-      <b>Admissão:</b>  {{user.dat_inicia_trab}} 
+      <b>Admissão:</b>  {{user.dat_inicia_trab|date:"d/m/Y"}} 
         <br>
       <b>Mês/Ano:</b>  {{periodo}}
       </td>
@@ -54,13 +54,13 @@
                 {% for key, value in registros %}
                 <tr>
                   <th scope="row">{{forloop.counter}}</th>
-                  <td>{{value.0.fields.dataReg}}</td>
+                  <td>{{value.0.fields.dataReg|date:"d/m/Y"}}</td>
                   <td> 
                     {% if value.0.fields.horEnt1 != None %}
                       {% if value.0.fields.altEnt1 == True %}
-                        <span style="color: red;">{{value.0.fields.horEnt1}} *</span>
+                        <span style="color: red;">{{value.0.fields.horEnt1|time:"H:i"}} *</span>
                       {% else %}
-                        {{value.0.fields.horEnt1}}
+                        {{value.0.fields.horEnt1|time:"H:i"}}
                       {% endif %}
                     {% else %}
                       N/A
@@ -70,9 +70,9 @@
                     {% if value.0.fields.horEnt1 != None %}
                       {% if value.0.fields.horSai2 != None %}
                         {% if value.0.fields.altSai2 == True %}
-                          <span style="color: red;">{{value.0.fields.horSai2}} *</span>
+                          <span style="color: red;">{{value.0.fields.horSai2|time:"H:i"}} *</span>
                         {% else %}
-                          {{value.0.fields.horSai2}}
+                          {{value.0.fields.horSai2|time:"H:i"}}
                         {% endif %}
                       {% else %}
                         ------
@@ -86,9 +86,9 @@
                     {% if value.0.fields.horEnt1 != None %}
                       {% if value.0.fields.horEnt3 != None %}
                         {% if value.0.fields.altEnt3 == True %}
-                          <span style="color: red;">{{value.0.fields.horEnt3}} *</span>
+                          <span style="color: red;">{{value.0.fields.horEnt3|time:"H:i"}} *</span>
                         {% else %}
-                          {{value.0.fields.horEnt3}}
+                          {{value.0.fields.horEnt3|time:"H:i"}}
                         {% endif %}
                       {% else %}
                         ------              
@@ -102,9 +102,9 @@
                     {% if value.0.fields.horEnt1 != None %}
                       {% if value.0.fields.horSai4 != None %}
                         {% if value.0.fields.altSai4 == True %}
-                          <span style="color: red;">{{value.0.fields.horSai4}} *</span>
+                          <span style="color: red;">{{value.0.fields.horSai4|time:"H:i"}} *</span>
                         {% else %}
-                          {{value.0.fields.horSai4}}
+                          {{value.0.fields.horSai4|time:"H:i"}}
                         {% endif %}
                       {% else %}
                         ------  
